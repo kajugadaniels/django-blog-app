@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="Ireme News" />
+    <meta name="description" content="Ireme News" />
+    <meta name="author" content="NEXCODE" />
+    <link rel="shortcut icon" href="assets/img/fav.png" title="Favicon" sizes="16x16" />
+    <link rel="stylesheet" href="{% static 'css/lib/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/lib/ionicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lib/line-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lib/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/lib/jquery.fancybox.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/lib/lity.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/lib/swiper.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>Ireme News</title>
+</head>
+
+<body class="home-style1">
+    <div class="loading-page style1">
+        <div class="lad-cont">
+            <h2 class="loading loading01">
+                <span>.</span>
+                <span>i</span>
+                <span>r</span>
+                <span>e</span>
+                <span>m</span>
+                <span>e</span>
+            </h2>
+            <small class="loading loading01">
+                <span>l</span>
+                <span>o</span>
+                <span>a</span>
+                <span>d</span>
+                <span>i</span>
+                <span>n</span>
+                <span>g</span>
+            </small>
+        </div>
+    </div>
+
+    {% include 'components/navbar.html' %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+
+    <script src="{% static 'js/lib/jquery-3.0.0.min.js' %}"></script>
+    <script src="{% static 'js/lib/jquery-migrate-3.0.0.min.js' %}"></script>
+    <script src="{% static 'js/lib/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/lib/wow.min.js' %}"></script>
+    <script src="{% static 'js/lib/jquery.fancybox.js' %}"></script>
+    <script src="{% static 'js/lib/lity.js' %}"></script>
+    <script src="{% static 'js/lib/swiper.min.js' %}"></script>
+    <script src="{% static 'js/lib/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/lib/jquery.counterup.js' %}"></script>
+    <script src="{% static 'js/lib/back-to-top.js' %}"></script>
+    <script src="{% static 'js/lib/parallaxie.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
