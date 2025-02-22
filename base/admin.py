@@ -12,11 +12,13 @@ class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 20
 
     def edit_link(self, obj):
-        url = reverse("admin:home_category_change", args=[obj.pk])
+        # Use the correct app namespace here (base_category_change)
+        url = reverse("admin:base_category_change", args=[obj.pk])
         return format_html('<a class="button" href="{}">Edit</a>', url)
     edit_link.short_description = "Edit"
     
     def delete_link(self, obj):
-        url = reverse("admin:home_category_delete", args=[obj.pk])
+        # Use the correct app namespace here (base_category_delete)
+        url = reverse("admin:base_category_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
