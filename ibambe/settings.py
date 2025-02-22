@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     # Custom apps
-    'base'
+    'base',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -135,11 +136,13 @@ WHITENOISE_AUTOREFRESH = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'account.User'
+
 JAZZMIN_SETTINGS = {
-    "site_title": "NEXCODE",
-    "site_header": "NEXCODE",
-    "site_brand": "NEXCODE",
-    "welcome_sign": "Nexcode Admin Login",
+    "site_title": "Ireme",
+    "site_header": "Ireme",
+    "site_brand": "Ireme",
+    "welcome_sign": "Ireme Admin Login",
     "show_sidebar": True,
     "navigation_expanded": True,
     "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
