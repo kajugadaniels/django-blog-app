@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'ckeditor',
     'ckeditor_uploader',
+
+    # Custom apps
+    'base'
 ]
 
 MIDDLEWARE = [
