@@ -1,0 +1,114 @@
+{% load static %}
+
+<div class="navbar-container">
+    <div class="container">
+        <div class="top-navbar style-1">
+            <div class="container p-0">
+                <div class="row align-items-center">
+                    <div class="col-lg-4">
+                        <div class="date-weather mb-3 mb-lg-0">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item">
+                                        <div class="icon me-3 pt-1">
+                                            <i class="la la-calendar"></i>
+                                        </div>
+                                        <div class="inf">
+                                            <strong>Monday</strong>
+                                            <p>Nov 25, 2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item">
+                                        <div class="icon me-3 pt-1">
+                                            <i class="la la-cloud-sun"></i>
+                                        </div>
+                                        <div class="inf">
+                                            <strong>32° deg, Cloudy</strong>
+                                            <p>New York</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <a href="#" class="logo-brand d-none d-lg-block">
+                            <img src="{% static 'img/logo_home1.png' %}" alt="" class="dark-none">
+                            <img src="{% static 'img/logo_home1_lt.png' %}" alt="" class="light-none">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light style-1">
+            <div class="container p-0">
+                <div class="mob-nav-toggles d-flex align-items-center justify-content-between">
+                    <button class="navbarList-icon me-lg-5" data-bs-toggle="offcanvas" href="#offcanvasExample"
+                        role="button" aria-controls="offcanvasExample">
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <a href="#" class="logo-brand d-block d-lg-none w-50 my-4">
+                        <img src="{% static 'img/logo_home1.png' %}" alt="" class="dark-none">
+                        <img src="{% static 'img/logo_home1_lt.png' %}" alt="" class="light-none">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                Ahabanza
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="nav-side">
+                        <a href="#" class="icon-link">
+                            <i class="la la-user fs-4"></i>
+                        </a>
+                        <a href="#" class="icon-link noti-dot">
+                            <i class="la la-shopping-bag fs-4"></i>
+                        </a>
+                        <a href="#" class="icon-link search-btn-style1">
+                            <i class="la la-search fs-4 sOpen-btn"></i>
+                            <i class="la la-close fs-4 sClose-btn"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="nav-search-style1">
+            <div class="row justify-content-center align-items-center gx-lg-5">
+                <div class="col-lg-4">
+                    <div class="info">
+                        <h5>
+                            urashobora gushakisha ukurikije <br> icyiciro cyangwa umutwe wamakuru
+                        </h5>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <form class="form">
+                        <span class="color-777 fst-italic text-capitalize mb-2 fsz-13px">
+                            Injira Ijambo ryibanze
+                        </span>
+                        <div class="form-group">
+                            <span class="icon">
+                                <i class="la la-search"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Elon Musk ... ">
+                            <button type="submit">Shakisha</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
