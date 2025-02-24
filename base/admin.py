@@ -136,3 +136,20 @@ class ArticleSubscriptionAdmin(admin.ModelAdmin):
         url = reverse("admin:base_articlesubscription_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
+
+@admin.register(SearchHistory)
+class SearchHistoryAdmin(admin.ModelAdmin):
+    list_display = ('user', 'search_term', 'created_at', 'edit_link', 'delete_link')
+    search_fields = ('user__username', 'search_term')
+    list_filter = ('created_at',)
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_searchhistory_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_searchhistory_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
