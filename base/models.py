@@ -49,3 +49,26 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def _generate_unique_slug(self):
+        """Generate a unique slug by appending 7 random numbers."""
+        base_slug = slugify(self.name)
+        slug = base_slug
+        while Tag.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{random.randint(1000, 9999)}"
+        return slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super(Tag, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Tags"
