@@ -119,3 +119,20 @@ class SubscriptionAdmin(admin.ModelAdmin):
         url = reverse("admin:base_subscription_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
+
+@admin.register(ArticleSubscription)
+class ArticleSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('article', 'subscription', 'view_permission', 'edit_link', 'delete_link')
+    search_fields = ('article__title', 'subscription__user__username')
+    list_filter = ('view_permission',)
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_articlesubscription_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_articlesubscription_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
