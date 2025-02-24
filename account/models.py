@@ -14,6 +14,7 @@ def user_image_path(instance, filename):
 
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
+        ('admin', 'Admin'),
         ('editor', 'Editor'),
         ('journalist', 'Journalist'),
         ('guest', 'Guest'),
