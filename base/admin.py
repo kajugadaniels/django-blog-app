@@ -44,3 +44,20 @@ class TagAdmin(admin.ModelAdmin):
         url = reverse("admin:base_tag_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'author', 'category', 'status', 'published_at', 'edit_link', 'delete_link')
+    search_fields = ('title', 'content', 'author__username', 'category__name')
+    list_filter = ('status', 'published_at', 'category')
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_article_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_article_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
