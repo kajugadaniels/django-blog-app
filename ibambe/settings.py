@@ -195,20 +195,20 @@ CKEDITOR_CONFIGS = {
             ['Format', 'FontSize', 'TextColor', 'BGColor'],
             # Add more advanced tools
             ['Maximize', 'ShowBlocks'],
-            # Remove formatting
+            # Remove formatting and view source
             ['RemoveFormat', 'Source'],
         ],
         'width': '100%',
-        'height': 500,  # Increase height for more space for the editor
-        'removePlugins': 'stylesheetparser',  # Disable unnecessary plugins
-        'extraPlugins': 'image2,video',  # Enable image2 plugin (better image handling) and video plugin
+        'height': 300,
+        'removePlugins': 'stylesheetparser',
+        'extraPlugins': 'uploadimage,image2',
         'image2_alignClasses': ['image-left', 'image-center', 'image-right'],
-        'image2_disableResizer': False,  # Allow resizing of images
-        'filebrowserUploadUrl': '/ckeditor/upload/',  # URL for file upload handling
-        'filebrowserUploadMethod': 'form',  # Use form method for uploads
-        'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL for image uploads
-        'filebrowserImageBrowseUrl': '/ckeditor/browse/',  # URL to browse images
-        'filebrowserVideoUploadUrl': '/ckeditor/upload/',  # URL for video uploads
-        'filebrowserVideoBrowseUrl': '/ckeditor/browse/',  # URL to browse video files
+        'image2_disableResizer': False,
+        'filebrowserUploadUrl': '/ckeditor/upload/?type=Files',
+        'filebrowserUploadMethod': 'form',
+        'filebrowserImageUploadUrl': '/ckeditor/upload/?type=Images',
+        'filebrowserImageBrowseUrl': '/ckeditor/browse/?type=Images',
+        'filebrowserVideoUploadUrl': '/ckeditor/upload/?type=Videos',
+        'filebrowserVideoBrowseUrl': '/ckeditor/browse/?type=Videos',
     },
 }
