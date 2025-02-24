@@ -85,3 +85,20 @@ class ArticleImageAdmin(admin.ModelAdmin):
         url = reverse("admin:base_articleimage_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('article', 'user', 'content', 'created_at', 'edit_link', 'delete_link')
+    search_fields = ('article__title', 'user__username', 'content')
+    list_filter = ('created_at', 'updated_at', 'article')
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_comment_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_comment_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
