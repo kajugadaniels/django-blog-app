@@ -1,16 +1,16 @@
-import random
-import requests
 from faker import Faker
 from base.models import *
 from account.models import *
+import random
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
-    help = 'Generate 100 fake articles'
+    help = 'Generate 100 fake articles for a news report system'
 
     def handle(self, *args, **kwargs):
         fake = Faker()
 
+        # Define article categories and their content themes
         east_african_countries = ['Rwanda', 'Kenya', 'Tanzania', 'Burundi', 'DRC']
         fake_content = [
             "The government of {country} has launched a new initiative to boost local businesses amidst the global recession.",
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         for i in range(1, 101):  # Generate 100 articles with ids from 1 to 100
             author = random.choice(User.objects.filter(role='editor'))  # Random user (editor role)
-            category = random.choice(Category.objects.all())  # Random category
+            category = random.choice(Category.objects.all())  # Random category from predefined categories
             tags = random.sample(list(Tag.objects.all()), 3)  # Random 3 tags
             
             article = Article(
