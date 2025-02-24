@@ -122,3 +122,17 @@ class ArticleImage(models.Model):
 
     class Meta:
         verbose_name_plural = "Article Images"
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.article.title}"
+
+    class Meta:
+        verbose_name_plural = "Comments"
