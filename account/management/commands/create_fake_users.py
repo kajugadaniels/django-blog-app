@@ -14,12 +14,12 @@ class Command(BaseCommand):
                 email=fake.email(),
                 name=fake.name(),
                 phone_number=fake.phone_number(),
-                role='editor',  # Ensure role is 'editor'
+                role='editor',
                 is_active=True,
                 is_staff=False
             )
-            user.set_password(fake.password())  # Generate fake password
+            user.set_password("Password!7")
             user.save()
             users.append(user)
         
-        self.stdout.write(self.style.SUCCESS(f'Successfully created {len(users)} users.'))
+        self.stdout.write(self.style.SUCCESS(f'Successfully created {len(users)} users with password "Password!7".'))
