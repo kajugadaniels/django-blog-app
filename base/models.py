@@ -1,12 +1,11 @@
 import os
 import random
-import string
 from django.db import models
-from django.db.models import Sum
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
+from ckeditor.fields import RichTextField
 from django.utils.html import format_html
-from django.conf import settings  # Import settings
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from django.core.exceptions import ValidationError
@@ -81,7 +80,7 @@ class Tag(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True)
-    content = models.TextField()
+    content = RichTextField()  # Use RichTextField from CKEditor instead of TextField
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='articles')

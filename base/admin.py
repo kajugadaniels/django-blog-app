@@ -3,6 +3,7 @@ from base.models import *
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.html import format_html
+from ckeditor.widgets import CKEditorWidget
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -57,6 +58,15 @@ class ArticleImageInline(admin.TabularInline):  # You can use StackedInline for 
             return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
         return "No image"
     image_preview.short_description = "Image Preview"
+
+class ArticleAdminForm(forms.ModelForm):
+    """Custom form for Article admin to use CKEditor on content field."""
+    class Meta:
+        model = Article
+        fields = '__all__'
+        widgets = {
+            'content': CKEditorWidget(),
+        }
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
