@@ -160,3 +160,14 @@ class ArticleSubscription(models.Model):
 
     class Meta:
         verbose_name_plural = "Article Subscriptions"
+
+class SearchHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    search_term = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Search by {self.user.username} for {self.search_term}"
+
+    class Meta:
+        verbose_name_plural = "Search Histories"
