@@ -171,3 +171,16 @@ class SearchHistory(models.Model):
 
     class Meta:
         verbose_name_plural = "Search Histories"
+
+class Alert(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    target_users = models.ManyToManyField(User, related_name='alerts')
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Alerts"
