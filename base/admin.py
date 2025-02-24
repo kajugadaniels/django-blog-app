@@ -46,10 +46,19 @@ class TagAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
 
-class ArticleImageInline(admin.TabularInline):  # You can use StackedInline for a different layout
+class ArticleAdminForm(forms.ModelForm):
+    """Custom form for Article admin to use CKEditor on content field."""
+    class Meta:
+        model = Article
+        fields = '__all__'
+        widgets = {
+            'content': CKEditorWidget(),  # Use CKEditor widget for content field
+        }
+
+class ArticleImageInline(admin.TabularInline):
     model = ArticleImage
-    extra = 1  # Number of empty forms to display by default
-    fields = ['image', 'caption', 'image_preview']  # Fields to display in the inline form
+    extra = 1
+    fields = ['image', 'caption', 'image_preview']
     readonly_fields = ['image_preview']  # Make the image preview readonly
 
     def image_preview(self, obj):
@@ -59,22 +68,22 @@ class ArticleImageInline(admin.TabularInline):  # You can use StackedInline for 
         return "No image"
     image_preview.short_description = "Image Preview"
 
-class ArticleAdminForm(forms.ModelForm):
-    """Custom form for Article admin to use CKEditor on content field."""
-    class Meta:
-        model = Article
-        fields = '__all__'
-        widgets = {
-            'content': CKEditorWidget(),
-        }
-
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'category', 'status', 'published_at', 'edit_link', 'delete_link')
+    form = ArticleAdminForm  # Specify the custom form for CKEditor
+    list_display = ('title', 'slug', 'author', 'category', 'status', 'published_at', 'image_preview', 'edit_link', 'delete_link')
     search_fields = ('title', 'content', 'author__username', 'category__name')
     list_filter = ('status', 'published_at', 'category')
     list_per_page = 20
     inlines = [ArticleImageInline]  # Inline the ArticleImage model into the ArticleAdmin
+
+    # This method adds an image preview column in the list display
+    def image_preview(self, obj):
+        """Display a thumbnail of the article image in the list view."""
+        if obj.articleimage_set.first():  # Check if an article image exists for the article
+            return format_html('<img src="{}" width="50" height="50" />', obj.articleimage_set.first().image.url)
+        return "No image"
+    image_preview.short_description = "Image Preview"
 
     def edit_link(self, obj):
         url = reverse("admin:base_article_change", args=[obj.pk])
@@ -86,13 +95,6 @@ class ArticleAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
 
-    def image_preview(self, obj):
-        """Display a thumbnail of the article image in the list view."""
-        if obj.articleimage_set.first():  # Check if an article image exists for the article
-            return format_html('<img src="{}" width="50" height="50" />', obj.articleimage_set.first().image.url)
-        return "No image"
-    image_preview.short_description = "Image Preview"
-    
 # @admin.register(ArticleImage)
 # class ArticleImageAdmin(admin.ModelAdmin):
 #     list_display = ('article', 'image_preview', 'caption', 'edit_link', 'delete_link')
