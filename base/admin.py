@@ -45,12 +45,26 @@ class TagAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
 
+class ArticleImageInline(admin.TabularInline):  # You can use StackedInline for a different layout
+    model = ArticleImage
+    extra = 1  # Number of empty forms to display by default
+    fields = ['image', 'caption', 'image_preview']  # Fields to display in the inline form
+    readonly_fields = ['image_preview']  # Make the image preview readonly
+
+    def image_preview(self, obj):
+        """Display a thumbnail of the article image in the inline form."""
+        if obj.image:
+            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+        return "No image"
+    image_preview.short_description = "Image Preview"
+
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'author', 'category', 'status', 'published_at', 'edit_link', 'delete_link')
     search_fields = ('title', 'content', 'author__username', 'category__name')
     list_filter = ('status', 'published_at', 'category')
     list_per_page = 20
+    inlines = [ArticleImageInline]  # Inline the ArticleImage model into the ArticleAdmin
 
     def edit_link(self, obj):
         url = reverse("admin:base_article_change", args=[obj.pk])
@@ -62,6 +76,13 @@ class ArticleAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
 
+    def image_preview(self, obj):
+        """Display a thumbnail of the article image in the list view."""
+        if obj.articleimage_set.first():  # Check if an article image exists for the article
+            return format_html('<img src="{}" width="50" height="50" />', obj.articleimage_set.first().image.url)
+        return "No image"
+    image_preview.short_description = "Image Preview"
+    
 @admin.register(ArticleImage)
 class ArticleImageAdmin(admin.ModelAdmin):
     list_display = ('article', 'image_preview', 'caption', 'edit_link', 'delete_link')
