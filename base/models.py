@@ -72,3 +72,35 @@ class Tag(models.Model):
 
     class Meta:
         verbose_name_plural = "Tags"
+
+class Article(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, related_name='articles')
+    published_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=20, choices=[('draft', 'Draft'), ('published', 'Published')], default='draft')
+    language = models.CharField(max_length=50, default='en')
+    views = models.PositiveIntegerField(default=0)
+
+    def _generate_unique_slug(self):
+        """Generate a unique slug by appending 7 random numbers."""
+        base_slug = slugify(self.title)
+        slug = base_slug
+        while Article.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{random.randint(1000, 9999)}"
+        return slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super(Article, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Articles"
