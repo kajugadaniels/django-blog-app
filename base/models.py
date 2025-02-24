@@ -18,8 +18,9 @@ def category_image_path(instance, filename):
 
 def article_image_path(instance, filename):
     base_filename, file_extension = os.path.splitext(filename)
+    article_slug = slugify(instance.caption if instance.caption else instance.article.title)
     timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
-    return f'articles/article_{slugify(instance.name)}_{timestamp}{file_extension}'
+    return f'articles/article_{article_slug}_{timestamp}{file_extension}'
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
