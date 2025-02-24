@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.html import format_html
-from django.contrib.auth.models import User
+from django.conf import settings  # Import settings
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from django.core.exceptions import ValidationError
@@ -28,7 +28,6 @@ class Category(models.Model):
     image = ProcessedImageField(
         upload_to=category_image_path,
         processors=[ResizeToFill(800, 800)],
-        # format='JPEG',
         options={'quality': 90},
         null=True,
         blank=True,
@@ -82,7 +81,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True)
     content = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='articles')
     published_at = models.DateTimeField(auto_now_add=True)
@@ -115,7 +114,6 @@ class ArticleImage(models.Model):
     image = ProcessedImageField(
         upload_to=article_image_path,
         processors=[ResizeToFill(1080, 600)],
-        # format='JPEG',
         options={'quality': 90},
         null=True,
         blank=True,
@@ -137,7 +135,7 @@ class ArticleImage(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -150,7 +148,7 @@ class Comment(models.Model):
         verbose_name_plural = "Comments"
 
 class Subscription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=[('active', 'Active'), ('expired', 'Expired')], default='active')
@@ -174,7 +172,7 @@ class ArticleSubscription(models.Model):
         verbose_name_plural = "Article Subscriptions"
 
 class SearchHistory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     search_term = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -188,7 +186,7 @@ class Alert(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    target_users = models.ManyToManyField(User, related_name='alerts')
+    target_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='alerts')  # Updated to reference custom user model
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
