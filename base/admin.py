@@ -83,29 +83,29 @@ class ArticleAdmin(admin.ModelAdmin):
         return "No image"
     image_preview.short_description = "Image Preview"
     
-@admin.register(ArticleImage)
-class ArticleImageAdmin(admin.ModelAdmin):
-    list_display = ('article', 'image_preview', 'caption', 'edit_link', 'delete_link')
-    search_fields = ('article__title', 'caption')
-    list_filter = ('article',)
-    list_per_page = 20
+# @admin.register(ArticleImage)
+# class ArticleImageAdmin(admin.ModelAdmin):
+#     list_display = ('article', 'image_preview', 'caption', 'edit_link', 'delete_link')
+#     search_fields = ('article__title', 'caption')
+#     list_filter = ('article',)
+#     list_per_page = 20
 
-    def image_preview(self, obj):
-        """Display a thumbnail of the article image in the list view."""
-        if obj.image:
-            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
-        return "No image"
-    image_preview.short_description = "Image Preview"
+#     def image_preview(self, obj):
+#         """Display a thumbnail of the article image in the list view."""
+#         if obj.image:
+#             return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+#         return "No image"
+#     image_preview.short_description = "Image Preview"
 
-    def edit_link(self, obj):
-        url = reverse("admin:base_articleimage_change", args=[obj.pk])
-        return format_html('<a class="button" href="{}">Edit</a>', url)
-    edit_link.short_description = "Edit"
+#     def edit_link(self, obj):
+#         url = reverse("admin:base_articleimage_change", args=[obj.pk])
+#         return format_html('<a class="button" href="{}">Edit</a>', url)
+#     edit_link.short_description = "Edit"
     
-    def delete_link(self, obj):
-        url = reverse("admin:base_articleimage_delete", args=[obj.pk])
-        return format_html('<a class="button" href="{}">Delete</a>', url)
-    delete_link.short_description = "Delete"
+#     def delete_link(self, obj):
+#         url = reverse("admin:base_articleimage_delete", args=[obj.pk])
+#         return format_html('<a class="button" href="{}">Delete</a>', url)
+#     delete_link.short_description = "Delete"
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
