@@ -149,3 +149,14 @@ class Subscription(models.Model):
 
     class Meta:
         verbose_name_plural = "Subscriptions"
+
+class ArticleSubscription(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    view_permission = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.subscription.user.username} - {self.article.title}"
+
+    class Meta:
+        verbose_name_plural = "Article Subscriptions"
