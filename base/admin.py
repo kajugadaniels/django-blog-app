@@ -153,3 +153,20 @@ class SearchHistoryAdmin(admin.ModelAdmin):
         url = reverse("admin:base_searchhistory_delete", args=[obj.pk])
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
+
+@admin.register(Alert)
+class AlertAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at', 'is_active', 'edit_link', 'delete_link')
+    search_fields = ('title', 'content')
+    list_filter = ('created_at', 'is_active')
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_alert_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_alert_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
