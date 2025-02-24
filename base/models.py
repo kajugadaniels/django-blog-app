@@ -16,6 +16,11 @@ def category_image_path(instance, filename):
     timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
     return f'categories/category_{slugify(instance.name)}_{timestamp}{file_extension}'
 
+def article_image_path(instance, filename):
+    base_filename, file_extension = os.path.splitext(filename)
+    timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
+    return f'articles/article_{slugify(instance.name)}_{timestamp}{file_extension}'
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -107,7 +112,14 @@ class Article(models.Model):
 
 class ArticleImage(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='article_images/')
+    image = ProcessedImageField(
+        upload_to=article_image_path,
+        processors=[ResizeToFill(1080, 600)],
+        # format='JPEG',
+        options={'quality': 90},
+        null=True,
+        blank=True,
+    )
     caption = models.CharField(max_length=255, null=True, blank=True)
 
     def image_preview(self):
