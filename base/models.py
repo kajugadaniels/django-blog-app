@@ -14,7 +14,7 @@ from django.core.exceptions import ValidationError
 def category_image_path(instance, filename):
     base_filename, file_extension = os.path.splitext(filename)
     timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
-    return f'portfolio/work_{slugify(instance.name)}_{timestamp}{file_extension}'
+    return f'categories/category_{slugify(instance.name)}_{timestamp}{file_extension}'
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
