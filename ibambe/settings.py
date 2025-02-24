@@ -183,20 +183,32 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
+            # Text Formatting tools
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
+            # Paragraph formatting
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            # Hyperlink tools
             ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source'],
-            ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
-            ['Format', 'FontSize'],
-            ['TextColor', 'BGColor'],
+            # Media embedding tools
+            ['Image', 'Video', 'Table', 'HorizontalRule', 'SpecialChar'],
+            # Formatting tools
+            ['Format', 'FontSize', 'TextColor', 'BGColor'],
+            # Add more advanced tools
             ['Maximize', 'ShowBlocks'],
+            # Remove formatting
+            ['RemoveFormat', 'Source'],
         ],
         'width': '100%',
-        'height': 300,
-        'removePlugins': 'stylesheetparser',
-        'extraPlugins': 'image2',
+        'height': 500,  # Increase height for more space for the editor
+        'removePlugins': 'stylesheetparser',  # Disable unnecessary plugins
+        'extraPlugins': 'image2,video',  # Enable image2 plugin (better image handling) and video plugin
         'image2_alignClasses': ['image-left', 'image-center', 'image-right'],
-        'image2_disableResizer': False,
+        'image2_disableResizer': False,  # Allow resizing of images
+        'filebrowserUploadUrl': '/ckeditor/upload/',  # URL for file upload handling
+        'filebrowserUploadMethod': 'form',  # Use form method for uploads
+        'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL for image uploads
+        'filebrowserImageBrowseUrl': '/ckeditor/browse/',  # URL to browse images
+        'filebrowserVideoUploadUrl': '/ckeditor/upload/',  # URL for video uploads
+        'filebrowserVideoBrowseUrl': '/ckeditor/browse/',  # URL to browse video files
     },
 }
