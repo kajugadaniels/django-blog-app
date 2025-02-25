@@ -669,105 +669,107 @@
                         </div>
                     </section>
     
-                    <div class="tc-technology-style1 pt-50">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">technology</a> <i
-                                class="la la-angle-right ms-1"></i> </p>
-                        <div class="tc-post-overlay-default">
-                            <div class="img th-600 img-cover">
-                                <img src="https://newzin-html.themescamp.com/assets/img/technology/1.png" alt="">
-                                <div class="tags">
-                                    <a href="#">technology</a>
+                    {% if otherCategory and otherRecentArticle %}
+                        <section class="tc-technology-style1 pt-50">
+                            <!-- Section Header with category name -->
+                            <p class="color-000 text-uppercase mb-30 ltspc-1">
+                                <a href="#">{{ otherCategory.name }}</a>
+                                <i class="la la-angle-right ms-1"></i>
+                            </p>
+                            
+                            <!-- Featured Article (most recent) -->
+                            <div class="tc-post-overlay-default">
+                                <div class="img th-600 img-cover">
+                                    {% with articleImage=otherRecentArticle.articleimage_set.first %}
+                                        {% if articleImage %}
+                                            <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                        {% else %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                        {% endif %}
+                                    {% endwith %}
+                                    <div class="tags">
+                                        <a href="#">{{ otherCategory.name }}</a>
+                                    </div>
+                                </div>
+                                <div class="content ps-40 pe-40 pb-40">
+                                    <h2 class="title mb-30">
+                                        <a href="#">{{ otherRecentArticle.title }}</a>
+                                    </h2>
+                                    <div class="meta-bot lh-1">
+                                        <ul class="d-flex">
+                                            <li class="date me-5">
+                                                <a href="#">
+                                                    <i class="la la-calendar me-2"></i> {{ otherRecentArticle.created_at|date:"M d, Y" }}
+                                                </a>
+                                            </li>
+                                            <li class="author me-5">
+                                                <a href="#">
+                                                    <i class="la la-user me-2"></i> by {{ otherRecentArticle.author.username }}
+                                                </a>
+                                            </li>
+                                            <li class="comment">
+                                                <a href="#">
+                                                    <i class="la la-comment me-2"></i> {{ otherRecentArticle.comment.count }} Comments
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="content ps-40 pe-40 pb-40">
-                                <h2 class="title mb-30">
-                                    <a href="#">Myenergi's award winning product <br> the zappi EV charger</a>
-                                </h2>
-                                <div class="meta-bot lh-1">
-                                    <ul class="d-flex">
-                                        <li class="date me-5">
-                                            <a href="#"><i class="la la-calendar me-2"></i> Dec 14, 2022</a>
-                                        </li>
-                                        <li class="author me-5">
-                                            <a href="#"><i class="la la-user me-2"></i> by Admin</a>
-                                        </li>
-                                        <li class="comment">
-                                            <a href="#"><i class="la la-comment me-2"></i> 55 Comments</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tc-post-list-style2">
-                            <div class="items">
-                                <div class="item pt-30 pb-30 mt-30 border-1 border-top border-bottom brd-gray">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="img th-200 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/technology/2.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <div class="content">
-                                                <div class="news-cat color-999 fsz-13px text-uppercase mb-3">
-                                                    <a href="#">technology</a>
+                            
+                            <!-- List of Two Most Viewed Articles in the Past 7 Days -->
+                            <div class="tc-post-list-style2">
+                                <div class="items">
+                                    {% for article in otherMostViewedArticles %}
+                                    <div class="item pt-30 pb-30 mt-30 border-1 border-top border-bottom brd-gray">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="img th-200 img-cover">
+                                                    {% with articleImage=article.articleimage_set.first %}
+                                                        {% if articleImage %}
+                                                            <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                        {% else %}
+                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                        {% endif %}
+                                                    {% endwith %}
                                                 </div>
-                                                <h3 class="title ltspc--1">
-                                                    <a href="#"> Big Title for featured post with double line and
-                                                        more text </a>
-                                                </h3>
-                                                <div class="meta-bot lh-1 mt-80">
-                                                    <ul class="d-flex">
-                                                        <li class="date me-5">
-                                                            <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                                2022</a>
-                                                        </li>
-                                                        <li class="author me-5">
-                                                            <a href="#"><i class="la la-user me-2"></i> by Admin
-                                                            </a>
-                                                        </li>
-                                                        <li class="comment">
-                                                            <a href="#"><i class="la la-comment me-2"></i> 55
-                                                                Comments</a>
-                                                        </li>
-                                                    </ul>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div class="content">
+                                                    <div class="news-cat color-999 fsz-13px text-uppercase mb-3">
+                                                        <a href="#">{{ otherCategory.name }}</a>
+                                                    </div>
+                                                    <h3 class="title ltspc--1">
+                                                        <a href="#">{{ article.title }}</a>
+                                                    </h3>
+                                                    <div class="meta-bot lh-1 mt-80">
+                                                        <ul class="d-flex">
+                                                            <li class="date me-5">
+                                                                <a href="#">
+                                                                    <i class="la la-calendar me-2"></i> {{ article.created_at|date:"M d, Y" }}
+                                                                </a>
+                                                            </li>
+                                                            <li class="author me-5">
+                                                                <a href="#">
+                                                                    <i class="la la-user me-2"></i> by {{ article.author.username }}
+                                                                </a>
+                                                            </li>
+                                                            <li class="comment">
+                                                                <a href="#">
+                                                                    <i class="la la-comment me-2"></i> {{ article.comment.count }} Comments
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item border-0 bg-gray1 p-3 mt-30">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="img th-200 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/technology/3.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <div class="content">
-                                                <div class="news-cat color-999 fsz-13px text-uppercase mb-3">
-                                                    <a href="#" class="text-danger">Sponsored Content</a>
-                                                </div>
-                                                <h3 class="title ltspc--1">
-                                                    <a href="#"> Oppoturnity become Lead of Backend Developer at
-                                                        Google Studio </a>
-                                                </h3>
-                                                <div class="meta-bot lh-1 mt-80">
-                                                    <ul class="d-flex">
-                                                        <li class="comment">
-                                                            <a href="#"> totalworks.com <i
-                                                                    class="las la-external-link-square-alt ms-2"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </section>
+                    {% endif %}
                 </div>
     
                 <div class="col-lg-3">
