@@ -244,20 +244,26 @@
     <section class="tc-google-stories-style1">
         <div class="container">
             <div class="section-content pt-70 pb-70 border-0 border-bottom brd-gray">
-                <p class="color-000 text-uppercase mb-30 ltspc-1">google web stories</p>
+                <p class="color-000 text-uppercase mb-30 ltspc-1">Categories</p>
                 <div class="tc-google-stories-slider1 tc-slider-style1">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
+                            {% for category in categories %}
                             <div class="swiper-slide">
                                 <a href="#" class="story-item">
                                     <div class="img img-cover">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/google-stories/1.png" alt="">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                                        {% else %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                        {% endif %}
                                     </div>
                                     <div class="title fsz-14px color-000 mt-10">
-                                        Kayak stories
+                                        {{ category.name }}
                                     </div>
                                 </a>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="swiper-button-next"></div>
