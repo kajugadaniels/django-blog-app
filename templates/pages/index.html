@@ -414,24 +414,16 @@
 
                         <div class="pt-15">
                             <span class="fsz-12px color-999 text-capitalize fst-italic">Related Post</span>
-                            <a href="#" class="d-flex my-3">
-                                <span class="icon-6 rounded-circle bg-dark me-3 flex-shrink-0 op-4 mt-10"></span>
-                                <h6 class="fsz-16px">
-                                    Top 10 Destinations not to be missed this summer
-                                </h6>
-                            </a>
-                            <a href="#" class="d-flex my-3">
-                                <span class="icon-6 rounded-circle bg-dark me-3 flex-shrink-0 op-4 mt-10"></span>
-                                <h6 class="fsz-16px">
-                                    Travel experience Switzerland self-sufficient in 4D3N
-                                </h6>
-                            </a>
-                            <a href="#" class="d-flex my-3">
-                                <span class="icon-6 rounded-circle bg-dark me-3 flex-shrink-0 op-4 mt-10"></span>
-                                <h6 class="fsz-16px">
-                                    Discovery Devon island, Canada
-                                </h6>
-                            </a>
+                            {% if relatedArticles %}
+                                {% for article in relatedArticles %}
+                                    <a href="#" class="d-flex my-3">
+                                        <span class="icon-6 rounded-circle bg-dark me-3 flex-shrink-0 op-4 mt-10"></span>
+                                        <h6 class="fsz-16px">{{ article.title }}</h6>
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                <p>No related posts available.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
