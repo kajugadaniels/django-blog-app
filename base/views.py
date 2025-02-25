@@ -84,6 +84,16 @@ def home(request):
                                               .order_by('-views')\
                                               .first()
     
+    # New logic: Retrieve 3 more most viewed articles in the last 7 days,
+    # excluding the mostViewedWeeklyArticle if it exists.
+    if mostViewedWeeklyArticle:
+        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+                                                  .exclude(id=mostViewedWeeklyArticle.id)\
+                                                  .order_by('-views')[:3]
+    else:
+        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+                                                  .order_by('-views')[:3]
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -97,6 +107,7 @@ def home(request):
         'mostLikedArticle': mostLikedArticle,
         'mostCommentedArticles': mostCommentedArticles,
         'mostViewedWeeklyArticle': mostViewedWeeklyArticle,
+        'mostViewedWeeklyArticles': mostViewedWeeklyArticles,
     }
     
     return render(request, 'pages/index.html', context)
