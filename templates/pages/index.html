@@ -1071,7 +1071,7 @@
                                                     {% if articleImage %}
                                                         <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                                     {% else %}
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="Default Image">
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
                                                     {% endif %}
                                                 {% endwith %}
                                                 <a href="{{ article.video_url }}" data-lity class="video_icon icon-60">
@@ -1146,7 +1146,7 @@
                                                     {% if articleImage %}
                                                         <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                                     {% else %}
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="Default Image">
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
                                                     {% endif %}
                                                 {% endwith %}
                                                 <a href="{{ article.video_url }}" data-lity class="video_icon icon-60">
@@ -1170,85 +1170,42 @@
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </section>
-    
+
     <section class="tc-columnist-style1">
         <div class="container">
             <div class="content pt-50 pb-50 border-1 border-top brd-gray">
-                <p class="color-000 text-uppercase mb-40 ltspc-1 lh-1">top columnist <i
-                        class="la la-angle-right ms-1"></i> </p>
+                <p class="color-000 text-uppercase mb-40 ltspc-1 lh-1">
+                    our authors <i class="la la-angle-right ms-1"></i>
+                </p>
                 <div class="columnist-slider1 tc-slider-style1">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
+                            {% for author in authors %}
                             <div class="swiper-slide">
                                 <div class="columnist-card d-flex align-items-center">
-                                    <div
-                                        class="img img-cover icon-100 rounded-circle overflow-hidden flex-lg-shrink-0 me-4">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/colums/1.png" alt="">
+                                    <div class="img img-cover icon-100 rounded-circle overflow-hidden flex-lg-shrink-0 me-4">
+                                        {% if author.image %}
+                                        <img src="{{ author.image.url }}" alt="{{ author.name }}">
+                                        {% else %}
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Profile">
+                                        {% endif %}
                                     </div>
                                     <div class="info">
                                         <h6 class="name fsz-20px mb-10">
-                                            Conor Bradley
+                                            {{ author.name }}
                                         </h6>
                                         <div class="jop-title">
                                             <small class="fsz-13px color-999">Specialize in</small>
-                                            <p class="fsz-13px text-uppercase">Business, technology</p>
+                                            <p class="fsz-13px text-uppercase">
+                                                {{ author.role|title }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="swiper-slide">
-                                <div class="columnist-card d-flex align-items-center">
-                                    <div
-                                        class="img img-cover icon-100 rounded-circle overflow-hidden flex-lg-shrink-0 me-4">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/colums/2.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="name fsz-20px mb-10">
-                                            Luis Diaz
-                                        </h6>
-                                        <div class="jop-title">
-                                            <small class="fsz-13px color-999">Specialize in</small>
-                                            <p class="fsz-13px text-uppercase">Politic, lifestyle</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="columnist-card d-flex align-items-center">
-                                    <div
-                                        class="img img-cover icon-100 rounded-circle overflow-hidden flex-lg-shrink-0 me-4">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/colums/3.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="name fsz-20px mb-10">
-                                            Alberto Moreno
-                                        </h6>
-                                        <div class="jop-title">
-                                            <small class="fsz-13px color-999">Specialize in</small>
-                                            <p class="fsz-13px text-uppercase">Entertaiment, culture, wolrd </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="columnist-card d-flex align-items-center">
-                                    <div
-                                        class="img img-cover icon-100 rounded-circle overflow-hidden flex-lg-shrink-0 me-4">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/colums/2.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="name fsz-20px mb-10">
-                                            Luis Diaz
-                                        </h6>
-                                        <div class="jop-title">
-                                            <small class="fsz-13px color-999">Specialize in</small>
-                                            <p class="fsz-13px text-uppercase">Politic, lifestyle</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="swiper-button-next"></div>
@@ -1257,7 +1214,7 @@
             </div>
         </div>
     </section>
-    
+
     <section class="another-news pt-50 pb-50 border-1 border-top brd-gray">
         <div class="container">
             <div class="content">
