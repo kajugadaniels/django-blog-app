@@ -1,4 +1,6 @@
 {% extends 'layouts/app.html' %}
+{% load static %}
+{% load humanize %}
 {% block content %}
     <section class="tc-breaking-news-style1 pt-50 pb-50">
         <div class="container">
@@ -7,94 +9,40 @@
                 <div class="tc-slider-style1">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <a href="#" class="item d-block">
-                                    <div class="row gx-4 align-items-center">
-                                        <div class="col-4">
-                                            <div class="img th-70 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/latest/3.png" alt="">
+                            {% for article in breakingNews %}
+                                <div class="swiper-slide">
+                                    <a href="#" class="item d-block">
+                                        <div class="row gx-4 align-items-center">
+                                            <div class="col-4">
+                                                <div class="img th-70 img-cover">
+                                                    {% with article_image=article.articleimage_set.first %}
+                                                        {% if article_image %}
+                                                            <img src="{{ article_image.image.url }}" alt="{{ article_image.caption }}">
+                                                        {% else %}
+                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="content">
-                                                <h5 class="title">Discover the secret in Sahara desert</h5>
-                                                <div class="meta-bot mt-10">
-                                                    <ul>
-                                                        <li class="date"> <i class="la la-clock"></i> 24 Minutes ago
-                                                        </li>
-                                                    </ul>
+                                            <div class="col-8">
+                                                <div class="content">
+                                                    <h5 class="title">
+                                                        {{ article.title }}
+                                                    </h5>
+                                                    <div class="meta-bot mt-10">
+                                                        <ul>
+                                                            <li class="date"> 
+                                                                <i class="la la-clock"></i> 
+                                                                {{ article.created_at|naturaltime }}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="#" class="item d-block">
-                                    <div class="row gx-4 align-items-center">
-                                        <div class="col-4">
-                                            <div class="img th-70 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/latest/4.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="content">
-                                                <h5 class="title">Economic policy between England & Scotland</h5>
-                                                <div class="meta-bot mt-10">
-                                                    <ul>
-                                                        <li class="date"> <i class="la la-clock"></i> 3 Hours ago
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="#" class="item d-block">
-                                    <div class="row gx-4 align-items-center">
-                                        <div class="col-4">
-                                            <div class="img th-70 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/latest/5.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="content">
-                                                <h5 class="title"> Make Poetry, Not War! </h5>
-                                                <div class="meta-bot mt-10">
-                                                    <ul>
-                                                        <li class="date"> <i class="la la-clock"></i> 15 Hours ago
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="#" class="item d-block">
-                                    <div class="row gx-4 align-items-center">
-                                        <div class="col-4">
-                                            <div class="img th-70 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/latest/4.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="content">
-                                                <h5 class="title">Economic policy between England & Scotland</h5>
-                                                <div class="meta-bot mt-10">
-                                                    <ul>
-                                                        <li class="date"> <i class="la la-clock"></i> 3 Hours ago
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <!-- arrows -->
