@@ -72,20 +72,19 @@ def home(request):
         .order_by('-like_count')\
         .first()
     
-    # Retrieve 3 articles with the most comments (ordered by comment count and then by like count)
+    # Retrieve 3 articles with the most comments (ordered by comment count then by like count)
     mostCommentedArticles = Article.objects.annotate(
         comment_count=Count('comment'),
         like_count=Count('like')
     ).order_by('-comment_count', '-like_count')[:3]
     
-    # New logic: Retrieve the most viewed article in the last 7 days.
+    # Retrieve the most viewed article in the last 7 days.
     weekTimeThreshold = timezone.now() - timedelta(days=7)
     mostViewedWeeklyArticle = Article.objects.filter(created_at__gte=weekTimeThreshold)\
                                               .order_by('-views')\
                                               .first()
     
-    # New logic: Retrieve 3 more most viewed articles in the last 7 days,
-    # excluding the mostViewedWeeklyArticle if it exists.
+    # Retrieve 3 more most viewed articles in the last 7 days (excluding the one above)
     if mostViewedWeeklyArticle:
         mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
                                                   .exclude(id=mostViewedWeeklyArticle.id)\
@@ -93,6 +92,44 @@ def home(request):
     else:
         mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
                                                   .order_by('-views')[:3]
+    
+    # NEW LOGIC: For one random category, retrieve:
+    # 1. One recent article in that category.
+    # 2. Four most viewed articles in that category (excluding the recent article if it exists).
+    # 3. Two articles with the most comments in that category (excluding articles from (1) & (2)).
+    randomCategory = Category.objects.order_by('?').first()
+    if randomCategory:
+        recentArticleInCategory = Article.objects.filter(category=randomCategory).order_by('-created_at').first()
+        
+        # Retrieve four most viewed articles in the category, excluding the recent article if exists.
+        if recentArticleInCategory:
+            mostViewedArticlesInCategory = list(
+                Article.objects.filter(category=randomCategory).exclude(id=recentArticleInCategory.id)
+                .order_by('-views')
+            )
+        else:
+            mostViewedArticlesInCategory = list(
+                Article.objects.filter(category=randomCategory).order_by('-views')
+            )
+        mostViewedArticlesInCategory = mostViewedArticlesInCategory[:4]
+        
+        # Exclude articles already selected in (1) and (2) from most commented selection.
+        excluded_ids = set()
+        if recentArticleInCategory:
+            excluded_ids.add(recentArticleInCategory.id)
+        for art in mostViewedArticlesInCategory:
+            excluded_ids.add(art.id)
+        
+        mostCommentedArticlesInCategory = list(
+            Article.objects.filter(category=randomCategory).exclude(id__in=excluded_ids)
+            .annotate(comment_count=Count('comment'))
+            .order_by('-comment_count')
+        )[:2]
+    else:
+        randomCategory = None
+        recentArticleInCategory = None
+        mostViewedArticlesInCategory = []
+        mostCommentedArticlesInCategory = []
     
     context = {
         'breakingNews': breakingNews,
@@ -108,6 +145,11 @@ def home(request):
         'mostCommentedArticles': mostCommentedArticles,
         'mostViewedWeeklyArticle': mostViewedWeeklyArticle,
         'mostViewedWeeklyArticles': mostViewedWeeklyArticles,
+        # New random category block
+        'randomCategory': randomCategory,
+        'recentArticleInCategory': recentArticleInCategory,
+        'mostViewedArticlesInCategory': mostViewedArticlesInCategory,
+        'mostCommentedArticlesInCategory': mostCommentedArticlesInCategory,
     }
     
     return render(request, 'pages/index.html', context)
