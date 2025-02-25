@@ -136,6 +136,23 @@ class CommentAdmin(admin.ModelAdmin):
         return format_html('<a class="button" href="{}">Delete</a>', url)
     delete_link.short_description = "Delete"
 
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('article', 'user', 'created_at', 'edit_link', 'delete_link')
+    search_fields = ('article__title', 'user__username')
+    list_filter = ('created_at', 'article')
+    list_per_page = 20
+
+    def edit_link(self, obj):
+        url = reverse("admin:base_like_change", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Edit</a>', url)
+    edit_link.short_description = "Edit"
+    
+    def delete_link(self, obj):
+        url = reverse("admin:base_like_delete", args=[obj.pk])
+        return format_html('<a class="button" href="{}">Delete</a>', url)
+    delete_link.short_description = "Delete"
+
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'plan', 'start_date', 'end_date', 'status', 'edit_link', 'delete_link')
