@@ -186,6 +186,23 @@ def home(request):
     # NEW LOGIC: Retrieve all authors from the user model.
     authors = User.objects.all()
     
+    # NEW LOGIC: For 3 random categories, retrieve:
+    # - The most recent (featured) article in that category.
+    # - Two additional recent articles in that category (excluding the featured article).
+    recentArticlesByCategory = []
+    randomCategoriesForRecent = Category.objects.order_by('?')[:3]
+    for cat in randomCategoriesForRecent:
+        featured = Article.objects.filter(category=cat).order_by('-created_at').first()
+        if featured:
+            others = Article.objects.filter(category=cat).exclude(id=featured.id).order_by('-created_at')[:2]
+        else:
+            others = []
+        recentArticlesByCategory.append({
+            'category': cat,
+            'featuredArticle': featured,
+            'otherArticles': others,
+        })
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -214,6 +231,8 @@ def home(request):
         'videoArticleMostViewed': videoArticleMostViewed,
         # Authors block
         'authors': authors,
+        # NEW: Random categories with recent articles block (3 categories)
+        'recentArticlesByCategory': recentArticlesByCategory,
     }
     
     return render(request, 'pages/index.html', context)
