@@ -450,44 +450,64 @@
             <div class="row">
                 <div class="col-lg-9">
                     <section class="tc-must-read-style1 bg-gray2 p-30">
-                        <p class="color-000 text-uppercase mb-20 ltspc-1"> <a href="#"> must read </a> <i
-                                class="la la-angle-right ms-1"></i> </p>
+                        <p class="color-000 text-uppercase mb-20 ltspc-1">
+                            <a href="#">
+                                must read
+                            </a>
+                            <i class="la la-angle-right ms-1"></i>
+                        </p>
                         <div class="tc-post-grid-default border-1 border-bottom brd-gray pb-30">
-                            <div class="item">
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="img img-cover th-230">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/must_read/1.png" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <div class="content">
-                                            <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">Sport</a>
-                                            <h3 class="title mb-15"> <a href="#">Manoah dominates, closes in on Blue
-                                                    Jays history</a> </h3>
-                                            <div class="text color-666">
-                                                The social-media company is in discussions to sell itself to Elon, a
-                                                dramatic turn of events just 11 days [...]
+                            {% if mostLikedArticle %}
+                                <div class="item">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="img img-cover th-230">
+                                                {% with articleImage=mostLikedArticle.articleimage_set.first %}
+                                                    {% if articleImage %}
+                                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                    {% else %}
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                    {% endif %}
+                                                {% endwith %}
                                             </div>
-                                            <div class="meta-bot lh-1 mt-50">
-                                                <ul class="d-flex">
-                                                    <li class="date me-4">
-                                                        <a href="#"><i class="la la-calendar me-1"></i> Dec 14,
-                                                            2022</a>
-                                                    </li>
-                                                    <li class="author me-4">
-                                                        <a href="#"><i class="la la-user me-1"></i> by Admin </a>
-                                                    </li>
-                                                    <li class="comment">
-                                                        <a href="#"><i class="la la-comment me-1"></i> 55
-                                                            Comments</a>
-                                                    </li>
-                                                </ul>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <div class="content">
+                                                {% if mostLikedArticle.category %}
+                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ mostLikedArticle.category.name }}</a>
+                                                {% endif %}
+                                                <h3 class="title mb-15">
+                                                    <a href="#">{{ mostLikedArticle.title }}</a>
+                                                </h3>
+                                                <div class="text color-666">
+                                                    {{ mostLikedArticle.content|truncatewords:25 }}
+                                                </div>
+                                                <div class="meta-bot lh-1 mt-50">
+                                                    <ul class="d-flex">
+                                                        <li class="date me-4">
+                                                            <a href="#">
+                                                                <i class="la la-calendar me-1"></i> 
+                                                                {{ mostLikedArticle.created_at|date:"M d, Y" }}
+                                                            </a>
+                                                        </li>
+                                                        <li class="author me-4">
+                                                            <a href="#">
+                                                                <i class="la la-user me-1"></i> by {{ mostLikedArticle.author.username }}
+                                                            </a>
+                                                        </li>
+                                                        <li class="comment">
+                                                            <a href="#">
+                                                                <i class="la la-comment me-1"></i> 
+                                                                {{ mostLikedArticle.comment.count }} Comments
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                         <div class="tc-post-grid-default pt-30">
                             <div class="row">
