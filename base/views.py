@@ -42,7 +42,7 @@ def home(request):
     
     # Advanced logic:
     # Determine the category that has the most articles overall.
-    mostPopulatedCategory = Category.objects.annotate(articleCount=Count('articles')).order_by('-articleCount').first()
+    mostPopulatedCategory = Category.objects.annotate(articleCount=Count('article_set')).order_by('-articleCount').first()
     # From that category, retrieve one article that is recent (within last 24 hours) and has the most views.
     if mostPopulatedCategory:
         advancedArticle = Article.objects.filter(category=mostPopulatedCategory, created_at__gte=timeThreshold).order_by('-views').first()
