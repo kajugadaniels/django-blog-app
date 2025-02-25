@@ -1219,253 +1219,92 @@
         <div class="container">
             <div class="content">
                 <div class="row">
+                    {% for catBlock in recentArticlesByCategory %}
                     <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Sport</a> <i
-                                class="la la-angle-right ms-1"></i> </p>
+                        <!-- Category Header -->
+                        <p class="color-000 text-uppercase mb-30 ltspc-1">
+                            <a href="#">{{ catBlock.category.name }}</a>
+                            <i class="la la-angle-right ms-1"></i>
+                        </p>
                         <div class="row">
                             <div class="col-12 border-1 border-end brd-gray">
+                                <!-- Featured Article in the Category -->
+                                {% if catBlock.featuredArticle %}
                                 <div class="tc-post-grid-default">
                                     <div class="item">
                                         <div class="img img-cover th-250">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/another_news/1.png" alt="">
+                                            {% with articleImage=catBlock.featuredArticle.articleimage_set.first %}
+                                                {% if articleImage %}
+                                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                {% else %}
+                                                    <img src="https://newzin-html.themescamp.com/assets/img/another_news/1.png" alt="Default Image">
+                                                {% endif %}
+                                            {% endwith %}
                                         </div>
                                         <div class="content pt-20">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-10">sport</a>
+                                            <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">
+                                                {{ catBlock.category.name }}
+                                            </a>
                                             <h4 class="title ltspc--1 mb-10">
-                                                <a href="#">
-                                                    America's track and field team won the 2022 olympics?
-                                                </a>
+                                                <a href="#">{{ catBlock.featuredArticle.title|truncatechars:30 }}</a>
                                             </h4>
                                             <div class="text color-666">
-                                                Crime rates on trains and buses are up in some of the nation’s
-                                                biggest [...]
+                                                {{ catBlock.featuredArticle.content|truncatechars:90 }}
                                             </div>
                                             <div class="meta-bot lh-1 mt-20">
                                                 <ul class="d-flex">
                                                     <li class="date me-5">
-                                                        <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                            2022</a>
+                                                        <a href="#"><i class="la la-calendar me-2"></i> 
+                                                            {{ catBlock.featuredArticle.created_at|date:"M d, Y" }}
+                                                        </a>
                                                     </li>
                                                     <li class="comment">
-                                                        <a href="#"><i class="la la-comment me-2"></i> 7</a>
+                                                        <a href="#"><i class="la la-comment me-2"></i>
+                                                            {{ catBlock.featuredArticle.comment.count }}
+                                                        </a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
+                                <!-- List of Two Additional Recent Articles in the Category -->
                                 <div class="tc-post-list-style2">
                                     <div class="items">
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
+                                        {% for article in catBlock.otherArticles %}
+                                        <a href="#" class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
                                             <div class="row gx-3 align-items-center">
                                                 <div class="col-4">
                                                     <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/2.png" alt="">
+                                                        {% with thumb=article.articleimage_set.first %}
+                                                            {% if thumb %}
+                                                                <img src="{{ thumb.image.url }}" alt="{{ thumb.caption }}">
+                                                            {% else %}
+                                                                <img src="https://newzin-html.themescamp.com/assets/img/another_news/2.png" alt="Default Thumbnail">
+                                                            {% endif %}
+                                                        {% endwith %}
                                                     </div>
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">sport</small>
-                                                        <h5 class="title ltspc--1">
-                                                            How’s Ameican Football Ball created out?
-                                                        </h5>
+                                                        <small class="news-cat color-999 fsz-13px text-uppercase mb-10">
+                                                            {{ catBlock.category.name }}
+                                                        </small>
+                                                        <h5 class="title ltspc--1">{{ article.title|truncatechars:20 }}</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 brd-gray">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/3.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">sport</small>
-                                                        <h5 class="title ltspc--1">
-                                                            Daniel share experience ski on Everest
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-    
-                    <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Entertaiment</a> <i
-                                class="la la-angle-right ms-1"></i> </p>
-                        <div class="row">
-                            <div class="col-12 border-1 border-end brd-gray">
-                                <div class="tc-post-grid-default">
-                                    <div class="item">
-                                        <div class="img img-cover th-250">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/another_news/4.png" alt="">
-                                        </div>
-                                        <div class="content pt-20">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-10">Entertaiment</a>
-                                            <h4 class="title ltspc--1 mb-10">
-                                                <a href="#">
-                                                    Logan Cee's Best Contemporary Art Works
-                                                </a>
-                                            </h4>
-                                            <div class="text color-666">
-                                                Crime rates on trains and buses are up in some of the nation’s
-                                                biggest [...]
-                                            </div>
-                                            <div class="meta-bot lh-1 mt-20">
-                                                <ul class="d-flex">
-                                                    <li class="date me-5">
-                                                        <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                            2022</a>
-                                                    </li>
-                                                    <li class="comment">
-                                                        <a href="#"><i class="la la-comment me-2"></i> 7</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tc-post-list-style2">
-                                    <div class="items">
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/5.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">entertaiment</small>
-                                                        <h5 class="title ltspc--1">
-                                                            Netflix change their policy for package family
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 brd-gray">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/6.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">entertaiment</small>
-                                                        <h5 class="title ltspc--1">
-                                                            Buy black vinyl record at Festival Oldschool market
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Travel</a> <i
-                                class="la la-angle-right ms-1"></i> </p>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="tc-post-grid-default">
-                                    <div class="item">
-                                        <div class="img img-cover th-250">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/another_news/7.png" alt="">
-                                        </div>
-                                        <div class="content pt-20">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-10">Travel</a>
-                                            <h4 class="title ltspc--1 mb-10">
-                                                <a href="#">
-                                                    Top 10 Most beautiful hot springs in the world
-                                                </a>
-                                            </h4>
-                                            <div class="text color-666">
-                                                Crime rates on trains and buses are up in some of the nation’s
-                                                biggest [...]
-                                            </div>
-                                            <div class="meta-bot lh-1 mt-20">
-                                                <ul class="d-flex">
-                                                    <li class="date me-5">
-                                                        <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                            2022</a>
-                                                    </li>
-                                                    <li class="comment">
-                                                        <a href="#"><i class="la la-comment me-2"></i> 7</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tc-post-list-style2">
-                                    <div class="items">
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/8.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">Travel</small>
-                                                        <h5 class="title ltspc--1">
-                                                            Experience in applying for a visa card for newcomers
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#"
-                                            class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 brd-gray">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-70 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/another_news/9.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <small
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-10">Travel</small>
-                                                        <h5 class="title ltspc--1">
-                                                            Release yourself on the sea and get the vibe chill
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
+                
         </div>
     </section>
     
