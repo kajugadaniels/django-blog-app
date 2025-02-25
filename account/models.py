@@ -34,6 +34,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, default='guest')
     slug = models.SlugField(unique=True, max_length=255, null=True, blank=True)
     
+    # New username field; auto generated from name
+    username = models.CharField(max_length=255, unique=True, null=True, blank=True)
+
     added_by = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='added_users')
 
     is_active = models.BooleanField(default=True)
@@ -51,8 +54,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def save(self, *args, **kwargs):
+        # Generate slug if not present
         if not self.slug:
             self.slug = slugify(self.name)
+        
+        # If new user or name changed, update the username field.
+        if self.pk:
+            # Existing instance: check if name has changed
+            old = User.objects.get(pk=self.pk)
+            if old.name != self.name:
+                self.username = slugify(self.name)
+        else:
+            # New instance: auto-create username from name
+            self.username = slugify(self.name)
+        
         super(User, self).save(*args, **kwargs)
     
     def get_full_name(self):
