@@ -154,6 +154,17 @@ class Comment(models.Model):
     class Meta:
         verbose_name_plural = "Comments"
 
+class Like(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Liked by {self.user.username} on {self.article.title}"
+
+    class Meta:
+        verbose_name_plural = "Likes"
+
 class Subscription(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     start_date = models.DateTimeField(auto_now_add=True)
