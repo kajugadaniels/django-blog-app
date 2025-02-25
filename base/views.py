@@ -1,8 +1,8 @@
 from base.models import *
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Count
 from django.shortcuts import render
+from django.db.models import Count
 
 def home(request):
     breakingNews = Article.objects.all().order_by('-id')[:4]
@@ -49,7 +49,7 @@ def home(request):
         advancedArticle = None
 
     # New logic: Retrieve 3 related articles to the advancedArticle.
-    # Related articles are defined as those in the same category as advancedArticle, created in the last 24 hours, and not the advancedArticle itself.
+    # Related articles are those in the same category as advancedArticle, created in the last 24 hours, and not the advancedArticle itself.
     if advancedArticle:
         relatedArticles = Article.objects.filter(
             category=advancedArticle.category,
@@ -58,6 +58,13 @@ def home(request):
     else:
         relatedArticles = None
 
+    # New logic: Retrieve the most liked article in the last 24 hours.
+    # We annotate each article with its like count (using the default reverse relationship "like_set")
+    mostLikedArticle = Article.objects.filter(created_at__gte=timeThreshold)\
+        .annotate(like_count=Count('like_set'))\
+        .order_by('-like_count')\
+        .first()
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -68,6 +75,7 @@ def home(request):
         'categoryArticles': categoryArticles,
         'advancedArticle': advancedArticle,
         'relatedArticles': relatedArticles,
+        'mostLikedArticle': mostLikedArticle,
     }
     
     return render(request, 'pages/index.html', context)
