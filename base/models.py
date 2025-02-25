@@ -89,6 +89,8 @@ class Article(models.Model):
     status = models.CharField(max_length=20, choices=[('draft', 'Draft'), ('published', 'Published')], default='draft')
     language = models.CharField(max_length=50, default='en')
     views = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def _generate_unique_slug(self):
         """Generate a unique slug by appending 7 random numbers."""
