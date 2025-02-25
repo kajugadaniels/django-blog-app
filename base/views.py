@@ -27,15 +27,17 @@ def home(request):
     # Retrieve the recent article from the last 24 hours (most recent creation date)
     recentArticle = Article.objects.filter(created_at__gte=timeThreshold).order_by('-created_at').first()
     
-    # New logic: Retrieve 6 articles, one from each randomly selected category.
-    # First, select 6 random categories.
-    randomCategories = Category.objects.order_by('?')[:6]
+    # New logic: Retrieve 6 articles, one from each category
     categoryArticles = []
-    # For each selected category, get one random article (if available)
-    for category in randomCategories:
+    # Get all categories and shuffle them for randomness
+    categoriesList = list(Category.objects.all())
+    random.shuffle(categoriesList)
+    for category in categoriesList:
         article = Article.objects.filter(category=category).order_by('?').first()
         if article:
             categoryArticles.append(article)
+            if len(categoryArticles) == 6:
+                break
     
     context = {
         'breakingNews': breakingNews,
