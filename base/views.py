@@ -12,17 +12,20 @@ def home(request):
     # Retrieve the article with the most views in the last 24 hours
     topArticle = Article.objects.filter(created_at__gte=timeThreshold).order_by('-views').first()
     
-    # Retrieve 3 trending articles from the last 24 hours,
-    # ensuring that the topArticle is excluded to avoid duplication.
+    # Retrieve 3 trending articles from the last 24 hours, excluding the topArticle to avoid duplication
     if topArticle:
         trendingArticles = Article.objects.filter(created_at__gte=timeThreshold).exclude(id=topArticle.id).order_by('-views')[:3]
     else:
         trendingArticles = Article.objects.filter(created_at__gte=timeThreshold).order_by('-views')[:3]
     
+    # Retrieve 2 articles in random order
+    randomArticles = Article.objects.all().order_by('?')[:2]
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
         'trendingArticles': trendingArticles,
+        'randomArticles': randomArticles,
     }
     
     return render(request, 'pages/index.html', context)
