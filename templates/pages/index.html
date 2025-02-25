@@ -511,56 +511,34 @@
                         </div>
                         <div class="tc-post-grid-default pt-30">
                             <div class="row">
-                                <div class="col-lg-4 border-1 border-end brd-gray">
-                                    <div class="item">
-                                        <div class="img img-cover th-180 mb-20">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/must_read/2.png" alt="">
-                                        </div>
-                                        <div class="content">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-1">business</a>
-                                            <h4 class="title ltspc--1">
-                                                <a href="#" class="hover-underline">
-                                                    Sponsored Content Post with Double line
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 border-1 border-end brd-gray">
-                                    <div class="item">
-                                        <div class="img img-cover th-180 mb-20">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/must_read/3.png" alt="">
-                                        </div>
-                                        <div class="content">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-1">culture</a>
-                                            <h4 class="title ltspc--1">
-                                                <a href="#" class="hover-underline">
-                                                    Discovery the culture of Japan. Oriental beauty & the legend of
-                                                    Samurai
-                                                </a>
-                                            </h4>
+                                {% for article in mostCommentedArticles %}
+                                    <div class="col-lg-4 border-1 border-end brd-gray">
+                                        <div class="item">
+                                            <div class="img img-cover th-180 mb-20">
+                                                {% with articleImage=article.articleimage_set.first %}
+                                                    {% if articleImage %}
+                                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                    {% else %}
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </div>
+                                            <div class="content">
+                                                {% if article.category %}
+                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                        {{ article.category.name }}
+                                                    </a>
+                                                {% endif %}
+                                                <h4 class="title ltspc--1">
+                                                    <a href="#" class="hover-underline">
+                                                        {{ article.title }}
+                                                    </a>
+                                                </h4>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="item">
-                                        <div class="img img-cover th-180 mb-20">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/must_read/4.png" alt="">
-                                        </div>
-                                        <div class="content">
-                                            <a href="#"
-                                                class="news-cat color-999 fsz-13px text-uppercase mb-1">technology</a>
-                                            <h4 class="title ltspc--1">
-                                                <a href="#" class="hover-underline">
-                                                    Tiktok will pass Facebook?
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                {% endfor %}
+                            </div>                            
                         </div>
                     </section>
     
