@@ -2,10 +2,10 @@ from base.models import *
 from django.shortcuts import render
 
 def home(request):
-    mostRecent = Article.objects.all().order_by('-id')[:2]
+    breakingNews = Article.objects.all().order_by('-id')[:4]
 
     context = {
-        'mostRecent': mostRecent
+        'breakingNews': breakingNews
     }
 
     return render(request, 'pages/index.html', context)
