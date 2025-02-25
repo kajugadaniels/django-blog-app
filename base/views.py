@@ -72,11 +72,17 @@ def home(request):
         .order_by('-like_count')\
         .first()
     
-    # New logic: Retrieve 3 articles with the most comments, ordered by comment count (and by likes as secondary order).
+    # Retrieve 3 articles with the most comments (ordered by comment count and then by like count)
     mostCommentedArticles = Article.objects.annotate(
         comment_count=Count('comment'),
         like_count=Count('like')
     ).order_by('-comment_count', '-like_count')[:3]
+    
+    # New logic: Retrieve the most viewed article in the last 7 days.
+    weekTimeThreshold = timezone.now() - timedelta(days=7)
+    mostViewedWeeklyArticle = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+                                              .order_by('-views')\
+                                              .first()
     
     context = {
         'breakingNews': breakingNews,
@@ -90,6 +96,7 @@ def home(request):
         'relatedArticles': relatedArticles,
         'mostLikedArticle': mostLikedArticle,
         'mostCommentedArticles': mostCommentedArticles,
+        'mostViewedWeeklyArticle': mostViewedWeeklyArticle,
     }
     
     return render(request, 'pages/index.html', context)
