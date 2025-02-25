@@ -21,11 +21,15 @@ def home(request):
     # Retrieve 2 articles in random order
     randomArticles = Article.objects.all().order_by('?')[:2]
     
+    # Retrieve all categories
+    categories = Category.objects.all()
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
         'trendingArticles': trendingArticles,
         'randomArticles': randomArticles,
+        'categories': categories,
     }
     
     return render(request, 'pages/index.html', context)
