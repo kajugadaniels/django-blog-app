@@ -217,22 +217,30 @@
                     <div class="col-lg-3">
                         <div class="tc-post-list-style1">
                             <div class="tc-post-title-style1">
-                                <a href="page-blog.html"> trending posts </a>
+                                <a href="#"> trending posts </a>
                             </div>
-                            <div class="tc-post-overlay-default">
-                                <div class="img th-200 img-cover">
-                                    <img src="https://newzin-html.themescamp.com/assets/img/trend/4.png" alt="">
+                            {% if topArticle %}
+                                <div class="tc-post-overlay-default">
+                                    <div class="img th-200 img-cover">
+                                        {% with articleImage=topArticle.articleimage_set.first %}
+                                            {% if articleImage %}
+                                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                            {% else %}
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                    <div class="content ps-20 pe-20 pb-20 text-white">
+                                        <a href="#" class="text-uppercase fsz-13px mb-1">{{ topArticle.category.name }}</a>
+                                        <h4 class="title">
+                                            <a href="#">{{ topArticle.title }}</a>
+                                        </h4>
+                                    </div>
                                 </div>
-                                <div class="content ps-20 pe-20 pb-20 text-white">
-                                    <a href="page-single-post-creative.html"
-                                        class="text-uppercase fsz-13px mb-1">lifestyle</a>
-                                    <h4 class="title">
-                                        <a href="#">The story about Hoki</a>
-                                    </h4>
-                                </div>
-                            </div>
+                            {% endif %}
+
                             <div class="items">
-                                <a href="page-single-post-creative.html" class="item hover-main">
+                                <a href="#" class="item hover-main">
                                     <h2 class="num">
                                         2
                                     </h2>
@@ -241,7 +249,7 @@
                                         <h6 class="title">Elon Musk got Twitter because he gets Twitter</h6>
                                     </div>
                                 </a>
-                                <a href="page-single-post-creative.html" class="item hover-main">
+                                <a href="#" class="item hover-main">
                                     <h2 class="num">
                                         3
                                     </h2>
@@ -250,7 +258,7 @@
                                         <h6 class="title">NFT Technology is become trends in 2022</h6>
                                     </div>
                                 </a>
-                                <a href="page-single-post-creative.html" class="item hover-main">
+                                <a href="#" class="item hover-main">
                                     <h2 class="num">
                                         4
                                     </h2>
