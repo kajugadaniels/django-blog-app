@@ -543,135 +543,117 @@
                     </section>
     
                     <section class="tc-business-style1 pt-50 pb-50">
+                        <!-- Section Header with Random Category Name -->
+                        {% if randomCategory %}
                         <p class="color-000 text-uppercase mb-30 ltspc-1">
-                            <a href="#">business</a>
+                            <a href="#">{{ randomCategory.name }}</a>
                             <i class="la la-angle-right ms-1"></i>
                         </p>
+                        {% endif %}
+                        
+                        <!-- Main Featured Block: Recent Article in the Random Category -->
                         <div class="main-blog pb-30 border-1 border-bottom brd-gray">
                             <div class="row">
                                 <div class="col-lg-8 border-1 border-end brd-gray">
+                                    {% if recentArticleInCategory %}
                                     <div class="tc-post-overlay-default">
                                         <div class="img th-400 img-cover">
-                                            <img src="https://newzin-html.themescamp.com/assets/img/bussines/1.png" alt="">
+                                            {% with articleImage=recentArticleInCategory.articleimage_set.first %}
+                                                {% if articleImage %}
+                                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                {% else %}
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                {% endif %}
+                                            {% endwith %}
                                             <div class="tags">
-                                                <a href="#">business</a>
+                                                <a href="#">{{ randomCategory.name }}</a>
                                             </div>
                                         </div>
                                         <div class="content ps-30 pe-30 pb-30">
                                             <h3 class="title mb-20">
-                                                <a href="#">Become master of strategy from playing chess</a>
-                                                </h2>
-                                                <div class="meta-bot lh-1">
-                                                    <ul class="d-flex">
-                                                        <li class="date me-5">
-                                                            <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                                2022</a>
-                                                        </li>
-                                                        <li class="author me-5">
-                                                            <a href="#"><i class="la la-user me-2"></i> by Admin</a>
-                                                        </li>
-                                                        <li class="comment">
-                                                            <a href="#"><i class="la la-comment me-2"></i> 55
-                                                                Comments</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                <a href="#">{{ recentArticleInCategory.title }}</a>
+                                            </h3>
+                                            <div class="meta-bot lh-1">
+                                                <ul class="d-flex">
+                                                    <li class="date me-5">
+                                                        <a href="#">
+                                                            <i class="la la-calendar me-2"></i> {{ recentArticleInCategory.created_at|date:"M d, Y" }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="author me-5">
+                                                        <a href="#">
+                                                            <i class="la la-user me-2"></i> by {{ recentArticleInCategory.author.username }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="comment">
+                                                        <a href="#">
+                                                            <i class="la la-comment me-2"></i> {{ recentArticleInCategory.comment.count }} Comments
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% endif %}
                                 </div>
+                                
+                                <!-- Right Column: Four Most Viewed Articles in the Random Category -->
                                 <div class="col-lg-4">
                                     <div class="tc-post-list-style2">
                                         <div class="items">
+                                            {% for article in mostViewedArticlesInCategory %}
                                             <div class="item pb-20">
                                                 <div class="content">
-                                                    <a href="#"
-                                                        class="news-cat color-999 fsz-13px text-uppercase mb-1">business</a>
+                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                        {{ randomCategory.name }}
+                                                    </a>
                                                     <h5 class="title ltspc--1">
-                                                        <a href="#">Global financial markets after covid 2022</a>
+                                                        <a href="#">{{ article.title }}</a>
                                                     </h5>
                                                 </div>
                                             </div>
-                                            <div class="item pb-20">
-                                                <div class="content">
-                                                    <a href="#"
-                                                        class="news-cat color-999 fsz-13px text-uppercase mb-1">business</a>
-                                                    <h5 class="title ltspc--1">
-                                                        <a href="#">U.S Stocks Market today</a>
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="item pb-20">
-                                                <div class="content">
-                                                    <a href="#"
-                                                        class="news-cat color-999 fsz-13px text-uppercase mb-1">business</a>
-                                                    <h5 class="title ltspc--1">
-                                                        <a href="#">Stock Market meltdowns have FAANGs looking
-                                                            increasingly toothless</a>
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="item pb-20 border-0">
-                                                <div class="content">
-                                                    <a href="#"
-                                                        class="news-cat color-999 fsz-13px text-uppercase mb-1">business</a>
-                                                    <h5 class="title ltspc--1">
-                                                        <a href="#">Success Stories of Starbuck</a>
-                                                    </h5>
-                                                </div>
-                                            </div>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Two Articles with Most Comments in the Random Category -->
                         <div class="tc-post-list-style2">
                             <div class="items">
                                 <div class="row">
+                                    {% for article in mostCommentedArticlesInCategory %}
                                     <div class="col-lg-6">
                                         <a href="#" class="item d-block border-0 pt-30">
                                             <div class="row gx-3 align-items-center">
                                                 <div class="col-4">
                                                     <div class="img th-90 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/bussines/2.png" alt="">
+                                                        {% with articleImage=article.articleimage_set.first %}
+                                                            {% if articleImage %}
+                                                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                            {% else %}
+                                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                            {% endif %}
+                                                        {% endwith %}
                                                     </div>
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="content">
-                                                        <div
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-1">
-                                                            business</div>
-                                                        <h5 class="title ltspc--1">Horseback Riding, <br> A
-                                                            business-class hobby</h5>
+                                                        <div class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                            {{ randomCategory.name }}
+                                                        </div>
+                                                        <h5 class="title ltspc--1">{{ article.title }}</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <a href="#" class="item d-block border-0 pt-30">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-4">
-                                                    <div class="img th-90 img-cover">
-                                                        <img src="https://newzin-html.themescamp.com/assets/img/bussines/3.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="content">
-                                                        <div
-                                                            class="news-cat color-999 fsz-13px text-uppercase mb-1">
-                                                            business</div>
-                                                        <h5 class="title ltspc--1">The Financial statements of ABC
-                                                            <br> Bank are questionable
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </section>                    
     
                     <section class="banner2">
                         <div class="container">
