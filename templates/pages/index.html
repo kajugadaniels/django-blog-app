@@ -240,34 +240,16 @@
                             {% endif %}
 
                             <div class="items">
+                                {% for article in trendingArticles %}
                                 <a href="#" class="item hover-main">
-                                    <h2 class="num">
-                                        2
-                                    </h2>
+                                    <h2 class="num">{{ forloop.counter|add:"1" }}</h2>
                                     <div class="content">
-                                        <span class="fsz-12px color-999 text-uppercase mb-2">news</span>
-                                        <h6 class="title">Elon Musk got Twitter because he gets Twitter</h6>
+                                        <span class="fsz-12px color-999 text-uppercase mb-2">{{ article.category.name }}</span>
+                                        <h6 class="title">{{ article.title }}</h6>
                                     </div>
                                 </a>
-                                <a href="#" class="item hover-main">
-                                    <h2 class="num">
-                                        3
-                                    </h2>
-                                    <div class="content">
-                                        <span class="fsz-12px color-999 text-uppercase mb-2">technology</span>
-                                        <h6 class="title">NFT Technology is become trends in 2022</h6>
-                                    </div>
-                                </a>
-                                <a href="#" class="item hover-main">
-                                    <h2 class="num">
-                                        4
-                                    </h2>
-                                    <div class="content">
-                                        <span class="fsz-12px color-999 text-uppercase mb-2">lifestyle</span>
-                                        <h6 class="title">MLB become 1st fashion brands in US</h6>
-                                    </div>
-                                </a>
-                                <a href="#" class="fsz-13px color-999  pt-30 pb-30">
+                                {% endfor %}
+                                <a href="#" class="fsz-13px color-999 pt-30 pb-30">
                                     See all posts <i class="la la-angle-right"></i>
                                 </a>
                             </div>
