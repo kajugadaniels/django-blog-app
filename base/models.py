@@ -92,6 +92,11 @@ class Article(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # New fields added:
+    video_url = models.URLField(null=True, blank=True)
+    sponsored = models.BooleanField(default=False)
+    sponsored_link = models.URLField(null=True, blank=True)
+
     def _generate_unique_slug(self):
         """Generate a unique slug by appending 7 random numbers."""
         base_slug = slugify(self.title)
