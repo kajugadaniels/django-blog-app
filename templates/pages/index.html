@@ -994,13 +994,11 @@
         </div>
     </section>
     
-    
-    <section class="tc-hot-videos-style1 pt-30 pb-50 parallaxie">
+    <section class="tc-hot-videos-style1 pt-30 pb-50 parallaxie" style="background-image: url('https://www.whatawonderfulworld.guide/wp-content/uploads/2022/02/NyungweHouse.jpg');">
         <div class="container">
             <div class="content">
                 <div class="section-head">
-                    <p class="text-white text-uppercase ltspc-1"> hot videos LAST WEEK <i
-                            class="la la-angle-right ms-1"></i> </p>
+                    <p class="text-white text-uppercase ltspc-1"> hot videos LAST WEEK <i class="la la-angle-right ms-1"></i> </p>
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="pills-Popular-tab" data-bs-toggle="pill"
@@ -1019,6 +1017,7 @@
                     </ul>
                 </div>
                 <div class="tab-content" id="pills-tabContent">
+                    <!-- Popular Tab -->
                     <div class="tab-pane fade show active" id="pills-Popular" role="tabpanel"
                         aria-labelledby="pills-Popular-tab">
                         <div class="row">
@@ -1026,27 +1025,27 @@
                                 <div class="tc-video-slider1">
                                     <div class="swiper-container">
                                         <div class="swiper-wrapper">
+                                            {% if videoArticleRecent %}
                                             <div class="swiper-slide">
                                                 <div class="slider-content">
                                                     <p class="sub-title">featured, video</p>
-                                                    <h3 class="title">  <a href="page-single-post-features.html"> Amazing View! Catch the sunrise <br> in high
-                                                        moutain </a> </h3>
+                                                    <h3 class="title">
+                                                        <a href="#">{{ videoArticleRecent.title }}</a>
+                                                    </h3>
                                                     <div class="meta-bot lh-1">
                                                         <ul class="d-flex">
                                                             <li class="date me-5">
-                                                                <a href="#"><i class="la la-calendar me-2"></i>
-                                                                    Dec 24, 2022
+                                                                <a href="#"><i class="la la-calendar me-2"></i> 
+                                                                    {{ videoArticleRecent.created_at|date:"M d, Y" }}
                                                                 </a>
                                                             </li>
                                                             <li class="comment">
                                                                 <i class="las la-chart-line me-2"></i>
-                                                                25,6K Views
-                                                                </a>
+                                                                {{ videoArticleRecent.views }} Views
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <a href="https://youtu.be/pGbIOC83-So?t=21" data-fancybox=""
-                                                        class="play-cont">
+                                                    <a href="{{ videoArticleRecent.video_url }}" data-fancybox class="play-cont">
                                                         <i class="ion-play me-3"></i>
                                                         <span>
                                                             play <br> video
@@ -1054,6 +1053,7 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="swiper-button-next"></div>
@@ -1062,75 +1062,65 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="tc-side-video-posts">
-                                    <p class="text-white text-uppercase ltspc-1 mb-40 lh-2 fsz-13px">videos up next
-                                    </p>
+                                    <p class="text-white text-uppercase ltspc-1 mb-40 lh-2 fsz-13px">videos up next</p>
                                     <div class="tc-post-grid-default">
+                                        {% for article in videoArticleMostViewed %}
                                         <div class="item mb-40">
                                             <div class="img img-cover th-180">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="">
-                                                <a href="https://youtu.be/pGbIOC83-So?t=21" data-lity
-                                                    class="video_icon icon-60">
+                                                {% with articleImage=article.articleimage_set.first %}
+                                                    {% if articleImage %}
+                                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                    {% else %}
+                                                        <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="Default Image">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <a href="{{ article.video_url }}" data-lity class="video_icon icon-60">
                                                     <i class="ion-play"></i>
                                                 </a>
                                             </div>
                                             <div class="content pt-20">
-                                                <a href="#"
-                                                    class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">travel,
-                                                    video</a>
-                                                <h4 class="title ltspc--1 text-white">
-                                                    <a href="page-single-post-features.html">Amazing View! Catch the sunrise in high mountain</a>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="img img-cover th-180">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/videos/2.png" alt="">
-                                                <a href="https://youtu.be/pGbIOC83-So?t=21" data-lity=""
-                                                    class="video_icon icon-60">
-                                                    <i class="ion-play"></i>
+                                                <a href="#" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
+                                                    {{ article.category.name }}
                                                 </a>
-                                            </div>
-                                            <div class="content pt-20">
-                                                <a href="#"
-                                                    class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">culture,
-                                                    video</a>
                                                 <h4 class="title ltspc--1 text-white">
-                                                    <a href="page-single-post-features.html">Bhutan! The happiest country on the world</a>
+                                                    <a href="#">{{ article.title }}</a>
                                                 </h4>
                                             </div>
                                         </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Latest Tab (You may duplicate similar content as Popular) -->
                     <div class="tab-pane fade" id="pills-Latest" role="tabpanel" aria-labelledby="pills-Latest-tab">
                         <div class="row">
                             <div class="col-lg-9 border-1 border-end brd-light">
                                 <div class="tc-video-slider1">
                                     <div class="swiper-container">
                                         <div class="swiper-wrapper">
+                                            {% if videoArticleRecent %}
                                             <div class="swiper-slide">
                                                 <div class="slider-content">
                                                     <p class="sub-title">featured, video</p>
-                                                    <h3 class="title"> <a href="page-single-post-features.html"> Amazing View! Catch the sunrise <br> in high
-                                                        moutain </a> </h3>
+                                                    <h3 class="title">
+                                                        <a href="#">{{ videoArticleRecent.title }}</a>
+                                                    </h3>
                                                     <div class="meta-bot lh-1">
                                                         <ul class="d-flex">
                                                             <li class="date me-5">
-                                                                <a href="#"><i class="la la-calendar me-2"></i>
-                                                                    Dec 24, 2022
+                                                                <a href="#"><i class="la la-calendar me-2"></i> 
+                                                                    {{ videoArticleRecent.created_at|date:"M d, Y" }}
                                                                 </a>
                                                             </li>
                                                             <li class="comment">
                                                                 <i class="las la-chart-line me-2"></i>
-                                                                25,6K Views
-                                                                </a>
+                                                                {{ videoArticleRecent.views }} Views
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <a href="https://youtu.be/pGbIOC83-So?t=21" data-fancybox=""
-                                                        class="play-cont">
+                                                    <a href="{{ videoArticleRecent.video_url }}" data-fancybox class="play-cont">
                                                         <i class="ion-play me-3"></i>
                                                         <span>
                                                             play <br> video
@@ -1138,6 +1128,7 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="swiper-button-next"></div>
@@ -1146,43 +1137,32 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="tc-side-video-posts">
-                                    <p class="text-white text-uppercase ltspc-1 mb-40 lh-2 fsz-13px">videos up next
-                                    </p>
+                                    <p class="text-white text-uppercase ltspc-1 mb-40 lh-2 fsz-13px">videos up next</p>
                                     <div class="tc-post-grid-default">
+                                        {% for article in videoArticleMostViewed %}
                                         <div class="item mb-40">
                                             <div class="img img-cover th-180">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="">
-                                                <a href="https://youtu.be/pGbIOC83-So?t=21" data-lity=""
-                                                    class="video_icon icon-60">
+                                                {% with articleImage=article.articleimage_set.first %}
+                                                    {% if articleImage %}
+                                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                    {% else %}
+                                                        <img src="https://newzin-html.themescamp.com/assets/img/videos/1.png" alt="Default Image">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <a href="{{ article.video_url }}" data-lity class="video_icon icon-60">
                                                     <i class="ion-play"></i>
                                                 </a>
                                             </div>
                                             <div class="content pt-20">
-                                                <a href="#"
-                                                    class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">travel,
-                                                    video</a>
-                                                <h4 class="title ltspc--1 text-white">
-                                                    <a href="page-single-post-features.html">Amazing View! Catch the sunrise in high mountain</a>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <div class="img img-cover th-180">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/videos/2.png" alt="">
-                                                <a href="https://youtu.be/pGbIOC83-So?t=21" data-lity=""
-                                                    class="video_icon icon-60">
-                                                    <i class="ion-play"></i>
+                                                <a href="#" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
+                                                    {{ article.category.name }}
                                                 </a>
-                                            </div>
-                                            <div class="content pt-20">
-                                                <a href="#"
-                                                    class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">culture,
-                                                    video</a>
                                                 <h4 class="title ltspc--1 text-white">
-                                                    <a href="page-single-post-features.html">Bhutan! The happiest country on the world</a>
+                                                    <a href="#">{{ article.title }}</a>
                                                 </h4>
                                             </div>
                                         </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -1190,8 +1170,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </section>
+    
     
     <section class="tc-lifestyle pt-50 pb-50">
         <div class="container">
