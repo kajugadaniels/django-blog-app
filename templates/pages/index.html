@@ -543,8 +543,10 @@
                     </section>
     
                     <section class="tc-business-style1 pt-50 pb-50">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">business</a> <i
-                                class="la la-angle-right ms-1"></i> </p>
+                        <p class="color-000 text-uppercase mb-30 ltspc-1">
+                            <a href="#">business</a>
+                            <i class="la la-angle-right ms-1"></i>
+                        </p>
                         <div class="main-blog pb-30 border-1 border-bottom brd-gray">
                             <div class="row">
                                 <div class="col-lg-8 border-1 border-end brd-gray">
@@ -905,29 +907,39 @@
                         </div>
                         <div class="tc-widget-popular-style1">
                             <p class="color-000 text-uppercase mb-20 ltspc-1"> popular posts </p>
-                            <div class="main-card">
-                                <div class="img th-300 img-cover">
-                                    <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/1.png" alt="">
-                                    <div class="tags">
-                                        <a href="#">business</a>
+                            {% if mostViewedWeeklyArticle %}
+                                <div class="main-card">
+                                    <div class="img th-300 img-cover">
+                                        {% with articleImage=mostViewedWeeklyArticle.articleimage_set.first %}
+                                            {% if articleImage %}
+                                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                            {% else %}
+                                                <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/1.png" alt="Default Image">
+                                            {% endif %}
+                                        {% endwith %}
+                                        {% if mostViewedWeeklyArticle.category %}
+                                            <div class="tags">
+                                                <a href="#">{{ mostViewedWeeklyArticle.category.name }}</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="content">
+                                        <h4 class="title">
+                                            <a href="#">{{ mostViewedWeeklyArticle.title }}</a>
+                                        </h4>
+                                        <div class="meta-bot">
+                                            <ul class="d-flex">
+                                                <li class="date me-4">
+                                                    <a href="#"><i class="la la-calendar me-1"></i> {{ mostViewedWeeklyArticle.created_at|date:"M d, Y" }}</a>
+                                                </li>
+                                                <li class="comment">
+                                                    <a href="#"><i class="la la-comment me-1"></i> {{ mostViewedWeeklyArticle.comment.count }} </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="content">
-                                    <h4 class="title">
-                                        <a href="#">Big Title for featured post with double</a>
-                                    </h4>
-                                    <div class="meta-bot">
-                                        <ul class="d-flex">
-                                            <li class="date me-4">
-                                                <a href="#"><i class="la la-calendar me-1"></i> Dec 14, 2022</a>
-                                            </li>
-                                            <li class="comment">
-                                                <a href="#"><i class="la la-comment me-1"></i> 55 </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endif %}
                             <div class="tc-widget-popular-list">
                                 <a href="#" class="item">
                                     <div class="img img-cover">
