@@ -42,12 +42,22 @@ def home(request):
     # Advanced logic:
     # Determine the category that has the most articles overall.
     mostPopulatedCategory = Category.objects.annotate(articleCount=Count('article')).order_by('-articleCount').first()
-    # From that category, retrieve one article that is recent (within last 24 hours) and has the most views.
+    # From that category, retrieve one article that is recent (within the last 24 hours) and has the most views.
     if mostPopulatedCategory:
         advancedArticle = Article.objects.filter(category=mostPopulatedCategory, created_at__gte=timeThreshold).order_by('-views').first()
     else:
         advancedArticle = None
-    
+
+    # New logic: Retrieve 3 related articles to the advancedArticle.
+    # Related articles are defined as those in the same category as advancedArticle, created in the last 24 hours, and not the advancedArticle itself.
+    if advancedArticle:
+        relatedArticles = Article.objects.filter(
+            category=advancedArticle.category,
+            created_at__gte=timeThreshold
+        ).exclude(id=advancedArticle.id).order_by('-created_at')[:3]
+    else:
+        relatedArticles = None
+
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -57,6 +67,7 @@ def home(request):
         'recentArticle': recentArticle,
         'categoryArticles': categoryArticles,
         'advancedArticle': advancedArticle,
+        'relatedArticles': relatedArticles,
     }
     
     return render(request, 'pages/index.html', context)
