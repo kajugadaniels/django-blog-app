@@ -138,43 +138,56 @@
                         <div class="tc-trends-news-slider1 tc-slider-style2">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
+                                    {% for article in randomArticles %}
                                     <div class="swiper-slide">
                                         <div class="tc-post-overlay-default">
                                             <div class="img th-650 img-cover">
-                                                <img src="https://newzin-html.themescamp.com/assets/img/trend/2.png" alt="">
+                                                {% with articleImage=article.articleimage_set.first %}
+                                                    {% if articleImage %}
+                                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                    {% else %}
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                    {% endif %}
+                                                {% endwith %}
                                                 <div class="tags">
-                                                    <a href="#">featured,</a>
-                                                    <a href="#">news</a>
+                                                    {% if article.category %}
+                                                        <a href="#">{{ article.category.name }}</a>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="content ps-40 pe-40 pb-40">
                                                 <h2 class="title mb-20">
-                                                    <a href="#">2022 NFL Craf predict:
-                                                        <br> Top 4 Quarterbacks
-                                                        selected</a>
+                                                    <a href="#">{{ article.title }}</a>
                                                 </h2>
                                                 <div class="text mb-40">
-                                                    Its first decline in subscribers since 2011 triggered a $54
-                                                    billion stock value loss and raised questions [...]
+                                                    {{ article.content|truncatewords:20 }}
                                                 </div>
                                                 <div class="meta-bot lh-1">
                                                     <ul class="d-flex">
                                                         <li class="date me-5">
-                                                            <a href="#"><i class="la la-calendar me-2"></i> Dec 14,
-                                                                2022</a>
+                                                            <a href="#">
+                                                                <i class="la la-calendar me-2"></i> 
+                                                                {{ article.created_at|date:"M d, Y" }}
+                                                            </a>
                                                         </li>
                                                         <li class="author me-5">
-                                                            <a href="#"><i class="la la-user me-2"></i> by Admin</a>
+                                                            <a href="#">
+                                                                <i class="la la-user me-2"></i> 
+                                                                by {{ article.author.name }}
+                                                            </a>
                                                         </li>
                                                         <li class="comment">
-                                                            <a href="#"><i class="la la-comment me-2"></i> 55
-                                                                Comments</a>
+                                                            <a href="#">
+                                                                <i class="la la-comment me-2"></i> 
+                                                                {{ article.comment_set.count }} Comments
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <!-- arrows -->
