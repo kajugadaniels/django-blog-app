@@ -3,8 +3,11 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
 
 def home(request):
+    User = get_user_model()
+    
     breakingNews = Article.objects.all().order_by('-id')[:4]
     
     # Define the time thresholds
@@ -30,7 +33,9 @@ def home(request):
     categories = Category.objects.all()
     
     # Retrieve the recent article from the last 24 hours (most recent creation date)
-    recentArticle = Article.objects.filter(created_at__gte=timeThreshold).order_by('-created_at').first()
+    recentArticle = Article.objects.filter(created_at__gte=timeThreshold)\
+                                   .order_by('-created_at')\
+                                   .first()
     
     # Retrieve 6 articles, one from each category (for 6 randomly selected categories)
     categoryArticles = []
@@ -97,7 +102,9 @@ def home(request):
     # (c) Two articles with the most comments in that category (excluding the ones already selected).
     randomCategory = Category.objects.order_by('?').first()
     if randomCategory:
-        recentArticleInCategory = Article.objects.filter(category=randomCategory).order_by('-created_at').first()
+        recentArticleInCategory = Article.objects.filter(category=randomCategory)\
+                                                   .order_by('-created_at')\
+                                                   .first()
         
         if recentArticleInCategory:
             mostViewedArticlesInCategory = list(
@@ -107,7 +114,8 @@ def home(request):
             )
         else:
             mostViewedArticlesInCategory = list(
-                Article.objects.filter(category=randomCategory).order_by('-views')
+                Article.objects.filter(category=randomCategory)
+                .order_by('-views')
             )
         mostViewedArticlesInCategory = mostViewedArticlesInCategory[:4]
         
@@ -130,7 +138,7 @@ def home(request):
         mostViewedArticlesInCategory = []
         mostCommentedArticlesInCategory = []
     
-    # NEW LOGIC: For another random category (different from randomCategory),
+    # NEW LOGIC: For another random category, which must be different from the above randomCategory,
     # retrieve:
     # (1) The most recent article in that category.
     # (2) Two most viewed articles in that category from the past 7 days (excluding the recent article if exists).
@@ -140,7 +148,9 @@ def home(request):
         otherCategory = Category.objects.order_by('?').first()
     
     if otherCategory:
-        otherRecentArticle = Article.objects.filter(category=otherCategory).order_by('-created_at').first()
+        otherRecentArticle = Article.objects.filter(category=otherCategory)\
+                                              .order_by('-created_at')\
+                                              .first()
         if otherRecentArticle:
             otherMostViewedArticles = list(
                 Article.objects.filter(category=otherCategory, created_at__gte=weekTimeThreshold)
@@ -173,6 +183,9 @@ def home(request):
         videoArticleMostViewed = Article.objects.filter(video_url__isnull=False)\
                                                 .order_by('-views')[:2]
     
+    # NEW LOGIC: Retrieve all authors from the user model.
+    authors = User.objects.all()
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -199,6 +212,8 @@ def home(request):
         # Video articles block
         'videoArticleRecent': videoArticleRecent,
         'videoArticleMostViewed': videoArticleMostViewed,
+        # Authors block
+        'authors': authors,
     }
     
     return render(request, 'pages/index.html', context)
