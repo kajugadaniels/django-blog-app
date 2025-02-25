@@ -31,7 +31,6 @@ def home(request):
     # Retrieve 6 articles, one from each category (for 6 randomly selected categories)
     categoryArticles = []
     categoriesList = list(Category.objects.all())
-    import random
     random.shuffle(categoriesList)
     for category in categoriesList:
         article = Article.objects.filter(category=category).order_by('?').first()
@@ -42,7 +41,7 @@ def home(request):
     
     # Advanced logic:
     # Determine the category that has the most articles overall.
-    mostPopulatedCategory = Category.objects.annotate(articleCount=Count('article_set')).order_by('-articleCount').first()
+    mostPopulatedCategory = Category.objects.annotate(articleCount=Count('article')).order_by('-articleCount').first()
     # From that category, retrieve one article that is recent (within last 24 hours) and has the most views.
     if mostPopulatedCategory:
         advancedArticle = Article.objects.filter(category=mostPopulatedCategory, created_at__gte=timeThreshold).order_by('-views').first()
