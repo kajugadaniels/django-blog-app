@@ -58,7 +58,6 @@ def home(request):
         advancedArticle = None
 
     # Retrieve 3 related articles to the advancedArticle.
-    # Related articles are defined as those in the same category as advancedArticle, created in the last 24 hours, and not the advancedArticle itself.
     if advancedArticle:
         relatedArticles = Article.objects.filter(
             category=advancedArticle.category,
@@ -67,12 +66,17 @@ def home(request):
     else:
         relatedArticles = None
 
-    # New logic: Retrieve the most liked article in the last 24 hours.
-    # Annotate each article with its like count using the reverse accessor 'like'
+    # Retrieve the most liked article in the last 24 hours.
     mostLikedArticle = Article.objects.filter(created_at__gte=timeThreshold)\
         .annotate(like_count=Count('like'))\
         .order_by('-like_count')\
         .first()
+    
+    # New logic: Retrieve 3 articles with the most comments, ordered by comment count (and by likes as secondary order).
+    mostCommentedArticles = Article.objects.annotate(
+        comment_count=Count('comment'),
+        like_count=Count('like')
+    ).order_by('-comment_count', '-like_count')[:3]
     
     context = {
         'breakingNews': breakingNews,
@@ -85,6 +89,7 @@ def home(request):
         'advancedArticle': advancedArticle,
         'relatedArticles': relatedArticles,
         'mostLikedArticle': mostLikedArticle,
+        'mostCommentedArticles': mostCommentedArticles,
     }
     
     return render(request, 'pages/index.html', context)
