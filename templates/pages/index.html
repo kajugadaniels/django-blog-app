@@ -941,37 +941,25 @@
                                 </div>
                             {% endif %}
                             <div class="tc-widget-popular-list">
-                                <a href="#" class="item">
-                                    <div class="img img-cover">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/2.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="title">
-                                            Joe Biden did not participate in the war
-                                        </h6>
-                                    </div>
-                                </a>
-                                <a href="#" class="item">
-                                    <div class="img img-cover">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/3.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="title">
-                                            Mindset to Succesful, Become Lion King
-                                        </h6>
-                                    </div>
-                                </a>
-                                <a href="#" class="item">
-                                    <div class="img img-cover">
-                                        <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/4.png" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="title">
-                                            Experience ballon balls in Turkey
-                                        </h6>
-                                    </div>
-                                </a>
-                            </div>
+                                {% for article in mostViewedWeeklyArticles %}
+                                    <a href="#" class="item">
+                                        <div class="img img-cover">
+                                            {% with articleImage=article.articleimage_set.first %}
+                                                {% if articleImage %}
+                                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                {% else %}
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                        <div class="info">
+                                            <h6 class="title">
+                                                {{ article.title }}
+                                            </h6>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>                            
                         </div>
                         <div class="tc-widget-adbox-style1">
                             <a href="#" class="img">
