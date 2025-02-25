@@ -276,40 +276,54 @@
     <section class="tc-latest-news-style1">
         <div class="container">
             <div class="section-content pt-50 pb-50 border-bottom border-1 brd-gray">
-                <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html"> latest news </a> <i class="la la-angle-right ms-1"></i>
+                <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#"> latest news </a> <i class="la la-angle-right ms-1"></i>
                 </p>
                 <div class="row">
                     <div class="col-lg-5 border-end brd-gray border-1">
                         <div class="tc-post-grid-default">
                             <div class="item">
                                 <div class="img img-cover th-330">
-                                    <img src="https://newzin-html.themescamp.com/assets/img/latest/1.png" alt="">
-                                    <a href="https://youtu.be/pGbIOC83-So?t=21" data-lity
-                                        class="video_icon icon-70">
+                                    {% with articleImage=recentArticle.articleimage_set.first %}
+                                        {% if articleImage %}
+                                            <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                        {% else %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                        {% endif %}
+                                    {% endwith %}
+                                    {# If you have a video URL field, you can display the video play icon conditionally #}
+                                    {% if recentArticle.video_url %}
+                                    <a href="{{ recentArticle.video_url }}" data-lity class="video_icon icon-70">
                                         <i class="ion-play"></i>
                                     </a>
+                                    {% endif %}
                                 </div>
                                 <div class="content pt-30">
-                                    <a href="page-blog.html"
-                                        class="news-cat color-999 fsz-13px text-uppercase mb-10">politics</a>
+                                    {% if recentArticle.category %}
+                                        <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ recentArticle.category.name }}</a>
+                                    {% endif %}
                                     <h2 class="title mb-20">
-                                        <a href="page-single-post-features.html">Biden asks Congress for $33 billion
-                                            to support Ukraine</a>
+                                        <a href="#">{{ recentArticle.title }}</a>
                                     </h2>
                                     <div class="text color-666">
-                                        The social-media company is in discussions to sell itself to Elon, a
-                                        dramatic turn of events just 11 days after the [...]
+                                        {{ recentArticle.content|truncatewords:30 }}
                                     </div>
                                     <div class="meta-bot lh-1 mt-40">
                                         <ul class="d-flex">
                                             <li class="date me-5">
-                                                <a href="#"><i class="la la-calendar me-2"></i> Dec 14, 2022</a>
+                                                <a href="#">
+                                                    <i class="la la-calendar me-2"></i> 
+                                                    {{ recentArticle.created_at|date:"M d, Y" }}
+                                                </a>
                                             </li>
                                             <li class="author me-5">
-                                                <a href="#"><i class="la la-user me-2"></i> by Admin </a>
+                                                <a href="#">
+                                                    <i class="la la-user me-2"></i> by {{ recentArticle.author.name }}
+                                                </a>
                                             </li>
                                             <li class="comment">
-                                                <a href="#"><i class="la la-comment me-2"></i> 55 Comments</a>
+                                                <a href="#">
+                                                    <i class="la la-comment me-2"></i> {{ recentArticle.comment_set.count }} Comments
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -518,7 +532,7 @@
             <div class="row">
                 <div class="col-lg-9">
                     <section class="tc-must-read-style1 bg-gray2 p-30">
-                        <p class="color-000 text-uppercase mb-20 ltspc-1"> <a href="page-blog.html"> must read </a> <i
+                        <p class="color-000 text-uppercase mb-20 ltspc-1"> <a href="#"> must read </a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="tc-post-grid-default border-1 border-bottom brd-gray pb-30">
                             <div class="item">
@@ -613,7 +627,7 @@
                     </section>
     
                     <section class="tc-business-style1 pt-50 pb-50">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">business</a> <i
+                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">business</a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="main-blog pb-30 border-1 border-bottom brd-gray">
                             <div class="row">
@@ -756,7 +770,7 @@
                     </section>
     
                     <div class="tc-technology-style1 pt-50">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">technology</a> <i
+                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">technology</a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="tc-post-overlay-default">
                             <div class="img th-600 img-cover">
@@ -1281,7 +1295,7 @@
     
     <section class="tc-lifestyle pt-50 pb-50">
         <div class="container">
-            <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">lifestyle</a> <i class="la la-angle-right ms-1"></i> </p>
+            <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">lifestyle</a> <i class="la la-angle-right ms-1"></i> </p>
             <div class="content">
                 <div class="row">
                     <div class="col-lg-6 border-end brd-gray border-1">
@@ -1580,7 +1594,7 @@
             <div class="content">
                 <div class="row">
                     <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">Sport</a> <i
+                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Sport</a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="row">
                             <div class="col-12 border-1 border-end brd-gray">
@@ -1662,7 +1676,7 @@
                     </div>
     
                     <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">Entertaiment</a> <i
+                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Entertaiment</a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="row">
                             <div class="col-12 border-1 border-end brd-gray">
@@ -1744,7 +1758,7 @@
                     </div>
     
                     <div class="col-lg-4">
-                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="page-blog.html">Travel</a> <i
+                        <p class="color-000 text-uppercase mb-30 ltspc-1"> <a href="#">Travel</a> <i
                                 class="la la-angle-right ms-1"></i> </p>
                         <div class="row">
                             <div class="col-12">
