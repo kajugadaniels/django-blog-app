@@ -203,6 +203,9 @@ def home(request):
             'otherArticles': others,
         })
     
+    # NEW LOGIC: Retrieve all tags in random order.
+    tags = Tag.objects.all().order_by('?')
+    
     context = {
         'breakingNews': breakingNews,
         'topArticle': topArticle,
@@ -231,8 +234,10 @@ def home(request):
         'videoArticleMostViewed': videoArticleMostViewed,
         # Authors block
         'authors': authors,
-        # NEW: Random categories with recent articles block (3 categories)
+        # Random categories with recent articles block (3 categories)
         'recentArticlesByCategory': recentArticlesByCategory,
+        # Tags block
+        'tags': tags,
     }
     
     return render(request, 'pages/index.html', context)
