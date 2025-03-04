@@ -776,6 +776,16 @@
     
                 <div class="col-lg-3">
                     <div class="tc-side-widgets">
+                        <div class="tc-widget-tags-style2">
+                            <h5 class="wid-title-style2"> Hot Tags Today </h5>
+                            <div class="tags-content">
+                                {% for tag in tags %}
+                                    <a href="#">
+                                        {{ tag.name }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
                         <div class="tc-widget-sponsored-style1">
                             <div class="img img-cover">
                                 <img src="https://newzin-html.themescamp.com/assets/img/sponsored/1.png" alt="">

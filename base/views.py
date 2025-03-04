@@ -234,7 +234,7 @@ def home(request):
         'videoArticleMostViewed': videoArticleMostViewed,
         # Authors block
         'authors': authors,
-        # Random categories with recent articles block (3 categories)
+        # Recent articles by category block (3 categories)
         'recentArticlesByCategory': recentArticlesByCategory,
         # Tags block
         'tags': tags,
