@@ -11,7 +11,7 @@
                         <div class="swiper-wrapper">
                             {% for article in breakingNews %}
                                 <div class="swiper-slide">
-                                    <a href="#" class="item d-block">
+                                    <a href="{% url 'base:showArticle' article.slug  %}" class="item d-block">
                                         <div class="row gx-4 align-items-center">
                                             <div class="col-4">
                                                 <div class="img th-70 img-cover">
