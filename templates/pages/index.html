@@ -116,25 +116,34 @@
                                 </div>
                             </div>
                         </div> {% endcomment %}
-                        <div class="tc-post-grid-default">
-                            <div class="item">
-                                <div class="img img-cover th-200">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
-                                </div>
-                                <div class="content py-4 px-3 bg-gray2">
-                                    <p class="color-main fsz-13px text-uppercase mb-1">Sponsored Content</p>
-                                    <h4 class="title ltspc--1">
-                                        <a href="#">
-                                            3D2N at Sixsense Resort 5 stars just $1,299
+                        {% if sponsoredArticleRecent %}
+                            <div class="tc-post-grid-default">
+                                <div class="item">
+                                    <div class="img img-cover th-200">
+                                        {% with articleImage=sponsoredArticleRecent.articleimage_set.first %}
+                                            {% if articleImage %}
+                                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                            {% else %}
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                    <div class="content py-4 px-3 bg-gray2">
+                                        <p class="color-main fsz-13px text-uppercase mb-1">Sponsored Content</p>
+                                        <h4 class="title ltspc--1">
+                                            <a href="{{ sponsoredArticleRecent.sponsored_link|default:'#' }}">
+                                                {{ sponsoredArticleRecent.title }}
+                                            </a>
+                                        </h4>
+                                        <a href="{{ sponsoredArticleRecent.sponsored_link|default:'#' }}" class="color-999 fsz-12px mt-20">
+                                            {{ sponsoredArticleRecent.sponsored_link|default:'Visit Link' }}
+                                            <i class="la la-external-link-square-alt"></i>
                                         </a>
-                                    </h4>
-                                    <a href="#" class="color-999 fsz-12px mt-20">
-                                        booking.com
-                                        <i class="la la-external-link-square-alt"></i>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
+
                     </div>
                     <div class="col-lg-6">
                         <div class="tc-trends-news-slider1 tc-slider-style2">
