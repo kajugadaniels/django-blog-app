@@ -1,10 +1,10 @@
+import random
 from base.models import *
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count
-from django.shortcuts import render
 from django.contrib.auth import get_user_model
-import random
+from django.shortcuts import render, get_object_or_404
 
 def home(request):
     User = get_user_model()
@@ -250,3 +250,29 @@ def home(request):
     }
     
     return render(request, 'pages/index.html', context)
+
+def showArticle(request, slug):
+    """
+    Retrieve a published article by its slug along with its associated image URLs
+    and any other URL fields (e.g., video_url, sponsored_link).
+    """
+    # Retrieve the article or return 404 if not found or not published.
+    article = get_object_or_404(Article, slug=slug, status='published')
+    
+    # Retrieve all associated images for the article.
+    images = article.articleimage_set.all()
+    
+    # Build a dictionary of URL fields for easy access in the template.
+    # (Assuming article has video_url and sponsored_link fields)
+    urls = {
+        'video': article.video_url,
+        'sponsored': article.sponsored_link,
+    }
+    
+    context = {
+        'article': article,
+        'images': images,
+        'urls': urls,
+    }
+    
+    return render(request, 'pages/article_detail.html', context)
