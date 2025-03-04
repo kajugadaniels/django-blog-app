@@ -276,3 +276,20 @@ def showArticle(request, slug):
     }
     
     return render(request, 'pages/article_detail.html', context)
+
+def showCategoryArticles(request, category_slug):
+    """
+    Retrieve all published articles assigned to a given category, identified by its slug.
+    """
+    # Retrieve the category using its slug; raise 404 if not found.
+    category = get_object_or_404(Category, slug=category_slug)
+    
+    # Retrieve all published articles associated with the category, ordered by most recent.
+    articles = Article.objects.filter(category=category, status='published').order_by('-created_at')
+    
+    context = {
+        'category': category,
+        'articles': articles,
+    }
+    
+    return render(request, 'pages/category_articles.html', context)
