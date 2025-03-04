@@ -795,23 +795,30 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="tc-widget-sponsored-style1">
-                            <div class="img img-cover">
-                                <img src="https://newzin-html.themescamp.com/assets/img/sponsored/1.png" alt="">
-                            </div>
-                            <div class="info pt-10">
-                                <div class="spon-cat"> Sponsored Content </div>
-                                <h6 class="title">
-                                    <a href="#">
-                                        Dile & Kamine Soap from pure natura 100%
+                        {% if sponsoredArticleRecent2 %}
+                            <div class="tc-widget-sponsored-style1">
+                                <div class="img img-cover">
+                                    {% with articleImage=sponsoredArticleRecent2.articleimage_set.first %}
+                                        {% if articleImage %}
+                                            <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                        {% else %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Sponsored Image">
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="info pt-10">
+                                    <div class="spon-cat"> Sponsored Content </div>
+                                    <h6 class="title">
+                                        <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
+                                            {{ sponsoredArticleRecent2.title }}
+                                        </a>
+                                    </h6>
+                                    <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
+                                        <small>{{ sponsoredArticleRecent2.sponsored_link|default:'Visit Site' }} <i class="las la-external-link-square-alt ms-2"></i></small>
                                     </a>
-                                </h6>
-                                <a href="#">
-                                    <small>dileandkamina.com <i
-                                            class="las la-external-link-square-alt ms-2"></i></small>
-                                </a>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                         <div class="tc-widget-popular-style1">
                             <p class="color-000 text-uppercase mb-20 ltspc-1"> popular posts </p>
                             {% if mostViewedWeeklyArticle %}
