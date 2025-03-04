@@ -223,7 +223,9 @@
                                         {% endwith %}
                                     </div>
                                     <div class="content ps-20 pe-20 pb-20 text-white">
-                                        <a href="#" class="text-uppercase fsz-13px mb-1">{{ topArticle.category.name }}</a>
+                                        <a href="{% url 'base:showCategoryArticles' topArticle.category.slug %}" class="text-uppercase fsz-13px mb-1">
+                                            {{ topArticle.category.name }}
+                                        </a>
                                         <h4 class="title">
                                             <a href="{% url 'base:showArticle' topArticle.slug  %}">{{ topArticle.title }}</a>
                                         </h4>
@@ -261,7 +263,7 @@
                         <div class="swiper-wrapper">
                             {% for category in categories %}
                             <div class="swiper-slide">
-                                <a href="#" class="story-item">
+                                <a href="{% url 'base:showCategoryArticles' category.slug %}" class="story-item">
                                     <div class="img img-cover">
                                         {% if category.image %}
                                             <img src="{{ category.image.url }}" alt="{{ category.name }}">
@@ -310,7 +312,7 @@
                                 </div>
                                 <div class="content pt-30">
                                     {% if recentArticle.category %}
-                                        <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ recentArticle.category.name }}</a>
+                                        <a href="{% url 'base:showCategoryArticles' recentArticle.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ recentArticle.category.name }}</a>
                                     {% endif %}
                                     <h2 class="title mb-20">
                                         <a href="{% url 'base:showArticle' recentArticle.slug  %}">{{ recentArticle.title }}</a>
@@ -362,9 +364,9 @@
                                             <div class="col-8">
                                                 <div class="content">
                                                     {% if article.category %}
-                                                        <div class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                        <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-1">
                                                             {{ article.category.name }}
-                                                        </div>
+                                                        </a>
                                                     {% endif %}
                                                     <h5 class="title ltspc--1">
                                                         <a href="{% url 'base:showArticle' article.slug  %}" class="hover-underline">{{ article.title }}</a>
@@ -394,7 +396,7 @@
                                     </div>
                                     <div class="content pt-20">
                                         {% if advancedArticle.category %}
-                                            <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ advancedArticle.category.name }}</a>
+                                            <a href="{% url 'base:showCategoryArticles' advancedArticle.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ advancedArticle.category.name }}</a>
                                         {% endif %}
                                         <h5 class="title ltspc--1 mb-10">
                                             <a href="{% url 'base:showArticle' advancedArticle.slug  %}">{{ advancedArticle.title }}</a>
@@ -485,7 +487,7 @@
                                         <div class="col-lg-7">
                                             <div class="content">
                                                 {% if mostLikedArticle.category %}
-                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ mostLikedArticle.category.name }}</a>
+                                                    <a href="{% url 'base:showCategoryArticles' mostLikedArticle.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ mostLikedArticle.category.name }}</a>
                                                 {% endif %}
                                                 <h3 class="title mb-15">
                                                     <a href="{% url 'base:showArticle' mostLikedArticle.slug  %}">{{ mostLikedArticle.title }}</a>
@@ -536,7 +538,7 @@
                                             </div>
                                             <div class="content">
                                                 {% if article.category %}
-                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                    <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-1">
                                                         {{ article.category.name }}
                                                     </a>
                                                 {% endif %}
@@ -557,7 +559,7 @@
                         <!-- Section Header with Random Category Name -->
                         {% if randomCategory %}
                         <p class="color-000 text-uppercase mb-30 ltspc-1">
-                            <a href="#">{{ randomCategory.name }}</a>
+                            <a href="{% url 'base:showCategoryArticles' randomCategory.slug %}">{{ randomCategory.name }}</a>
                             <i class="la la-angle-right ms-1"></i>
                         </p>
                         {% endif %}
@@ -577,7 +579,7 @@
                                                 {% endif %}
                                             {% endwith %}
                                             <div class="tags">
-                                                <a href="#">{{ randomCategory.name }}</a>
+                                                <a href="{% url 'base:showCategoryArticles' randomCategory.slug %}">{{ randomCategory.name }}</a>
                                             </div>
                                         </div>
                                         <div class="content ps-30 pe-30 pb-30">
@@ -615,7 +617,7 @@
                                             {% for article in mostViewedArticlesInCategory %}
                                             <div class="item pb-20">
                                                 <div class="content">
-                                                    <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-1">
+                                                    <a href="{% url 'base:showCategoryArticles' randomCategory.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-1">
                                                         {{ randomCategory.name }}
                                                     </a>
                                                     <h5 class="title ltspc--1">
@@ -684,7 +686,7 @@
                         <section class="tc-technology-style1 pt-50">
                             <!-- Section Header with category name -->
                             <p class="color-000 text-uppercase mb-30 ltspc-1">
-                                <a href="#">{{ otherCategory.name }}</a>
+                                <a href="{% url 'base:showCategoryArticles' otherCategory.slug %}">{{ otherCategory.name }}</a>
                                 <i class="la la-angle-right ms-1"></i>
                             </p>
                             
@@ -699,7 +701,7 @@
                                         {% endif %}
                                     {% endwith %}
                                     <div class="tags">
-                                        <a href="#">{{ otherCategory.name }}</a>
+                                        <a href="{% url 'base:showCategoryArticles' otherCategory.slug %}">{{ otherCategory.name }}</a>
                                     </div>
                                 </div>
                                 <div class="content ps-40 pe-40 pb-40">
@@ -748,7 +750,7 @@
                                             <div class="col-lg-8">
                                                 <div class="content">
                                                     <div class="news-cat color-999 fsz-13px text-uppercase mb-3">
-                                                        <a href="#">{{ otherCategory.name }}</a>
+                                                        <a href="{% url 'base:showCategoryArticles' otherCategory.slug %}">{{ otherCategory.name }}</a>
                                                     </div>
                                                     <h3 class="title ltspc--1">
                                                         <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
@@ -833,7 +835,7 @@
                                         {% endwith %}
                                         {% if mostViewedWeeklyArticle.category %}
                                             <div class="tags">
-                                                <a href="#">{{ mostViewedWeeklyArticle.category.name }}</a>
+                                                <a href="{% url 'base:showCategoryArticles' mostViewedWeeklyArticle.category.slug %}">{{ mostViewedWeeklyArticle.category.name }}</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -1009,7 +1011,7 @@
                                                 </a>
                                             </div>
                                             <div class="content pt-20">
-                                                <a href="#" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
+                                                <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
                                                     {{ article.category.name }}
                                                 </a>
                                                 <h4 class="title ltspc--1 text-white">
@@ -1084,7 +1086,7 @@
                                                 </a>
                                             </div>
                                             <div class="content pt-20">
-                                                <a href="#" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
+                                                <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="news-cat text-white fsz-13px text-uppercase mb-1 fw-lighter">
                                                     {{ article.category.name }}
                                                 </a>
                                                 <h4 class="title ltspc--1 text-white">
@@ -1153,7 +1155,7 @@
                     <div class="col-lg-4">
                         <!-- Category Header -->
                         <p class="color-000 text-uppercase mb-30 ltspc-1">
-                            <a href="#">{{ catBlock.category.name }}</a>
+                            <a href="{% url 'base:showCategoryArticles' catBlock.category.slug %}">{{ catBlock.category.name }}</a>
                             <i class="la la-angle-right ms-1"></i>
                         </p>
                         <div class="row">
@@ -1172,7 +1174,7 @@
                                             {% endwith %}
                                         </div>
                                         <div class="content pt-20">
-                                            <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">
+                                            <a href="{% url 'base:showCategoryArticles' catBlock.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-10">
                                                 {{ catBlock.category.name }}
                                             </a>
                                             <h4 class="title ltspc--1 mb-10">
