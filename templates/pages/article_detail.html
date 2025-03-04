@@ -21,7 +21,11 @@
                     <div class="author-side color-666 fsz-13px">
                         <div class="author me-40 d-flex d-lg-inline-flex align-items-center">
                             <span class="icon-30 rounded-circle overflow-hidden me-10">
-                                <img src="https://newzin-html.themescamp.com/assets/img/colums.png" alt="">
+                                {% if article.author.image %}
+                                    <img src="{{ article.author.image.url }}" alt="{{ article.title }}">
+                                {% else %}
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                {% endif %}
                             </span>
                             <span>By</span>
                             <a href="#" class="text-decoration-underline text-primary ms-1">{{ article.author.name }}</a>

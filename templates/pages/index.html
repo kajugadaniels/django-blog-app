@@ -168,7 +168,7 @@
                                             </div>
                                             <div class="content ps-40 pe-40 pb-40">
                                                 <h2 class="title mb-20">
-                                                    <a href="#">{{ article.title }}</a>
+                                                    <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
                                                 </h2>
                                                 <div class="text mb-40">
                                                     {{ article.content|truncatewords:20 }}
@@ -176,7 +176,7 @@
                                                 <div class="meta-bot lh-1">
                                                     <ul class="d-flex">
                                                         <li class="date me-5">
-                                                            <a href="#">
+                                                            <a href="{% url 'base:showArticle' article.slug  %}">
                                                                 <i class="la la-calendar me-2"></i> 
                                                                 {{ article.created_at|date:"M d, Y" }}
                                                             </a>
@@ -188,7 +188,7 @@
                                                             </a>
                                                         </li>
                                                         <li class="comment">
-                                                            <a href="#">
+                                                            <a href="{% url 'base:showArticle' article.slug  %}">
                                                                 <i class="la la-comment me-2"></i> 
                                                                 {{ article.comment_set.count }} Comments
                                                             </a>
@@ -225,7 +225,7 @@
                                     <div class="content ps-20 pe-20 pb-20 text-white">
                                         <a href="#" class="text-uppercase fsz-13px mb-1">{{ topArticle.category.name }}</a>
                                         <h4 class="title">
-                                            <a href="#">{{ topArticle.title }}</a>
+                                            <a href="{% url 'base:showArticle' topArticle.slug  %}">{{ topArticle.title }}</a>
                                         </h4>
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@
 
                             <div class="items">
                                 {% for article in trendingArticles %}
-                                <a href="#" class="item hover-main">
+                                <a href="{% url 'base:showArticle' article.slug  %}" class="item hover-main">
                                     <h2 class="num">{{ forloop.counter|add:"1" }}</h2>
                                     <div class="content">
                                         <span class="fsz-12px color-999 text-uppercase mb-2">{{ article.category.name }}</span>
@@ -313,7 +313,7 @@
                                         <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ recentArticle.category.name }}</a>
                                     {% endif %}
                                     <h2 class="title mb-20">
-                                        <a href="#">{{ recentArticle.title }}</a>
+                                        <a href="{% url 'base:showArticle' recentArticle.slug  %}">{{ recentArticle.title }}</a>
                                     </h2>
                                     <div class="text color-666">
                                         {{ recentArticle.content|truncatewords:30 }}
@@ -367,7 +367,7 @@
                                                         </div>
                                                     {% endif %}
                                                     <h5 class="title ltspc--1">
-                                                        <a href="#" class="hover-underline">{{ article.title }}</a>
+                                                        <a href="{% url 'base:showArticle' article.slug  %}" class="hover-underline">{{ article.title }}</a>
                                                     </h5>
                                                 </div>
                                             </div>
@@ -397,7 +397,7 @@
                                             <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ advancedArticle.category.name }}</a>
                                         {% endif %}
                                         <h5 class="title ltspc--1 mb-10">
-                                            <a href="#">{{ advancedArticle.title }}</a>
+                                            <a href="{% url 'base:showArticle' advancedArticle.slug  %}">{{ advancedArticle.title }}</a>
                                         </h5>
                                         <div class="text color-666">
                                             {{ advancedArticle.content|truncatewords:30 }}
@@ -427,7 +427,7 @@
                             <span class="fsz-12px color-999 text-capitalize fst-italic">Related Post</span>
                             {% if relatedArticles %}
                                 {% for article in relatedArticles %}
-                                    <a href="#" class="d-flex my-3">
+                                    <a href="{% url 'base:showArticle' article.slug  %}" class="d-flex my-3">
                                         <span class="icon-6 rounded-circle bg-dark me-3 flex-shrink-0 op-4 mt-10"></span>
                                         <h6 class="fsz-16px">{{ article.title }}</h6>
                                     </a>
@@ -488,7 +488,7 @@
                                                     <a href="#" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ mostLikedArticle.category.name }}</a>
                                                 {% endif %}
                                                 <h3 class="title mb-15">
-                                                    <a href="#">{{ mostLikedArticle.title }}</a>
+                                                    <a href="{% url 'base:showArticle' mostLikedArticle.slug  %}">{{ mostLikedArticle.title }}</a>
                                                 </h3>
                                                 <div class="text color-666">
                                                     {{ mostLikedArticle.content|truncatewords:25 }}
@@ -541,7 +541,7 @@
                                                     </a>
                                                 {% endif %}
                                                 <h4 class="title ltspc--1">
-                                                    <a href="#" class="hover-underline">
+                                                    <a href="{% url 'base:showArticle' article.slug  %}" class="hover-underline">
                                                         {{ article.title }}
                                                     </a>
                                                 </h4>
@@ -619,7 +619,7 @@
                                                         {{ randomCategory.name }}
                                                     </a>
                                                     <h5 class="title ltspc--1">
-                                                        <a href="#">{{ article.title }}</a>
+                                                        <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
                                                     </h5>
                                                 </div>
                                             </div>
@@ -636,7 +636,7 @@
                                 <div class="row">
                                     {% for article in mostCommentedArticlesInCategory %}
                                     <div class="col-lg-6">
-                                        <a href="#" class="item d-block border-0 pt-30">
+                                        <a href="{% url 'base:showArticle' article.slug  %}" class="item d-block border-0 pt-30">
                                             <div class="row gx-3 align-items-center">
                                                 <div class="col-4">
                                                     <div class="img th-90 img-cover">
@@ -704,7 +704,7 @@
                                 </div>
                                 <div class="content ps-40 pe-40 pb-40">
                                     <h2 class="title mb-30">
-                                        <a href="#">{{ otherRecentArticle.title }}</a>
+                                        <a href="{% url 'base:showArticle' otherRecentArticle.slug  %}">{{ otherRecentArticle.title }}</a>
                                     </h2>
                                     <div class="meta-bot lh-1">
                                         <ul class="d-flex">
@@ -751,7 +751,7 @@
                                                         <a href="#">{{ otherCategory.name }}</a>
                                                     </div>
                                                     <h3 class="title ltspc--1">
-                                                        <a href="#">{{ article.title }}</a>
+                                                        <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
                                                     </h3>
                                                     <div class="meta-bot lh-1 mt-80">
                                                         <ul class="d-flex">
@@ -839,7 +839,7 @@
                                     </div>
                                     <div class="content">
                                         <h4 class="title">
-                                            <a href="#">{{ mostViewedWeeklyArticle.title }}</a>
+                                            <a href="{% url 'base:showArticle' mostViewedWeeklyArticle.slug  %}">{{ mostViewedWeeklyArticle.title }}</a>
                                         </h4>
                                         <div class="meta-bot">
                                             <ul class="d-flex">
@@ -856,7 +856,7 @@
                             {% endif %}
                             <div class="tc-widget-popular-list">
                                 {% for article in mostViewedWeeklyArticles %}
-                                    <a href="#" class="item">
+                                    <a href="{% url 'base:showArticle' article.slug  %}" class="item">
                                         <div class="img img-cover">
                                             {% with articleImage=article.articleimage_set.first %}
                                                 {% if articleImage %}
@@ -1013,7 +1013,7 @@
                                                     {{ article.category.name }}
                                                 </a>
                                                 <h4 class="title ltspc--1 text-white">
-                                                    <a href="#">{{ article.title }}</a>
+                                                    <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
                                                 </h4>
                                             </div>
                                         </div>
@@ -1088,7 +1088,7 @@
                                                     {{ article.category.name }}
                                                 </a>
                                                 <h4 class="title ltspc--1 text-white">
-                                                    <a href="#">{{ article.title }}</a>
+                                                    <a href="{% url 'base:showArticle' article.slug  %}">{{ article.title }}</a>
                                                 </h4>
                                             </div>
                                         </div>
@@ -1176,7 +1176,7 @@
                                                 {{ catBlock.category.name }}
                                             </a>
                                             <h4 class="title ltspc--1 mb-10">
-                                                <a href="#">{{ catBlock.featuredArticle.title|truncatechars:30 }}</a>
+                                                <a href="{% url 'base:showArticle' catBlock.featuredArticle.slug  %}">{{ catBlock.featuredArticle.title|truncatechars:30 }}</a>
                                             </h4>
                                             <div class="text color-666">
                                                 {{ catBlock.featuredArticle.content|truncatechars:90 }}
@@ -1203,7 +1203,7 @@
                                 <div class="tc-post-list-style2">
                                     <div class="items">
                                         {% for article in catBlock.otherArticles %}
-                                        <a href="#" class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
+                                        <a href="{% url 'base:showArticle' article.slug  %}" class="item d-block border-1 border-top border-bottom-0 brd-gray pt-15 mt-15 brd-gray">
                                             <div class="row gx-3 align-items-center">
                                                 <div class="col-4">
                                                     <div class="img th-70 img-cover">
