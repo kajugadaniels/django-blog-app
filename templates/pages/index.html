@@ -162,7 +162,7 @@
                                                 {% endwith %}
                                                 <div class="tags">
                                                     {% if article.category %}
-                                                        <a href="#">{{ article.category.name }}</a>
+                                                        <a href="{% url 'base:showCategoryArticles' article.category.slug %}">{{ article.category.name }}</a>
                                                     {% endif %}
                                                 </div>
                                             </div>
