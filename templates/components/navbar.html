@@ -118,39 +118,41 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
-        // Get current date/time
-        const now = new Date();
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const currentDay = days[now.getDay()];
-        const currentDate = now.getDate();
-        const currentMonth = months[now.getMonth()];
-        const currentYear = now.getFullYear();
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes().toString().padStart(2, '0');
-        const currentTime = currentHours + ":" + currentMinutes;
-        
-        // Update the date block in the navbar
-        const currentDateEl = document.getElementById("current-date");
-        if(currentDateEl){
-             currentDateEl.innerHTML = `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
-        }
-        
-        // Use an external API (e.g., ipinfo.io) to get location info (city and country)
-        fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
-            .then(response => response.json())
-            .then(data => {
-                const city = data.city || "Unknown City";
-                const country = data.country || "Unknown Country";
-                const locationEl = document.getElementById("location-info");
-                if(locationEl){
-                    // Display location and current time
-                    locationEl.innerHTML = `<strong>${city}, ${country}</strong><p>${currentTime}</p>`;
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching location info:", error);
-            });
-    });
+document.addEventListener("DOMContentLoaded", function(){
+    // Get current date/time including seconds
+    const now = new Date();
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const currentDay = days[now.getDay()];
+    const currentDate = now.getDate();
+    const currentMonth = months[now.getMonth()];
+    const currentYear = now.getFullYear();
+    const currentHours = now.getHours().toString().padStart(2, '0');
+    const currentMinutes = now.getMinutes().toString().padStart(2, '0');
+    const currentSeconds = now.getSeconds().toString().padStart(2, '0');
+    const currentTime = currentHours + ":" + currentMinutes + ":" + currentSeconds;
+    
+    // Update the date block in the navbar
+    const currentDateEl = document.getElementById("current-date");
+    if(currentDateEl){
+        currentDateEl.innerHTML = `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
+    }
+    
+    // Use the IPinfo API to get location info
+    fetch('https://ipinfo.io/json?token=1a9fe57f5148a2')
+        .then(response => response.json())
+        .then(data => {
+            const city = data.city || "Unknown City";
+            const region = data.region || "Unknown Region";
+            const country = data.country || "Unknown Country";
+            const locationEl = document.getElementById("location-info");
+            if(locationEl){
+                // Display location (city, region, country) and current time
+                locationEl.innerHTML = `<strong>${city}, ${region}, ${country}</strong><p>${currentTime}</p>`;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching location info:", error);
+        });
+});
 </script>
