@@ -36,7 +36,7 @@
                                                     <a href="{% url 'base:showArticle' article.slug %}">{{ article.title }}</a>
                                                 </h4>
                                                 <div class="text color-666">
-                                                    {{ article.content|truncatewords:20 }}
+                                                    {{ article.content|safe|truncatechars:140 }}
                                                 </div>
                                                 <div class="meta-bot fsz-13px color-666">
                                                     <ul class="d-flex">
@@ -44,7 +44,7 @@
                                                             <a href="#"><i class="la la-calendar me-2"></i> {{ article.created_at|date:"M d, Y" }}</a>
                                                         </li>
                                                         <li class="author me-5">
-                                                            <a href="#"><i class="la la-user me-2"></i> by {{ article.author.username }}</a>
+                                                            <a href="#"><i class="la la-user me-2"></i> by {{ article.author.name }}</a>
                                                         </li>
                                                         <li class="comment">
                                                             <a href="#"><i class="la la-comment me-2"></i> {{ article.comment.count }} Comments</a>
