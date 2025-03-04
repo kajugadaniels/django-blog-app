@@ -3,5 +3,71 @@
 {% load humanize %}
 {% block content %}
 
+<section class="tc-main-post-style1 pb-60">
+    <div class="container">
+        <div class="tc-main-post-title pt-40 pb-40">
+            <div class="row">
+                <div class="col-lg-8">
+                    <p class="text-uppercase mb-15">{{ article.category.name }}</p>
+                    <h2 class="title">
+                        {{ article.title }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="meta-nav pt-30 pb-30 border-top border-1 brd-gray">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="author-side color-666 fsz-13px">
+                        <div class="author me-40 d-flex d-lg-inline-flex align-items-center">
+                            <span class="icon-30 rounded-circle overflow-hidden me-10">
+                                <img src="https://newzin-html.themescamp.com/assets/img/colums.png" alt="">
+                            </span>
+                            <span>By</span>
+                            <a href="#" class="text-decoration-underline text-primary ms-1">{{ article.author.name }}</a>
+                        </div>
+                        <span class="me-40">
+                            <a href="#"><i class="la la-calendar me-1"></i> {{ article.created_at|naturaltime }}</a>
+                        </span>
+                        <span class="">
+                            <a href="#"><i class="la la-comment me-1"></i> {{ article.comment_set.count }} Comments</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <div class="links-side color-000 fsz-13px">
+                        <a href="#" class="me-40"><i class="la la-link me-1"></i> Copy Link</a>
+                        <a href="#" class="me-40"><i class="la la-bookmark me-1"></i> Bookmark</a>
+                        <a href="#"><i class="la la-exclamation-triangle me-1"></i> Report</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tc-main-post-img img-cover mb-50">
+            {% for image in images %}
+                <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+            {% endfor %}
+        </div>
+        <div class="tc-main-post-content color-000">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="sharing">
+                        <p class="text-uppercase mb-20">Share</p>
+                        <div class="share-icons">
+                            <a href="#"> <i class="la la-twitter"></i> </a>
+                            <a href="#"> <i class="la la-facebook-f"></i> </a>
+                            <a href="#"> <i class="la la-instagram"></i> </a>
+                            <a href="#"> <i class="la la-youtube"></i> </a>
+                            <a href="#"> <i class="la la-spotify"></i> </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    {{ article.content|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
