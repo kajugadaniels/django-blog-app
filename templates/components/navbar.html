@@ -13,7 +13,8 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-calendar"></i>
                                         </div>
-                                        <div class="inf">
+                                        <!-- Add an ID for updating the current date and day -->
+                                        <div class="inf" id="current-date">
                                             <strong>Monday</strong>
                                             <p>Nov 25, 2023</p>
                                         </div>
@@ -24,7 +25,8 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-cloud-sun"></i>
                                         </div>
-                                        <div class="inf">
+                                        <!-- Add an ID for updating the location info and time -->
+                                        <div class="inf" id="location-info">
                                             <strong>32° deg, Cloudy</strong>
                                             <p>New York</p>
                                         </div>
@@ -33,6 +35,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-lg-4">
                         <a href="#" class="logo-brand d-none d-lg-block">
                             <h1>
@@ -113,3 +116,41 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        // Get current date/time
+        const now = new Date();
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const currentDay = days[now.getDay()];
+        const currentDate = now.getDate();
+        const currentMonth = months[now.getMonth()];
+        const currentYear = now.getFullYear();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes().toString().padStart(2, '0');
+        const currentTime = currentHours + ":" + currentMinutes;
+        
+        // Update the date block in the navbar
+        const currentDateEl = document.getElementById("current-date");
+        if(currentDateEl){
+             currentDateEl.innerHTML = `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
+        }
+        
+        // Use an external API (e.g., ipinfo.io) to get location info (city and country)
+        fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
+            .then(response => response.json())
+            .then(data => {
+                const city = data.city || "Unknown City";
+                const country = data.country || "Unknown Country";
+                const locationEl = document.getElementById("location-info");
+                if(locationEl){
+                    // Display location and current time
+                    locationEl.innerHTML = `<strong>${city}, ${country}</strong><p>${currentTime}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching location info:", error);
+            });
+    });
+</script>
