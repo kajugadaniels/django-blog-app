@@ -13,9 +13,8 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-calendar"></i>
                                         </div>
-                                        <!-- Add an ID for updating the current date and day -->
+                                        <!-- ID for updating the current day and date -->
                                         <div class="inf" id="current-date">
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -24,9 +23,8 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-cloud-sun"></i>
                                         </div>
-                                        <!-- Add an ID for updating the location info and time -->
+                                        <!-- ID for updating the location and realtime clock -->
                                         <div class="inf" id="location-info">
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +115,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
-    // Get current date/time including seconds
+    // Set the current date (day and full date)
     const now = new Date();
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -125,32 +123,44 @@ document.addEventListener("DOMContentLoaded", function(){
     const currentDate = now.getDate();
     const currentMonth = months[now.getMonth()];
     const currentYear = now.getFullYear();
-    const currentHours = now.getHours().toString().padStart(2, '0');
-    const currentMinutes = now.getMinutes().toString().padStart(2, '0');
-    const currentSeconds = now.getSeconds().toString().padStart(2, '0');
-    const currentTime = currentHours + ":" + currentMinutes + ":" + currentSeconds;
     
-    // Update the date block in the navbar
+    // Update current date block
     const currentDateEl = document.getElementById("current-date");
     if(currentDateEl){
         currentDateEl.innerHTML = `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
     }
     
-    // Use the IPinfo API to get location info
+    // Prepare location info element and variable for location text
+    const locationInfoEl = document.getElementById("location-info");
+    let locationText = "Unknown City, Unknown Region, Unknown Country";
+    
+    // Fetch location info from IPinfo
     fetch('https://ipinfo.io/json?token=1a9fe57f5148a2')
         .then(response => response.json())
         .then(data => {
             const city = data.city || "Unknown City";
             const region = data.region || "Unknown Region";
             const country = data.country || "Unknown Country";
-            const locationEl = document.getElementById("location-info");
-            if(locationEl){
-                // Display location (city, region, country) and current time
-                locationEl.innerHTML = `<strong>${city}, ${region}, ${country}</strong><p>${currentTime}</p>`;
-            }
+            locationText = `${city}, ${region}, ${country}`;
         })
-        .catch(error => {
+    .catch(error => {
             console.error("Error fetching location info:", error);
-        });
+    });
+    
+    // Function to update time in realtime
+    function updateTime(){
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const currentTime = hours + ":" + minutes + ":" + seconds;
+        if(locationInfoEl){
+            locationInfoEl.innerHTML = `<strong>${locationText}</strong><p>${currentTime}</p>`;
+        }
+    }
+    
+    // Initial time update and then update every second
+    updateTime();
+    setInterval(updateTime, 1000);
 });
 </script>
