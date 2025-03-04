@@ -1,8 +1,8 @@
 from base.models import *
-from django.shortcuts import render
-from django.utils import timezone
 from datetime import timedelta
+from django.utils import timezone
 from django.db.models import Count
+from django.shortcuts import render
 from django.contrib.auth import get_user_model
 import random
 
@@ -208,13 +208,9 @@ def home(request):
     tags = Tag.objects.all().order_by('?')
     
     # NEW LOGIC: Retrieve two distinct recent sponsored articles.
-    # The first sponsored article is the most recent one with sponsored=True.
-    sponsoredArticle1 = Article.objects.filter(sponsored=True).order_by('-created_at').first()
-    # Retrieve a second sponsored article, ensuring it is different from the first.
-    if sponsoredArticle1:
-        sponsoredArticle2 = Article.objects.filter(sponsored=True).exclude(id=sponsoredArticle1.id).order_by('-created_at').first()
-    else:
-        sponsoredArticle2 = None
+    sponsoredArticles = Article.objects.filter(sponsored=True).order_by('-created_at')
+    sponsoredArticleRecent = sponsoredArticles.first()
+    sponsoredArticleRecent2 = sponsoredArticles.exclude(id=sponsoredArticleRecent.id).first() if sponsoredArticleRecent else None
     
     context = {
         'breakingNews': breakingNews,
@@ -249,8 +245,8 @@ def home(request):
         # Tags block
         'tags': tags,
         # Sponsored articles block
-        'sponsoredArticle1': sponsoredArticle1,
-        'sponsoredArticle2': sponsoredArticle2,
+        'sponsoredArticleRecent': sponsoredArticleRecent,
+        'sponsoredArticleRecent2': sponsoredArticleRecent2,
     }
     
     return render(request, 'pages/index.html', context)
