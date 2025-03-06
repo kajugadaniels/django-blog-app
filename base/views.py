@@ -1,10 +1,10 @@
 import random
+from base.models import *
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
-from base.models import Article, Category, Tag
+from django.shortcuts import render, get_object_or_404
 
 def home(request):
     """
@@ -253,6 +253,12 @@ def home(request):
     
     return render(request, 'pages/category_articles.html', context)
 
+# -------------------------------------------------------------------
+# Git Commit Commands:
+#
+# For home() view:
+#
+# For showArticle() view:
 def showArticle(request, slug):
     """
     Retrieve a published article by its slug along with its associated images and URL fields.
@@ -276,6 +282,7 @@ def showArticle(request, slug):
     
     return render(request, 'pages/article_detail.html', context)
 
+# For showCategoryArticles() view:
 def showCategoryArticles(request, category_slug):
     """
     Retrieve all published articles for a given category along with sidebar data including:
