@@ -341,20 +341,62 @@ def showCategoryArticles(request, category_slug):
     
     return render(request, 'pages/category_articles.html', context)
 
-
 def showTagArticles(request, tag_slug):
     """
-    Retrieve all published articles that are associated with a given tag.
+    Retrieve all published articles associated with a given tag, identified by its slug.
+    Additionally, gather sidebar data including:
+      - Trending post: the article with the most views in the last 24 hours with this tag.
+      - Popular posts: the most viewed article in the last 7 days and three additional popular articles with this tag.
+      - All categories and tags (for sidebar display).
+      - The second most recent sponsored article for this tag.
     """
-    # Retrieve all categories
-    categories = Category.objects.all()
+    # Retrieve the tag or return 404 if not found.
     tag = get_object_or_404(Tag, slug=tag_slug)
+    
+    # Retrieve all published articles that have this tag, ordered by most recent.
     articles = Article.objects.filter(tags=tag, status='published').order_by('-created_at')
-
+    
+    # Define time thresholds.
+    timeThreshold = timezone.now() - timedelta(hours=24)
+    weekTimeThreshold = timezone.now() - timedelta(days=7)
+    
+    # Retrieve trending post for this tag (most viewed article in the last 24 hours).
+    topArticle = Article.objects.filter(tags=tag, status='published', created_at__gte=timeThreshold)\
+                                .order_by('-views').first()
+    
+    # Retrieve the most viewed article in the last 7 days for this tag.
+    mostViewedWeeklyArticle = Article.objects.filter(tags=tag, status='published', created_at__gte=weekTimeThreshold)\
+                                             .order_by('-views').first()
+    if mostViewedWeeklyArticle:
+        mostViewedWeeklyArticles = Article.objects.filter(tags=tag, status='published', created_at__gte=weekTimeThreshold)\
+                                                  .exclude(id=mostViewedWeeklyArticle.id)\
+                                                  .order_by('-views')[:3]
+    else:
+        mostViewedWeeklyArticles = Article.objects.filter(tags=tag, status='published', created_at__gte=weekTimeThreshold)\
+                                                  .order_by('-views')[:3]
+    
+    # Retrieve all categories (for sidebar).
+    categories = Category.objects.all()
+    
+    # Retrieve all tags in random order.
+    all_tags = Tag.objects.all().order_by('?')
+    
+    # Retrieve sponsored articles for this tag and get the second most recent one.
+    sponsoredArticles = Article.objects.filter(tags=tag, status='published', sponsored=True).order_by('-created_at')
+    sponsoredArticleRecent2 = None
+    if sponsoredArticles.exists():
+        firstSponsored = sponsoredArticles.first()
+        sponsoredArticleRecent2 = sponsoredArticles.exclude(id=firstSponsored.id).first()
+    
     context = {
-        'categories': categories,
         'tag': tag,
         'articles': articles,
+        'topArticle': topArticle,
+        'mostViewedWeeklyArticle': mostViewedWeeklyArticle,
+        'mostViewedWeeklyArticles': mostViewedWeeklyArticles,
+        'categories': categories,
+        'tags': all_tags,
+        'sponsoredArticleRecent2': sponsoredArticleRecent2,
     }
-
+    
     return render(request, 'pages/tag_articles.html', context)
