@@ -278,28 +278,23 @@ def showArticle(request, slug):
 
 def showCategoryArticles(request, category_slug):
     """
-    Retrieve all published articles for a given category (by slug) and also gather additional
-    sidebar data including:
-      - Trending post: the article with the most views in the last 24 hours.
-      - Popular posts: the most viewed article in the last 7 days and three additional popular articles.
-      - All tags in random order.
+    Retrieve all published articles for a given category along with sidebar data including:
+      - Trending post (most viewed in last 24 hours)
+      - Popular posts (most viewed in last 7 days)
+      - All tags in random order
       - The second most recent sponsored article for the category.
     """
-    # Retrieve the category; 404 if not found.
     category = get_object_or_404(Category, slug=category_slug)
     
-    # Retrieve all published articles for the category, ordered by most recent.
-    articles = Article.objects.filter(category=category, status='published').order_by('-created_at')
+    articles = Article.objects.filter(status='published', category=category).order_by('-created_at')
     
     # Define time thresholds.
     timeThreshold = timezone.now() - timedelta(hours=24)
     weekTimeThreshold = timezone.now() - timedelta(days=7)
     
-    # Retrieve the trending post for this category (most viewed in the last 24 hours).
     topArticle = Article.objects.filter(category=category, status='published', created_at__gte=timeThreshold)\
                                 .order_by('-views').first()
     
-    # Retrieve the most viewed article in the last 7 days for this category.
     mostViewedWeeklyArticle = Article.objects.filter(category=category, status='published', created_at__gte=weekTimeThreshold)\
                                              .order_by('-views').first()
     if mostViewedWeeklyArticle:
@@ -310,11 +305,10 @@ def showCategoryArticles(request, category_slug):
         mostViewedWeeklyArticles = Article.objects.filter(category=category, status='published', created_at__gte=weekTimeThreshold)\
                                                   .order_by('-views')[:3]
     
-    # Retrieve all tags in random order.
     tags = Tag.objects.all().order_by('?')
     
-    # Retrieve sponsored articles for the category, then get the second most recent one.
-    sponsoredArticles = Article.objects.filter(category=category, status='published', sponsored=True).order_by('-created_at')
+    sponsoredArticles = Article.objects.filter(category=category, status='published', sponsored=True)\
+                                       .order_by('-created_at')
     sponsoredArticleRecent2 = None
     if sponsoredArticles.exists():
         firstSponsored = sponsoredArticles.first()
