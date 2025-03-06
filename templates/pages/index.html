@@ -791,7 +791,7 @@
                             <h5 class="wid-title-style2"> Hot Tags Today </h5>
                             <div class="tags-content">
                                 {% for tag in tags %}
-                                    <a href="#">
+                                    <a href="{% url 'base:showTagArticles' tag.slug %}">
                                         {{ tag.name }}
                                     </a>
                                 {% endfor %}

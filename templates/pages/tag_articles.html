@@ -92,8 +92,8 @@
                 <div class="tc-widget-tags-style2">
                     <h5 class="wid-title-style2"> Hot Tags Today </h5>
                     <div class="tags-content">
-                        {% for t in tags %}
-                        <a href="{% url 'base:tag_articles' t.slug %}">{{ t.name }}</a>
+                        {% for tag in tags %}
+                        <a href="{% url 'base:showTagArticles' tag.slug %}">{{ tag.name }}</a>
                         {% endfor %}
                     </div>
                 </div>
