@@ -33,7 +33,7 @@
                     </div>
                     
                     <div class="col-lg-4">
-                        <a href="#" class="logo-brand d-none d-lg-block">
+                        <a href="{% url 'base:home' %}" class="logo-brand d-none d-lg-block">
                             <h1>
                                 Irebe.
                             </h1>
@@ -51,7 +51,7 @@
                         <span></span>
                         <span></span>
                     </button>
-                    <a href="#" class="logo-brand d-block d-lg-none w-50 my-4">
+                    <a href="{% url 'base:home' %}" class="logo-brand d-block d-lg-none w-50 my-4">
                         <img src="{% static 'img/logo_home1.png' %}" alt="" class="dark-none">
                         <img src="{% static 'img/logo_home1_lt.png' %}" alt="" class="light-none">
                     </a>
@@ -63,11 +63,20 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- Home Link -->
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'base:home' %}">
                                 Home
                             </a>
                         </li>
+                        <!-- Loop through first eight categories -->
+                        {% for category in categories|slice:":8" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'base:showCategoryArticles' category.slug %}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
                     </ul>
                     <div class="nav-side">
                         <a href="#" class="icon-link search-btn-style1">
