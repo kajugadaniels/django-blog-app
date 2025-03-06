@@ -255,17 +255,14 @@ def home(request):
 
 def showArticle(request, slug):
     """
-    Retrieve a published article by its slug along with its associated image URLs
-    and any other URL fields (e.g., video_url, sponsored_link).
+    Retrieve a published article by its slug along with its associated images and URL fields.
     """
-    # Retrieve the article or return 404 if not found or not published.
     article = get_object_or_404(Article, slug=slug, status='published')
     
     # Retrieve all associated images for the article.
     images = article.articleimage_set.all()
     
-    # Build a dictionary of URL fields for easy access in the template.
-    # (Assuming article has video_url and sponsored_link fields)
+    # Build a dictionary of URL fields.
     urls = {
         'video': article.video_url,
         'sponsored': article.sponsored_link,
