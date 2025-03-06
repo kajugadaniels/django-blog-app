@@ -227,7 +227,7 @@
                                             {{ topArticle.category.name }}
                                         </a>
                                         <h4 class="title">
-                                            <a href="{% url 'base:showArticle' topArticle.slug  %}">{{ topArticle.title }}</a>
+                                            <a href="{% url 'base:showArticle' topArticle.slug  %}">{{ topArticle.title|truncatechars:35 }}</a>
                                         </h4>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>z
     
     <section class="tc-latest-news-style1">
         <div class="container">
@@ -315,7 +315,7 @@
                                         <a href="{% url 'base:showCategoryArticles' recentArticle.category.slug %}" class="news-cat color-999 fsz-13px text-uppercase mb-10">{{ recentArticle.category.name }}</a>
                                     {% endif %}
                                     <h2 class="title mb-20">
-                                        <a href="{% url 'base:showArticle' recentArticle.slug  %}">{{ recentArticle.title }}</a>
+                                        <a href="#">{{ recentArticle.title }}</a>
                                     </h2>
                                     <div class="text color-666">
                                         {{ recentArticle.content|truncatewords:30 }}
