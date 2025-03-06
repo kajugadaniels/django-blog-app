@@ -444,7 +444,7 @@
         </div>
     </section>
     
-    <section class="banner1">
+    {% comment %} <section class="banner1">
         <div class="container">
             <div class="content pt-50 pb-50 border-bottom border-1 brd-gray">
                 <div class="row justify-content-center">
@@ -456,7 +456,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> {% endcomment %}
     
     <section class="pt-50 pb-50">
         <div class="container">
@@ -668,7 +668,7 @@
                         </div>
                     </section>                    
     
-                    <section class="banner2">
+                    {% comment %} <section class="banner2">
                         <div class="container">
                             <div class="content">
                                 <div class="row justify-content-center">
@@ -680,7 +680,7 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </section> {% endcomment %}
     
                     {% if otherCategory and otherRecentArticle %}
                         <section class="tc-technology-style1 pt-50">
@@ -830,7 +830,7 @@
                                             {% if articleImage %}
                                                 <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                             {% else %}
-                                                <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/1.png" alt="Default Image">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
                                             {% endif %}
                                         {% endwith %}
                                         {% if mostViewedWeeklyArticle.category %}
@@ -877,12 +877,12 @@
                                 {% endfor %}
                             </div>                            
                         </div>
-                        <div class="tc-widget-adbox-style1">
+                        {% comment %} <div class="tc-widget-adbox-style1">
                             <a href="#" class="img">
                                 <img src="https://newzin-html.themescamp.com/assets/img/banner12.png" alt="" class="">
                             </a>
-                        </div>
-                        <div class="tc-widget-survey-style1">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="tc-widget-survey-style1">
                             <p class="color-000 text-uppercase mb-20 ltspc-1"> quick survey </p>
                             <div class="ques-title lh-4">
                                 How was your experience on Newzin?
@@ -919,7 +919,7 @@
                             <small class="pl-num">
                                 <span class="color-000">24,562 </span> Peoples joined
                             </small>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -1169,7 +1169,7 @@
                                                 {% if articleImage %}
                                                     <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                                 {% else %}
-                                                    <img src="https://newzin-html.themescamp.com/assets/img/another_news/1.png" alt="Default Image">
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
                                                 {% endif %}
                                             {% endwith %}
                                         </div>
@@ -1213,7 +1213,7 @@
                                                             {% if thumb %}
                                                                 <img src="{{ thumb.image.url }}" alt="{{ thumb.caption }}">
                                                             {% else %}
-                                                                <img src="https://newzin-html.themescamp.com/assets/img/another_news/2.png" alt="Default Thumbnail">
+                                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Thumbnail">
                                                             {% endif %}
                                                         {% endwith %}
                                                     </div>
@@ -1236,34 +1236,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                
-        </div>
-    </section>
-    
-    <section class="tc-download-style1 pb-50">
-        <div class="container">
-            <div class="content">
-                <div class="row align-items-center">
-                    <div class="col-lg-4">
-                        <div class="info">
-                            <strong class="title">Download Newzin App</strong>
-                            <div class="text">
-                                Easy to update latest news, daily podcast and everything in your hand
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="img">
-                            <a href="#">
-                                <img src="https://newzin-html.themescamp.com/assets/img/apple1.png" alt="">
-                            </a>
-                            <a href="#">
-                                <img src="https://newzin-html.themescamp.com/assets/img/android1.png" alt="">
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-    </section>    
+    </section>
 {% endblock content %}

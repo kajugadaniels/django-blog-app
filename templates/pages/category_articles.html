@@ -130,7 +130,7 @@
                                             {% if articleImage %}
                                                 <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                             {% else %}
-                                                <img src="https://newzin-html.themescamp.com/assets/img/wid_popular/1.png" alt="Default Image">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
                                             {% endif %}
                                         {% endwith %}
                                         {% if mostViewedWeeklyArticle.category %}
@@ -177,11 +177,11 @@
                                 {% endfor %}
                             </div>                            
                         </div>
-                        <div class="tc-widget-adbox-style1">
+                        {% comment %} <div class="tc-widget-adbox-style1">
                             <a href="#" class="img">
                                 <img src="https://newzin-html.themescamp.com/assets/img/banner12.png" alt="" class="">
                             </a>
-                        </div>
+                        </div> {% endcomment %}
                         <div class="tc-widget-survey-style1">
                             <p class="color-000 text-uppercase mb-20 ltspc-1"> quick survey </p>
                             <div class="ques-title lh-4">
