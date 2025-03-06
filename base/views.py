@@ -340,3 +340,21 @@ def showCategoryArticles(request, category_slug):
     }
     
     return render(request, 'pages/category_articles.html', context)
+
+
+def showTagArticles(request, tag_slug):
+    """
+    Retrieve all published articles that are associated with a given tag.
+    """
+    # Retrieve all categories
+    categories = Category.objects.all()
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    articles = Article.objects.filter(tags=tag, status='published').order_by('-created_at')
+
+    context = {
+        'categories': categories,
+        'tag': tag,
+        'articles': articles,
+    }
+
+    return render(request, 'pages/tag_articles.html', context)
