@@ -72,4 +72,156 @@
     </div>
 </section>
 
+<section class="tc-single-post-comments">
+    <div class="container">
+        <div class="comments-content pt-50 pb-50 border-1 border-top border-dark">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="content">
+                        <div class="comments-cards">
+                            <!-- Existing comments will be loaded here.
+                                 New comments and replies will be appended dynamically. -->
+                            <!-- Example static comments can remain here if needed -->
+                        </div>
+                        <!-- Main Comment Form -->
+                        <form id="comment-form" class="comment-form d-block pt-30" data-article-id="{{ article.id }}">
+                            <p class="text-uppercase mb-30">Leave A Comment</p>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group mb-4 mb-lg-0">
+                                        <input type="text" class="form-control fsz-12px rounded-0 p-3" name="name" placeholder="Your Name *">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group mb-30">
+                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="comment" rows="6" placeholder="Write your comment here"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn bg-main text-white rounded-0 mt-40">
+                                        <span class="fsz-11px">Submit Comment</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- End Main Comment Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for AJAX comment submission and reply handling -->
+<script>
+    // Function to get the CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentForm = document.getElementById('comment-form');
+        const commentsContainer = document.querySelector('.comments-cards');
+        const csrftoken = getCookie('csrftoken');
+
+        // Main comment form submission via AJAX
+        commentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(commentForm);
+            // Append the article ID from the form's data attribute
+            formData.append('article_id', commentForm.dataset.articleId);
+
+            fetch("{% url 'base:addComment' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Append the new comment HTML to the comments container
+                    commentsContainer.insertAdjacentHTML('beforeend', data.html);
+                    commentForm.reset();
+                } else {
+                    alert("Error: " + JSON.stringify(data.errors));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Delegate event for reply button clicks
+        commentsContainer.addEventListener('click', function(e) {
+            if (e.target.closest('.reply-btn')) {
+                e.preventDefault();
+                const replyBtn = e.target.closest('.reply-btn');
+                const parentCommentId = replyBtn.dataset.commentId;
+                // Check if a reply form already exists under this comment
+                let parentComment = replyBtn.closest('[data-comment-id]');
+                if (!parentComment.querySelector('.reply-form')) {
+                    // Create reply form HTML
+                    let replyFormHtml = `
+                        <form class="reply-form mt-20" data-parent-id="${parentCommentId}" data-article-id="${commentForm.dataset.articleId}">
+                            <div class="form-group mb-4">
+                                <input type="text" class="form-control fsz-12px rounded-0 p-3" name="name" placeholder="Your Name *">
+                            </div>
+                            <div class="form-group mb-3">
+                                <textarea class="form-control rounded-0 fsz-12px p-3" name="comment" rows="4" placeholder="Write your reply here"></textarea>
+                            </div>
+                            <button type="submit" class="btn bg-main text-white rounded-0">
+                                <span class="fsz-11px">Submit Reply</span>
+                            </button>
+                        </form>
+                    `;
+                    parentComment.insertAdjacentHTML('beforeend', replyFormHtml);
+                }
+            }
+        });
+
+        // Delegate event for reply form submissions via AJAX
+        commentsContainer.addEventListener('submit', function(e) {
+            if (e.target && e.target.classList.contains('reply-form')) {
+                e.preventDefault();
+                const replyForm = e.target;
+                const formData = new FormData(replyForm);
+                formData.append('article_id', replyForm.dataset.articleId);
+                formData.append('parent_id', replyForm.dataset.parentId);
+
+                fetch("{% url 'base:addComment' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Insert the new reply above the reply form and then remove the form
+                        replyForm.insertAdjacentHTML('beforebegin', data.html);
+                        replyForm.remove();
+                    } else {
+                        alert("Error: " + JSON.stringify(data.errors));
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+</script>
+
 {% endblock %}
