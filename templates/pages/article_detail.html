@@ -78,6 +78,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="content">
+                        <!-- Notification message container -->
+                        <div id="notification" style="display:none; margin-bottom:20px;"></div>
+
                         <div class="comments-cards">
                             <!-- Existing comments will be loaded here.
                                  New comments and replies will be appended dynamically. -->
@@ -93,7 +96,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group mb-30">
-                                        <!-- Changed name from "comment" to "content" -->
+                                        <!-- The field name 'content' must match your CommentForm -->
                                         <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="6" placeholder="Write your comment here"></textarea>
                                     </div>
                                 </div>
@@ -112,8 +115,34 @@
     </div>
 </section>
 
-<!-- JavaScript for AJAX comment submission and reply handling -->
+<!-- JavaScript for AJAX comment submission, reply handling, and notifications -->
 <script>
+    // Function to show a notification message
+    function showNotification(message, type="success") {
+        const notificationDiv = document.getElementById('notification');
+        notificationDiv.style.display = 'block';
+        notificationDiv.style.padding = "10px 15px";
+        notificationDiv.style.borderRadius = "5px";
+        notificationDiv.style.marginBottom = "20px";
+        if (type === "success") {
+            notificationDiv.style.backgroundColor = "#d4edda";
+            notificationDiv.style.color = "#155724";
+            notificationDiv.style.border = "1px solid #c3e6cb";
+        } else if (type === "error") {
+            notificationDiv.style.backgroundColor = "#f8d7da";
+            notificationDiv.style.color = "#721c24";
+            notificationDiv.style.border = "1px solid #f5c6cb";
+        } else {
+            notificationDiv.style.backgroundColor = "#fff3cd";
+            notificationDiv.style.color = "#856404";
+            notificationDiv.style.border = "1px solid #ffeeba";
+        }
+        notificationDiv.innerText = message;
+        setTimeout(() => {
+            notificationDiv.style.display = 'none';
+        }, 3000); // Hide after 3 seconds
+    }
+
     // Function to get the CSRF token from cookies
     function getCookie(name) {
         let cookieValue = null;
@@ -156,11 +185,15 @@
                     // Append the new comment HTML to the comments container
                     commentsContainer.insertAdjacentHTML('beforeend', data.html);
                     commentForm.reset();
+                    showNotification("Your comment has been posted successfully.", "success");
                 } else {
-                    alert("Error: " + JSON.stringify(data.errors));
+                    showNotification("Error: " + JSON.stringify(data.errors), "error");
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification("An unexpected error occurred.", "error");
+            });
         });
 
         // Delegate event for reply button clicks
@@ -172,7 +205,7 @@
                 // Check if a reply form already exists under this comment
                 let parentComment = replyBtn.closest('[data-comment-id]');
                 if (!parentComment.querySelector('.reply-form')) {
-                    // Create reply form HTML with updated field name "content"
+                    // Create reply form HTML with field name "content"
                     let replyFormHtml = `
                         <form class="reply-form mt-20" data-parent-id="${parentCommentId}" data-article-id="${commentForm.dataset.articleId}">
                             <div class="form-group mb-4">
@@ -214,11 +247,15 @@
                         // Insert the new reply above the reply form and then remove the form
                         replyForm.insertAdjacentHTML('beforebegin', data.html);
                         replyForm.remove();
+                        showNotification("Your reply has been posted successfully.", "success");
                     } else {
-                        alert("Error: " + JSON.stringify(data.errors));
+                        showNotification("Error: " + JSON.stringify(data.errors), "error");
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification("An unexpected error occurred.", "error");
+                });
             }
         });
     });
