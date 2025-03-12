@@ -79,7 +79,7 @@ class Tag(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
     content = RichTextField()  # Use RichTextField from CKEditor instead of TextField
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
