@@ -185,7 +185,7 @@ def home(request):
                                                 .order_by('-views')[:2]
     
     # NEW LOGIC: Retrieve all authors from the user model.
-    authors = User.objects.all()
+    authors = User.objects.filter(is_staff=False)
     
     # NEW LOGIC: For 3 random categories, retrieve:
     # - The most recent (featured) article in that category.
