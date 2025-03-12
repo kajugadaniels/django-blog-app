@@ -11,49 +11,49 @@
                 <div class="tc-post-list-style3">
                     <div class="items">
                         {% for article in articles %}
-                        <div class="item">
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="img th-230 img-cover overflow-hidden">
-                                        {% with articleImage=article.articleimage_set.first %}
-                                            {% if articleImage %}
-                                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
-                                            {% else %}
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
-                                            {% endif %}
-                                        {% endwith %}
-                                    </div>
-                                </div>
-                                <div class="col-lg-7">
-                                    <div class="content mt-20 mt-lg-0">
-                                        {% if article.category %}
-                                        <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="color-999 fsz-13px text-uppercase mb-10">
-                                            {{ article.category.name }}
-                                        </a>
-                                        {% endif %}
-                                        <h4 class="title mb-15">
-                                            <a href="{% url 'base:showArticle' article.slug %}">{{ article.title }}</a>
-                                        </h4>
-                                        <div class="text color-666">
-                                            {{ article.content|safe|truncatechars:140 }}
+                            <div class="item">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="img th-230 img-cover overflow-hidden">
+                                            {% with articleImage=article.articleimage_set.first %}
+                                                {% if articleImage %}
+                                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                                {% else %}
+                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                                {% endif %}
+                                            {% endwith %}
                                         </div>
-                                        <div class="meta-bot fsz-13px color-666">
-                                            <ul class="d-flex">
-                                                <li class="date me-5">
-                                                    <a href="#"><i class="la la-calendar me-2"></i> {{ article.created_at|date:"M d, Y" }}</a>
-                                                </li>
-                                                <li class="author me-5">
-                                                    <a href="#"><i class="la la-user me-2"></i> by {{ article.author.name }}</a>
-                                                </li>
-                                                <li class="comment">
-                                                    <a href="#"><i class="la la-comment me-2"></i> {{ article.comment.count }} Comments</a>
-                                                </li>
-                                            </ul>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="content mt-20 mt-lg-0">
+                                            {% if article.category %}
+                                            <a href="{% url 'base:showCategoryArticles' article.category.slug %}" class="color-999 fsz-13px text-uppercase mb-10">
+                                                {{ article.category.name }}
+                                            </a>
+                                            {% endif %}
+                                            <h4 class="title mb-15">
+                                                <a href="{% url 'base:showArticle' article.slug %}">{{ article.title }}</a>
+                                            </h4>
+                                            <div class="text color-666">
+                                                {{ article.content|safe|truncatechars:140 }}
+                                            </div>
+                                            <div class="meta-bot fsz-13px color-666">
+                                                <ul class="d-flex">
+                                                    <li class="date me-5">
+                                                        <a href="#"><i class="la la-calendar me-2"></i> {{ article.created_at|date:"M d, Y" }}</a>
+                                                    </li>
+                                                    <li class="author me-5">
+                                                        <a href="#"><i class="la la-user me-2"></i> by {{ article.author.name }}</a>
+                                                    </li>
+                                                    <li class="comment">
+                                                        <a href="#"><i class="la la-comment me-2"></i> {{ article.comment.count }} Comments</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         {% empty %}
                             <p>No articles found for tag "{{ tag.name }}".</p>
                         {% endfor %}
@@ -66,103 +66,9 @@
                         <a href="#"> Trending Posts </a>
                     </div>
                     {% if topArticle %}
-                    <div class="tc-post-overlay-default">
-                        <div class="img th-200 img-cover">
-                            {% with articleImage=topArticle.articleimage_set.first %}
-                                {% if articleImage %}
-                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
-                                {% else %}
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
-                                {% endif %}
-                            {% endwith %}
-                        </div>
-                        <div class="content ps-20 pe-20 pb-20 text-white">
-                            {% if topArticle.category %}
-                            <a href="{% url 'base:showCategoryArticles' topArticle.category.slug %}" class="text-uppercase fsz-13px mb-1">
-                                {{ topArticle.category.name }}
-                            </a>
-                            {% endif %}
-                            <h4 class="title">
-                                <a href="{% url 'base:showArticle' topArticle.slug %}">{{ topArticle.title|truncatechars:35 }}</a>
-                            </h4>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="tc-widget-tags-style2">
-                    <h5 class="wid-title-style2"> Hot Tags Today </h5>
-                    <div class="tags-content">
-                        {% for tag in tags %}
-                        <a href="{% url 'base:showTagArticles' tag.slug %}">{{ tag.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% if sponsoredArticleRecent2 %}
-                <div class="tc-widget-sponsored-style1">
-                    <div class="img img-cover">
-                        {% with articleImage=sponsoredArticleRecent2.articleimage_set.first %}
-                            {% if articleImage %}
-                                <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
-                            {% else %}
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Sponsored Image">
-                            {% endif %}
-                        {% endwith %}
-                    </div>
-                    <div class="info pt-10">
-                        <div class="spon-cat"> Sponsored Content </div>
-                        <h6 class="title">
-                            <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
-                                {{ sponsoredArticleRecent2.title }}
-                            </a>
-                        </h6>
-                        <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
-                            <small>{{ sponsoredArticleRecent2.sponsored_link|default:'Visit Site' }} <i class="las la-external-link-square-alt ms-2"></i></small>
-                        </a>
-                    </div>
-                </div>
-                {% endif %}
-                <div class="tc-widget-popular-style1">
-                    <p class="color-000 text-uppercase mb-20 ltspc-1"> Popular Posts </p>
-                    {% if mostViewedWeeklyArticle %}
-                    <div class="main-card">
-                        <div class="img th-300 img-cover">
-                            {% with articleImage=mostViewedWeeklyArticle.articleimage_set.first %}
-                                {% if articleImage %}
-                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
-                                {% else %}
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
-                                {% endif %}
-                            {% endwith %}
-                            {% if mostViewedWeeklyArticle.category %}
-                            <div class="tags">
-                                <a href="{% url 'base:showCategoryArticles' mostViewedWeeklyArticle.category.slug %}">
-                                    {{ mostViewedWeeklyArticle.category.name }}
-                                </a>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="content">
-                            <h4 class="title">
-                                <a href="{% url 'base:showArticle' mostViewedWeeklyArticle.slug %}">{{ mostViewedWeeklyArticle.title }}</a>
-                            </h4>
-                            <div class="meta-bot">
-                                <ul class="d-flex">
-                                    <li class="date me-4">
-                                        <a href="#"><i class="la la-calendar me-1"></i> {{ mostViewedWeeklyArticle.created_at|date:"M d, Y" }}</a>
-                                    </li>
-                                    <li class="comment">
-                                        <a href="#"><i class="la la-comment me-1"></i> {{ mostViewedWeeklyArticle.comment.count }} </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    <div class="tc-widget-popular-list">
-                        {% for article in mostViewedWeeklyArticles %}
-                        <a href="{% url 'base:showArticle' article.slug %}" class="item">
-                            <div class="img img-cover">
-                                {% with articleImage=article.articleimage_set.first %}
+                        <div class="tc-post-overlay-default">
+                            <div class="img th-200 img-cover">
+                                {% with articleImage=topArticle.articleimage_set.first %}
                                     {% if articleImage %}
                                         <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
                                     {% else %}
@@ -170,12 +76,110 @@
                                     {% endif %}
                                 {% endwith %}
                             </div>
-                            <div class="info">
-                                <h6 class="title">
-                                    {{ article.title }}
-                                </h6>
+                            <div class="content ps-20 pe-20 pb-20 text-white">
+                                {% if topArticle.category %}
+                                <a href="{% url 'base:showCategoryArticles' topArticle.category.slug %}" class="text-uppercase fsz-13px mb-1">
+                                    {{ topArticle.category.name }}
+                                </a>
+                                {% endif %}
+                                <h4 class="title">
+                                    <a href="{% url 'base:showArticle' topArticle.slug %}">{{ topArticle.title|truncatechars:35 }}</a>
+                                </h4>
                             </div>
-                        </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="tc-widget-tags-style2">
+                    <h5 class="wid-title-style2"> Hot Tags Today </h5>
+                    <div class="tags-content">
+                        {% for tag in tags %}
+                            <a href="{% url 'base:showTagArticles' tag.slug %}">{{ tag.name }}</a>
+                        {% empty %}
+                            No Post
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if sponsoredArticleRecent2 %}
+                    <div class="tc-widget-sponsored-style1">
+                        <div class="img img-cover">
+                            {% with articleImage=sponsoredArticleRecent2.articleimage_set.first %}
+                                {% if articleImage %}
+                                    <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                {% else %}
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Sponsored Image">
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="info pt-10">
+                            <div class="spon-cat"> Sponsored Content </div>
+                            <h6 class="title">
+                                <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
+                                    {{ sponsoredArticleRecent2.title }}
+                                </a>
+                            </h6>
+                            <a href="{{ sponsoredArticleRecent2.sponsored_link|default:'#' }}">
+                                <small>{{ sponsoredArticleRecent2.sponsored_link|default:'Visit Site' }} <i class="las la-external-link-square-alt ms-2"></i></small>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="tc-widget-popular-style1">
+                    <p class="color-000 text-uppercase mb-20 ltspc-1"> Popular Posts </p>
+                    {% if mostViewedWeeklyArticle %}
+                        <div class="main-card">
+                            <div class="img th-300 img-cover">
+                                {% with articleImage=mostViewedWeeklyArticle.articleimage_set.first %}
+                                    {% if articleImage %}
+                                        <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                    {% else %}
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                    {% endif %}
+                                {% endwith %}
+                                {% if mostViewedWeeklyArticle.category %}
+                                    <div class="tags">
+                                        <a href="{% url 'base:showCategoryArticles' mostViewedWeeklyArticle.category.slug %}">
+                                            {{ mostViewedWeeklyArticle.category.name }}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="content">
+                                <h4 class="title">
+                                    <a href="{% url 'base:showArticle' mostViewedWeeklyArticle.slug %}">{{ mostViewedWeeklyArticle.title }}</a>
+                                </h4>
+                                <div class="meta-bot">
+                                    <ul class="d-flex">
+                                        <li class="date me-4">
+                                            <a href="#"><i class="la la-calendar me-1"></i> {{ mostViewedWeeklyArticle.created_at|date:"M d, Y" }}</a>
+                                        </li>
+                                        <li class="comment">
+                                            <a href="#"><i class="la la-comment me-1"></i> {{ mostViewedWeeklyArticle.comment.count }} </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="tc-widget-popular-list">
+                        {% for article in mostViewedWeeklyArticles %}
+                            <a href="{% url 'base:showArticle' article.slug %}" class="item">
+                                <div class="img img-cover">
+                                    {% with articleImage=article.articleimage_set.first %}
+                                        {% if articleImage %}
+                                            <img src="{{ articleImage.image.url }}" alt="{{ articleImage.caption }}">
+                                        {% else %}
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="info">
+                                    <h6 class="title">
+                                        {{ article.title }}
+                                    </h6>
+                                </div>
+                            </a>
+                        {% empty %}
+                            No Post
                         {% endfor %}
                     </div>
                 </div>
