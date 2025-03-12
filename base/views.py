@@ -254,7 +254,8 @@ def home(request):
 def showArticle(request, slug):
     """
     Retrieve a published article by its slug along with its associated image URLs
-    and any other URL fields (e.g., video_url, sponsored_link).
+    and any additional URL fields (e.g., video_url, sponsored_link). This view now also
+    retrieves the number of likes and comments on the article.
     """
     # Retrieve the article or return 404 if not found or not published.
     article = get_object_or_404(Article, slug=slug, status='published')
@@ -262,21 +263,26 @@ def showArticle(request, slug):
     # Retrieve all associated images for the article.
     images = article.articleimage_set.all()
     
-    # Retrieve all categories
+    # Retrieve all categories.
     categories = Category.objects.all()
     
     # Build a dictionary of URL fields for easy access in the template.
-    # (Assuming article has video_url and sponsored_link fields)
     urls = {
         'video': article.video_url,
         'sponsored': article.sponsored_link,
     }
+    
+    # Retrieve the number of likes and comments for the article.
+    likes_count = article.like_set.count()
+    comments_count = article.comment_set.count()
     
     context = {
         'categories': categories,
         'article': article,
         'images': images,
         'urls': urls,
+        'likes_count': likes_count,
+        'comments_count': comments_count,
     }
     
     return render(request, 'pages/article_detail.html', context)
