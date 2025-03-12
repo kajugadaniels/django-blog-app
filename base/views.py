@@ -16,25 +16,25 @@ def home(request):
     weekTimeThreshold = timezone.now() - timedelta(days=7)
     
     # Retrieve the article with the most views in the last 24 hours
-    topArticle = Article.objects.filter(created_at__gte=timeThreshold).order_by('-views').first()
+    topArticle = Article.objects.filter(created_at__gte=timeThreshold, status='published').order_by('-views').first()
     
     # Retrieve 3 trending articles from the last 24 hours, excluding the topArticle to avoid duplication
     if topArticle:
-        trendingArticles = Article.objects.filter(created_at__gte=timeThreshold)\
+        trendingArticles = Article.objects.filter(created_at__gte=timeThreshold, status='published')\
                                           .exclude(id=topArticle.id)\
                                           .order_by('-views')[:3]
     else:
-        trendingArticles = Article.objects.filter(created_at__gte=timeThreshold)\
+        trendingArticles = Article.objects.filter(created_at__gte=timeThreshold, status='published')\
                                           .order_by('-views')[:3]
     
     # Retrieve 2 articles in random order
-    randomArticles = Article.objects.all().order_by('?')[:2]
+    randomArticles = Article.objects.filter(status='published').order_by('?')[:2]
     
     # Retrieve all categories
     categories = Category.objects.all()
     
     # Retrieve the recent article from the last 24 hours (most recent creation date)
-    recentArticle = Article.objects.filter(created_at__gte=timeThreshold)\
+    recentArticle = Article.objects.filter(created_at__gte=timeThreshold, status='published')\
                                    .order_by('-created_at')\
                                    .first()
     
@@ -43,7 +43,7 @@ def home(request):
     categoriesList = list(Category.objects.all())
     random.shuffle(categoriesList)
     for category in categoriesList:
-        article = Article.objects.filter(category=category).order_by('?').first()
+        article = Article.objects.filter(category=category, status='published').order_by('?').first()
         if article:
             categoryArticles.append(article)
             if len(categoryArticles) == 6:
@@ -56,7 +56,7 @@ def home(request):
                                             .first()
     # From that category, retrieve one article that is recent (within the last 24 hours) and has the most views.
     if mostPopulatedCategory:
-        advancedArticle = Article.objects.filter(category=mostPopulatedCategory, created_at__gte=timeThreshold)\
+        advancedArticle = Article.objects.filter(category=mostPopulatedCategory, created_at__gte=timeThreshold, status='published')\
                                            .order_by('-views')\
                                            .first()
     else:
@@ -66,13 +66,13 @@ def home(request):
     if advancedArticle:
         relatedArticles = Article.objects.filter(
             category=advancedArticle.category,
-            created_at__gte=timeThreshold
+            created_at__gte=timeThreshold, status='published'
         ).exclude(id=advancedArticle.id).order_by('-created_at')[:3]
     else:
         relatedArticles = None
 
     # Retrieve the most liked article in the last 24 hours.
-    mostLikedArticle = Article.objects.filter(created_at__gte=timeThreshold)\
+    mostLikedArticle = Article.objects.filter(created_at__gte=timeThreshold, status='published')\
         .annotate(like_count=Count('like'))\
         .order_by('-like_count')\
         .first()
@@ -84,17 +84,17 @@ def home(request):
     ).order_by('-comment_count', '-like_count')[:3]
     
     # Retrieve the most viewed article in the last 7 days.
-    mostViewedWeeklyArticle = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+    mostViewedWeeklyArticle = Article.objects.filter(created_at__gte=weekTimeThreshold, status='published')\
                                               .order_by('-views')\
                                               .first()
     
     # Retrieve 3 more most viewed articles in the last 7 days (excluding the one above)
     if mostViewedWeeklyArticle:
-        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold, status='published')\
                                                   .exclude(id=mostViewedWeeklyArticle.id)\
                                                   .order_by('-views')[:3]
     else:
-        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold)\
+        mostViewedWeeklyArticles = Article.objects.filter(created_at__gte=weekTimeThreshold, status='published')\
                                                   .order_by('-views')[:3]
     
     # NEW LOGIC: For one random category, retrieve:
@@ -103,19 +103,19 @@ def home(request):
     # (c) Two articles with the most comments in that category (excluding the ones already selected).
     randomCategory = Category.objects.order_by('?').first()
     if randomCategory:
-        recentArticleInCategory = Article.objects.filter(category=randomCategory)\
+        recentArticleInCategory = Article.objects.filter(category=randomCategory, status='published')\
                                                    .order_by('-created_at')\
                                                    .first()
         
         if recentArticleInCategory:
             mostViewedArticlesInCategory = list(
-                Article.objects.filter(category=randomCategory)
+                Article.objects.filter(category=randomCategory, status='published')
                 .exclude(id=recentArticleInCategory.id)
                 .order_by('-views')
             )
         else:
             mostViewedArticlesInCategory = list(
-                Article.objects.filter(category=randomCategory)
+                Article.objects.filter(category=randomCategory, status='published')
                 .order_by('-views')
             )
         mostViewedArticlesInCategory = mostViewedArticlesInCategory[:4]
@@ -128,7 +128,7 @@ def home(request):
             excluded_ids.add(art.id)
         
         mostCommentedArticlesInCategory = list(
-            Article.objects.filter(category=randomCategory)
+            Article.objects.filter(category=randomCategory, status='published')
             .exclude(id__in=excluded_ids)
             .annotate(comment_count=Count('comment'))
             .order_by('-comment_count')
@@ -149,18 +149,18 @@ def home(request):
         otherCategory = Category.objects.order_by('?').first()
     
     if otherCategory:
-        otherRecentArticle = Article.objects.filter(category=otherCategory)\
+        otherRecentArticle = Article.objects.filter(category=otherCategory, status='published')\
                                               .order_by('-created_at')\
                                               .first()
         if otherRecentArticle:
             otherMostViewedArticles = list(
-                Article.objects.filter(category=otherCategory, created_at__gte=weekTimeThreshold)
+                Article.objects.filter(category=otherCategory, created_at__gte=weekTimeThreshold, status='published')
                 .exclude(id=otherRecentArticle.id)
                 .order_by('-views')
             )
         else:
             otherMostViewedArticles = list(
-                Article.objects.filter(category=otherCategory, created_at__gte=weekTimeThreshold)
+                Article.objects.filter(category=otherCategory, created_at__gte=weekTimeThreshold, status='published')
                 .order_by('-views')
             )
         otherMostViewedArticles = otherMostViewedArticles[:2]
@@ -171,17 +171,17 @@ def home(request):
     
     # NEW LOGIC: Retrieve articles that have a video_url.
     # 1. The most recent article with a video_url.
-    videoArticleRecent = Article.objects.filter(video_url__isnull=False)\
+    videoArticleRecent = Article.objects.filter(video_url__isnull=False, status='published')\
                                         .order_by('-created_at')\
                                         .first()
     
     # 2. Two most viewed articles with a video_url (excluding the recent video article if exists).
     if videoArticleRecent:
-        videoArticleMostViewed = Article.objects.filter(video_url__isnull=False)\
+        videoArticleMostViewed = Article.objects.filter(video_url__isnull=False, status='published')\
                                                 .exclude(id=videoArticleRecent.id)\
                                                 .order_by('-views')[:2]
     else:
-        videoArticleMostViewed = Article.objects.filter(video_url__isnull=False)\
+        videoArticleMostViewed = Article.objects.filter(video_url__isnull=False, status='published')\
                                                 .order_by('-views')[:2]
     
     # NEW LOGIC: Retrieve all authors from the user model.
@@ -193,9 +193,9 @@ def home(request):
     recentArticlesByCategory = []
     randomCategoriesForRecent = Category.objects.order_by('?')[:3]
     for cat in randomCategoriesForRecent:
-        featured = Article.objects.filter(category=cat).order_by('-created_at').first()
+        featured = Article.objects.filter(category=cat, status='published').order_by('-created_at').first()
         if featured:
-            others = Article.objects.filter(category=cat).exclude(id=featured.id).order_by('-created_at')[:2]
+            others = Article.objects.filter(category=cat, status='published').exclude(id=featured.id).order_by('-created_at')[:2]
         else:
             others = []
         recentArticlesByCategory.append({
@@ -208,7 +208,7 @@ def home(request):
     tags = Tag.objects.all().order_by('?')
     
     # NEW LOGIC: Retrieve two distinct recent sponsored articles.
-    sponsoredArticles = Article.objects.filter(sponsored=True).order_by('-created_at')
+    sponsoredArticles = Article.objects.filter(sponsored=True, status='published').order_by('-created_at')
     sponsoredArticleRecent = sponsoredArticles.first()
     sponsoredArticleRecent2 = sponsoredArticles.exclude(id=sponsoredArticleRecent.id).first() if sponsoredArticleRecent else None
     
