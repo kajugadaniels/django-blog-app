@@ -8,6 +8,7 @@ app_name = 'base'
 urlpatterns = [
     path('', home, name="home"),
     path('article/<slug:slug>/', showArticle, name='showArticle'),
+    path('add-comment/', addComment, name='addComment'),
     path('category/<slug:category_slug>/', showCategoryArticles, name='showCategoryArticles'),
     path('tag/<slug:tag_slug>/', showTagArticles, name='showTagArticles'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
