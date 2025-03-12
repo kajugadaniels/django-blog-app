@@ -1,9 +1,12 @@
 import random
+from base.forms import *
 from base.models import *
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Count
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
 from django.shortcuts import render, get_object_or_404
 
 def home(request):
@@ -286,6 +289,26 @@ def showArticle(request, slug):
     }
     
     return render(request, 'pages/article_detail.html', context)
+
+def addComment(request):
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            article_id = request.POST.get('article_id')
+            parent_id = request.POST.get('parent_id')
+            article = get_object_or_404(Article, id=article_id)
+            comment = form.save(commit=False)
+            comment.article = article
+            if parent_id:
+                parent = get_object_or_404(Comment, id=parent_id)
+                comment.parent = parent
+            comment.save()
+            # Render the comment snippet using a partial template.
+            html = render_to_string('pages/comment_partial.html', {'comment': comment})
+            return JsonResponse({'success': True, 'html': html})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 def showCategoryArticles(request, category_slug):
     """
