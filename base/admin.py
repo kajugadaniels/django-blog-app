@@ -121,8 +121,8 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('article', 'user', 'content', 'created_at', 'edit_link', 'delete_link')
-    search_fields = ('article__title', 'user__username', 'content')
+    list_display = ('article', 'content', 'created_at', 'edit_link', 'delete_link')
+    search_fields = ('article__title', 'content')
     list_filter = ('created_at', 'updated_at', 'article')
     list_per_page = 20
 
