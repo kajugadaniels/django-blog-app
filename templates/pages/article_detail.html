@@ -5,6 +5,7 @@
 
 <section class="tc-main-post-style1 pb-60">
     <div class="container">
+        <!-- Article Title & Meta -->
         <div class="tc-main-post-title pt-40 pb-40">
             <div class="row">
                 <div class="col-lg-8">
@@ -72,76 +73,24 @@
     </div>
 </section>
 
+<!-- Comments Section -->
 <section class="tc-single-post-comments">
     <div class="container">
         <div class="comments-content pt-50 pb-50 border-1 border-top border-dark">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="content">
-                        <div class="comments-cards">
-                            <div class="comment-replay-cont border-bottom border-1 brd-gray pb-40 pt-40">
-                                <div class="d-flex comment-cont">
-                                    <div class="icon-60 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
-                                    </div>
-                                    <div class="inf w-100">
-                                        <div class="title d-flex justify-content-between">
-                                            <h6 class="fw-bold fsz-14px">David Bowie</h6>
-                                            <span class="time fsz-12px text-uppercase color-999">
-                                                3 hours ago
-                                            </span>
-                                        </div>
-                                        <div class="text color-666 fsz-12px mt-10">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Atume nusaate staman utra phone limo sumeria                                            
-                                        </div>
-                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
-                                            <span class="fsz-11px"> replay </span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="d-flex comment-replay ps-5 mt-30 ms-4">
-                                    <div class="icon-40 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
-                                    </div>
-                                    <div class="inf w-100">
-                                        <div class="title d-flex justify-content-between">
-                                            <h6 class="fw-bold fsz-14px">Logan Cee</h6>
-                                            <span class="time fsz-12px text-uppercase color-999">
-                                                2 dayes ago
-                                            </span>
-                                        </div>
-                                        <div class="text color-666 fsz-12px mt-10">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Atume nusaate staman utra phone limo sumeria                                            
-                                        </div>
-                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
-                                            <span class="fsz-11px"> replay </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment-replay-cont pb-40 pt-40 border-bottom border-1 brd-gray">
-                                <div class="d-flex comment-cont">
-                                    <div class="icon-60 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
-                                    </div>
-                                    <div class="inf w-100">
-                                        <div class="title d-flex justify-content-between">
-                                            <h6 class="fw-bold fsz-14px">Luis Diaz</h6>
-                                            <span class="time fsz-12px text-uppercase color-999">
-                                                December 25, 2022
-                                            </span>
-                                        </div>
-                                        <div class="text color-000 fsz-12px mt-10">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt                                             
-                                        </div>
-                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
-                                            <span class="fsz-11px"> replay </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Comments list container -->
+                        <div class="comments-cards" id="commentsContainer">
+                            <!-- Existing comments rendered here -->
+                            {% for comment in article.comment_set.all %}
+                                {% include 'pages/comment_item.html' with comment=comment %}
+                            {% empty %}
+                                <p>No comments yet.</p>
+                            {% endfor %}
                         </div>
-                        <form class="comment-form d-block pt-30">
+                        <!-- Comment Form -->
+                        <form id="commentForm" data-article-id="{{ article.id }}" class="comment-form d-block pt-30">
                             <p class="text-uppercase mb-30">Leave A Comment</p>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -151,16 +100,17 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group mb-30">
-                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="comment" rows="6" placeholder="Write your comment here"></textarea>
+                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="6" placeholder="Write your comment here"></textarea>
                                     </div>
                                 </div>
+                                <!-- Hidden input for parent comment id -->
+                                <input type="hidden" id="parentId" name="parent" value="">
                                 <div class="col-12">
                                     <button type="submit" class="btn bg-main text-white rounded-0 mt-40">
-                                        <span class="fsz-11px">Submit Comment </span>
+                                        <span class="fsz-11px">Submit Comment</span>
                                     </button>
                                 </div>
                             </div>
-                            
                         </form>
                     </div>
                 </div>
@@ -168,5 +118,93 @@
         </div>
     </div>
 </section>
+
+<!-- AJAX and Reply Functionality Script -->
+<script>
+    // Utility function to get CSRF token from cookies
+    function getCSRFToken() {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    cookieValue = cookie.substring('csrftoken='.length);
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Function to submit comment via AJAX
+    function submitCommentAjax(event) {
+        event.preventDefault();
+        const form = document.getElementById('commentForm');
+        const formData = new FormData(form);
+        const articleId = form.getAttribute('data-article-id');
+        formData.append('articleId', articleId);
+        
+        fetch("{% url 'base:ajaxSubmitComment' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                // Append the new comment HTML to the appropriate container.
+                const parentId = formData.get('parent');
+                if (parentId) {
+                    const parentComment = document.getElementById('comment-' + parentId);
+                    if (parentComment) {
+                        let replyContainer = parentComment.querySelector('.comment-replies');
+                        if (!replyContainer) {
+                            replyContainer = document.createElement('div');
+                            replyContainer.classList.add('comment-replies', 'ps-5', 'mt-30', 'ms-4');
+                            parentComment.appendChild(replyContainer);
+                        }
+                        replyContainer.innerHTML += data.commentHtml;
+                    }
+                } else {
+                    const commentsContainer = document.getElementById('commentsContainer');
+                    commentsContainer.innerHTML += data.commentHtml;
+                }
+                form.reset();
+                document.getElementById('parentId').value = '';
+            } else {
+                console.error('Error submitting comment:', data.errors);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Function to handle reply button click
+    function handleReplyClick(event) {
+        event.preventDefault();
+        const replyBtn = event.target.closest('.reply-btn');
+        const commentId = replyBtn.getAttribute('data-comment-id');
+        document.getElementById('parentId').value = commentId;
+        document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Add event listeners on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentForm = document.getElementById('commentForm');
+        commentForm.addEventListener('submit', submitCommentAjax);
+        
+        // Delegate click event for reply buttons
+        document.getElementById('commentsContainer').addEventListener('click', function(event) {
+            if (event.target.closest('.reply-btn')) {
+                handleReplyClick(event);
+            }
+        });
+    });
+</script>
 
 {% endblock %}
