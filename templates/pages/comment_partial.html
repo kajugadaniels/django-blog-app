@@ -1,0 +1,43 @@
+{% if not comment.parent %}
+    <div class="comment-replay-cont pb-40 pt-40 border-bottom border-1 brd-gray" data-comment-id="{{ comment.id }}">
+        <div class="d-flex comment-cont">
+            <div class="icon-60 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
+                <img src="assets/img/colums/placeholder.png" alt="">
+            </div>
+            <div class="inf w-100">
+                <div class="title d-flex justify-content-between">
+                    <h6 class="fw-bold fsz-14px">{{ comment.name }}</h6>
+                    <span class="time fsz-12px text-uppercase color-999">
+                        {{ comment.created_at|naturaltime }}
+                    </span>
+                </div>
+                <div class="text color-666 fsz-12px mt-10">
+                    {{ comment.content }}
+                </div>
+                <a href="#" class="butn border border-1 mt-20 py-2 px-3 reply-btn" data-comment-id="{{ comment.id }}">
+                    <span class="fsz-11px"> reply </span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="d-flex comment-replay ps-5 mt-30 ms-4" data-comment-id="{{ comment.id }}">
+        <div class="icon-40 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
+            <img src="assets/img/colums/placeholder.png" alt="">
+        </div>
+        <div class="inf w-100">
+            <div class="title d-flex justify-content-between">
+                <h6 class="fw-bold fsz-14px">{{ comment.name }}</h6>
+                <span class="time fsz-12px text-uppercase color-999">
+                    {{ comment.created_at|naturaltime }}
+                </span>
+            </div>
+            <div class="text color-666 fsz-12px mt-10">
+                {{ comment.content }}
+            </div>
+            <a href="#" class="butn border border-1 mt-20 py-2 px-3 reply-btn" data-comment-id="{{ comment.id }}">
+                <span class="fsz-11px"> reply </span>
+            </a>
+        </div>
+    </div>
+{% endif %}
