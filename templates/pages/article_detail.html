@@ -50,6 +50,8 @@
         <div class="tc-main-post-img img-cover mb-50">
             {% for image in images %}
                 <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+            {% empty %}
+                No Image
             {% endfor %}
         </div>
         <div class="tc-main-post-content color-000">
