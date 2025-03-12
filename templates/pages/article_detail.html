@@ -33,15 +33,12 @@
                         <span class="me-40">
                             <a href="#"><i class="la la-calendar me-1"></i> {{ article.created_at|naturaltime }}</a>
                         </span>
-                        <span class="">
-                            <a href="#"><i class="la la-comment me-1"></i> {{ article.comment_set.count }} Comments</a>
+                        <span class="me-40">
+                            <a href="#"><i class="la la-comment me-1"></i> {{ comments_count }} Comments</a>
                         </span>
-                    </div>
-                </div>
-                <div class="col-lg-6 text-lg-end">
-                    <div class="links-side color-000 fsz-13px">
-                        <a href="#" class="me-40"><i class="la la-link me-1"></i> Copy Link</a>
-                        <a href="#" class="me-40"><i class="la la-heart-o me-1"></i> Bookmark</a>
+                        <span>
+                            <a href="#"><i class="la la-thumbs-up me-1"></i> {{ likes_count }} Likes</a>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -59,11 +56,11 @@
                     <div class="sharing">
                         <p class="text-uppercase mb-20">Share</p>
                         <div class="share-icons">
-                            <a href="#"> <i class="la la-twitter"></i> </a>
-                            <a href="#"> <i class="la la-facebook-f"></i> </a>
-                            <a href="#"> <i class="la la-instagram"></i> </a>
-                            <a href="#"> <i class="la la-youtube"></i> </a>
-                            <a href="#"> <i class="la la-spotify"></i> </a>
+                            <a href="#"><i class="la la-twitter"></i></a>
+                            <a href="#"><i class="la la-facebook-f"></i></a>
+                            <a href="#"><i class="la la-instagram"></i></a>
+                            <a href="#"><i class="la la-youtube"></i></a>
+                            <a href="#"><i class="la la-spotify"></i></a>
                         </div>
                     </div>
                 </div>
