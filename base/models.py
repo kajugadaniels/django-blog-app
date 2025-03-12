@@ -142,14 +142,14 @@ class ArticleImage(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to reference custom user model
+    name = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.article.title}"
+        return f"Comment by {self.name} on {self.article.title}"
 
     class Meta:
         verbose_name_plural = "Comments"
