@@ -78,15 +78,70 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="content">
-                        <!-- Notification message container -->
-                        <div id="notification" style="display:none; margin-bottom:20px;"></div>
-
                         <div class="comments-cards">
-                            <!-- Existing comments will be loaded here.
-                                 New comments and replies will be appended dynamically. -->
+                            <div class="comment-replay-cont border-bottom border-1 brd-gray pb-40 pt-40">
+                                <div class="d-flex comment-cont">
+                                    <div class="icon-60 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
+                                    </div>
+                                    <div class="inf w-100">
+                                        <div class="title d-flex justify-content-between">
+                                            <h6 class="fw-bold fsz-14px">David Bowie</h6>
+                                            <span class="time fsz-12px text-uppercase color-999">
+                                                3 hours ago
+                                            </span>
+                                        </div>
+                                        <div class="text color-666 fsz-12px mt-10">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Atume nusaate staman utra phone limo sumeria                                            
+                                        </div>
+                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
+                                            <span class="fsz-11px"> replay </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="d-flex comment-replay ps-5 mt-30 ms-4">
+                                    <div class="icon-40 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
+                                    </div>
+                                    <div class="inf w-100">
+                                        <div class="title d-flex justify-content-between">
+                                            <h6 class="fw-bold fsz-14px">Logan Cee</h6>
+                                            <span class="time fsz-12px text-uppercase color-999">
+                                                2 dayes ago
+                                            </span>
+                                        </div>
+                                        <div class="text color-666 fsz-12px mt-10">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Atume nusaate staman utra phone limo sumeria                                            
+                                        </div>
+                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
+                                            <span class="fsz-11px"> replay </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-replay-cont pb-40 pt-40 border-bottom border-1 brd-gray">
+                                <div class="d-flex comment-cont">
+                                    <div class="icon-60 rounded-circle img-cover overflow-hidden me-3 flex-shrink-0">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="">
+                                    </div>
+                                    <div class="inf w-100">
+                                        <div class="title d-flex justify-content-between">
+                                            <h6 class="fw-bold fsz-14px">Luis Diaz</h6>
+                                            <span class="time fsz-12px text-uppercase color-999">
+                                                December 25, 2022
+                                            </span>
+                                        </div>
+                                        <div class="text color-000 fsz-12px mt-10">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt                                             
+                                        </div>
+                                        <a href="#" class="butn border border-1 mt-20 py-2 px-3">
+                                            <span class="fsz-11px"> replay </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Main Comment Form -->
-                        <form id="comment-form" class="comment-form d-block pt-30" data-article-id="{{ article.id }}">
+                        <form class="comment-form d-block pt-30">
                             <p class="text-uppercase mb-30">Leave A Comment</p>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -96,169 +151,22 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group mb-30">
-                                        <!-- The field name 'content' must match your CommentForm -->
-                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="6" placeholder="Write your comment here"></textarea>
+                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="comment" rows="6" placeholder="Write your comment here"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <button type="submit" class="btn bg-main text-white rounded-0 mt-40">
-                                        <span class="fsz-11px">Submit Comment</span>
+                                        <span class="fsz-11px">Submit Comment </span>
                                     </button>
                                 </div>
                             </div>
+                            
                         </form>
-                        <!-- End Main Comment Form -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- JavaScript for AJAX comment submission, reply handling, and notifications -->
-<script>
-    // Function to show a notification message
-    function showNotification(message, type="success") {
-        const notificationDiv = document.getElementById('notification');
-        notificationDiv.style.display = 'block';
-        notificationDiv.style.padding = "10px 15px";
-        notificationDiv.style.borderRadius = "5px";
-        notificationDiv.style.marginBottom = "20px";
-        if (type === "success") {
-            notificationDiv.style.backgroundColor = "#d4edda";
-            notificationDiv.style.color = "#155724";
-            notificationDiv.style.border = "1px solid #c3e6cb";
-        } else if (type === "error") {
-            notificationDiv.style.backgroundColor = "#f8d7da";
-            notificationDiv.style.color = "#721c24";
-            notificationDiv.style.border = "1px solid #f5c6cb";
-        } else {
-            notificationDiv.style.backgroundColor = "#fff3cd";
-            notificationDiv.style.color = "#856404";
-            notificationDiv.style.border = "1px solid #ffeeba";
-        }
-        notificationDiv.innerText = message;
-        setTimeout(() => {
-            notificationDiv.style.display = 'none';
-        }, 3000); // Hide after 3 seconds
-    }
-
-    // Function to get the CSRF token from cookies
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                cookie = cookie.trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const commentForm = document.getElementById('comment-form');
-        const commentsContainer = document.querySelector('.comments-cards');
-        const csrftoken = getCookie('csrftoken');
-
-        // Main comment form submission via AJAX
-        commentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(commentForm);
-            // Append the article ID from the form's data attribute
-            formData.append('article_id', commentForm.dataset.articleId);
-
-            fetch("{% url 'base:addComment' %}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrftoken,
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Append the new comment HTML to the comments container
-                    commentsContainer.insertAdjacentHTML('beforeend', data.html);
-                    commentForm.reset();
-                    showNotification("Your comment has been posted successfully.", "success");
-                } else {
-                    showNotification("Error: " + JSON.stringify(data.errors), "error");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification("An unexpected error occurred.", "error");
-            });
-        });
-
-        // Delegate event for reply button clicks
-        commentsContainer.addEventListener('click', function(e) {
-            if (e.target.closest('.reply-btn')) {
-                e.preventDefault();
-                const replyBtn = e.target.closest('.reply-btn');
-                const parentCommentId = replyBtn.dataset.commentId;
-                // Check if a reply form already exists under this comment
-                let parentComment = replyBtn.closest('[data-comment-id]');
-                if (!parentComment.querySelector('.reply-form')) {
-                    // Create reply form HTML with field name "content"
-                    let replyFormHtml = `
-                        <form class="reply-form mt-20" data-parent-id="${parentCommentId}" data-article-id="${commentForm.dataset.articleId}">
-                            <div class="form-group mb-4">
-                                <input type="text" class="form-control fsz-12px rounded-0 p-3" name="name" placeholder="Your Name *">
-                            </div>
-                            <div class="form-group mb-3">
-                                <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="4" placeholder="Write your reply here"></textarea>
-                            </div>
-                            <button type="submit" class="btn bg-main text-white rounded-0">
-                                <span class="fsz-11px">Submit Reply</span>
-                            </button>
-                        </form>
-                    `;
-                    parentComment.insertAdjacentHTML('beforeend', replyFormHtml);
-                }
-            }
-        });
-
-        // Delegate event for reply form submissions via AJAX
-        commentsContainer.addEventListener('submit', function(e) {
-            if (e.target && e.target.classList.contains('reply-form')) {
-                e.preventDefault();
-                const replyForm = e.target;
-                const formData = new FormData(replyForm);
-                formData.append('article_id', replyForm.dataset.articleId);
-                formData.append('parent_id', replyForm.dataset.parentId);
-
-                fetch("{% url 'base:addComment' %}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrftoken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Insert the new reply above the reply form and then remove the form
-                        replyForm.insertAdjacentHTML('beforebegin', data.html);
-                        replyForm.remove();
-                        showNotification("Your reply has been posted successfully.", "success");
-                    } else {
-                        showNotification("Error: " + JSON.stringify(data.errors), "error");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification("An unexpected error occurred.", "error");
-                });
-            }
-        });
-    });
-</script>
 
 {% endblock %}
