@@ -55,6 +55,8 @@
                                         </div>
                                     </div>
                                 </div>
+                            {% empty %}
+                                No Post
                             {% endfor %}
                         </div>
                     </div>
@@ -94,6 +96,8 @@
                                     <a href="{% url 'base:showTagArticles' tag.slug %}">
                                         {{ tag.name }}
                                     </a>
+                                {% empty %}
+                                    No Post
                                 {% endfor %}
                             </div>
                         </div>
@@ -174,6 +178,8 @@
                                             </h6>
                                         </div>
                                     </a>
+                                {% empty %}
+                                    No Post
                                 {% endfor %}
                             </div>                            
                         </div>
