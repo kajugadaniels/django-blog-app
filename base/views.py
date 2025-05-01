@@ -295,6 +295,37 @@ def showArticle(request, slug):
     return render(request, 'pages/article_detail.html', context)
 
 @require_POST
+def ajaxLike(request):
+    """
+    Handle an anonymous like via POST. Uses session_key to ensure one like per visitor per article.
+    """
+    # Ensure session exists
+    if not request.session.session_key:
+        request.session.create()
+
+    article_id = request.POST.get('articleId')
+    article = get_object_or_404(Article, pk=article_id, status='published')
+
+    session_key = request.session.session_key
+
+    # Try to create a new AnonymousLike; if it already exists, don't double-count
+    like, created = AnonymousLike.objects.get_or_create(
+        article=article,
+        session_key=session_key
+    )
+
+    if created:
+        liked = True
+    else:
+        # If user clicks again, perhaps you want to unlike; here we simply ignore
+        liked = False
+
+    return JsonResponse({
+        'liked': liked,
+        'likes_count': article.likes_count
+    })
+
+@require_POST
 def ajaxSubmitComment(request):
     # Ensure this is an AJAX request
     if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
