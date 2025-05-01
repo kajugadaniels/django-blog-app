@@ -3,227 +3,262 @@
 {% load humanize %}
 {% block content %}
 
-<section class="tc-main-post-style1 pb-60">
-    <div class="container">
-        <!-- Article Title & Meta -->
-        <div class="tc-main-post-title pt-40 pb-40">
-            <div class="row">
-                <div class="col-lg-8">
-                    <p class="text-uppercase mb-15">{{ article.category.name }}</p>
-                    <h2 class="title">
-                        {{ article.title }}
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="meta-nav pt-30 pb-30 border-top border-1 brd-gray">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="author-side color-666 fsz-13px">
-                        <div class="author me-40 d-flex d-lg-inline-flex align-items-center">
-                            <span class="icon-30 rounded-circle overflow-hidden me-10">
-                                {% if article.author.image %}
-                                    <img src="{{ article.author.image.url }}" alt="{{ article.title }}">
-                                {% else %}
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
-                                {% endif %}
-                            </span>
-                            <span>By</span>
-                            <a href="#" class="text-decoration-underline text-primary ms-1">{{ article.author.name }}</a>
-                        </div>
-                        <span class="me-40">
-                            <a href="#"><i class="la la-calendar me-1"></i> {{ article.created_at|naturaltime }}</a>
-                        </span>
-                        <span class="me-40">
-                            <a href="#"><i class="la la-comment me-1"></i> {{ comments_count }} Comments</a>
-                        </span>
-                        <span>
-                            <a href="#"><i class="la la-thumbs-up me-1"></i> {{ article.views|intcomma }} Views</a>
-                        </span>
+    <section class="tc-main-post-style1 pb-60">
+        <div class="container">
+            <!-- Article Title & Meta -->
+            <div class="tc-main-post-title pt-40 pb-40">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <p class="text-uppercase mb-15">{{ article.category.name }}</p>
+                        <h2 class="title">
+                            {{ article.title }}
+                        </h2>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="tc-main-post-img img-cover mb-50">
-            {% for image in images %}
-                <img src="{{ image.image.url }}" alt="{{ image.caption }}">
-            {% empty %}
-                No Image
-            {% endfor %}
-        </div>
-        <div class="tc-main-post-content color-000">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="social-share mt-30 mb-50">
-                        <p class="fsz-14px mb-3">Share this article:</p>
-                        <div class="">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" class="mb-2 btn btn-outline-primary me-2" target="_blank" rel="noopener">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                                </svg>
-                            </a>
-                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title|urlencode }}" class="mb-2 btn btn-outline-dark me-2" target="_blank" rel="noopener">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M10.488 14.651L15.25 21h7l-7.858-10.478L20.93 3h-2.65l-5.117 5.886L8.75 3h-7l7.51 10.015L2.32 21h2.65zM16.25 19L5.75 5h2l10.5 14z" />
-                                </svg>
-                            </a>
-                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ article.title|urlencode }}" class="mb-2 btn btn-outline-primary me-2" target="_blank" rel="noopener">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <g fill="currentColor">
-                                        <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.74 3.74 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766c-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483a1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.6 1.6 0 0 1 1.6 1.606" clip-rule="evenodd" />
-                                        <path d="M7.2 8.809H4V19.5h3.2z" />
-                                    </g>
-                                </svg>
-                            </a>
-                            <a href="https://api.whatsapp.com/send?text={{ article.title|urlencode }}%20{{ request.build_absolute_uri }}" class="mb-2 btn btn-outline-success" target="_blank" rel="noopener">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01m-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-10">
-                    {{ article.content|safe }}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Comments Section -->
-<section class="tc-single-post-comments">
-    <div class="container">
-        <div class="comments-content pt-50 pb-50 border-1 border-top border-dark">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="content">
-                        <!-- Comments list container -->
-                        <div class="comments-cards" id="commentsContainer">
-                            <!-- Existing comments rendered here -->
-                            {% for comment in article.comment_set.all %}
-                                {% include 'pages/comment_item.html' with comment=comment %}
-                            {% empty %}
-                                <p>No comments yet.</p>
-                            {% endfor %}
-                        </div>
-                        <!-- Comment Form -->
-                        <form id="commentForm" data-article-id="{{ article.id }}" class="comment-form d-block pt-30">
-                            <p class="text-uppercase mb-30">Leave A Comment</p>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4 mb-lg-0">
-                                        <input type="text" class="form-control fsz-12px rounded-0 p-3" name="name" placeholder="Your Name *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-30">
-                                        <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="6" placeholder="Write your comment here"></textarea>
-                                    </div>
-                                </div>
-                                <!-- Hidden input for parent comment id -->
-                                <input type="hidden" id="parentId" name="parent" value="">
-                                <div class="col-12">
-                                    <button type="submit" class="btn bg-main text-white rounded-0 mt-40">
-                                        <span class="fsz-11px">Submit Comment</span>
-                                    </button>
-                                </div>
+            <div class="meta-nav pt-30 pb-30 border-top border-1 brd-gray">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="author-side color-666 fsz-13px">
+                            <div class="author me-40 d-flex d-lg-inline-flex align-items-center">
+                                <span class="icon-30 rounded-circle overflow-hidden me-10">
+                                    {% if article.author.image %}
+                                        <img src="{{ article.author.image.url }}" alt="{{ article.title }}">
+                                    {% else %}
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" alt="Default Image">
+                                    {% endif %}
+                                </span>
+                                <span>By</span>
+                                <a href="#" class="text-decoration-underline text-primary ms-1">{{ article.author.name }}</a>
                             </div>
-                        </form>
+                            <span class="me-40">
+                                <a href="#"><i class="la la-calendar me-1"></i> {{ article.created_at|naturaltime }}</a>
+                            </span>
+                            <span class="me-40">
+                                <a href="#"><i class="la la-comment me-1"></i> {{ comments_count }} Comments</a>
+                            </span>
+                            <span>
+                                <a href="#"><i class="la la-eye me-1"></i> {{ article.views|intcomma }} Views</a>
+                            </span>
+                            <button id="likeBtn" style="background: transparent; border: none;">
+                                <span id="likesCount">
+                                    <i class="la la-thumbs-up me-1"></i> 
+                                    {{ likes_count }}
+                                </span>
+                                Likes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tc-main-post-img img-cover mb-50">
+                {% for image in images %}
+                    <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% empty %}
+                    No Image
+                {% endfor %}
+            </div>
+
+            <div class="tc-main-post-content color-000">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="social-share mt-30 mb-50">
+                            <p class="fsz-14px mb-3">Share this article:</p>
+                            <div class="">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" class="mb-2 btn btn-outline-primary me-2" target="_blank" rel="noopener">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                    </svg>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title|urlencode }}" class="mb-2 btn btn-outline-dark me-2" target="_blank" rel="noopener">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M10.488 14.651L15.25 21h7l-7.858-10.478L20.93 3h-2.65l-5.117 5.886L8.75 3h-7l7.51 10.015L2.32 21h2.65zM16.25 19L5.75 5h2l10.5 14z" />
+                                    </svg>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ article.title|urlencode }}" class="mb-2 btn btn-outline-primary me-2" target="_blank" rel="noopener">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <g fill="currentColor">
+                                            <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.74 3.74 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766c-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483a1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.6 1.6 0 0 1 1.6 1.606" clip-rule="evenodd" />
+                                            <path d="M7.2 8.809H4V19.5h3.2z" />
+                                        </g>
+                                    </svg>
+                                </a>
+                                <a href="https://api.whatsapp.com/send?text={{ article.title|urlencode }}%20{{ request.build_absolute_uri }}" class="mb-2 btn btn-outline-success" target="_blank" rel="noopener">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01m-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        {{ article.content|safe }}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- AJAX and Reply Functionality Script -->
-<script>
-    // Utility function to get CSRF token from cookies
-    function getCSRFToken() {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.startsWith('csrftoken=')) {
-                    cookieValue = cookie.substring('csrftoken='.length);
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
+    <!-- Comments Section -->
+    <section class="tc-single-post-comments">
+        <div class="container">
+            <div class="comments-content pt-50 pb-50 border-1 border-top border-dark">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="content">
+                            <!-- Comments list container -->
+                            <div class="comments-cards" id="commentsContainer">
+                                <!-- Existing comments rendered here -->
+                                {% for comment in article.comment_set.all %}
+                                    {% include 'pages/comment_item.html' with comment=comment %}
+                                {% empty %}
+                                    <p>No comments yet.</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Comment Form -->
+                            <form id="commentForm" data-article-id="{{ article.id }}" class="comment-form d-block pt-30">
+                                <p class="text-uppercase mb-30">Leave A Comment</p>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-4 mb-lg-0">
+                                            <input type="text" class="form-control fsz-12px rounded-0 p-3" name="name" placeholder="Your Name *">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-30">
+                                            <textarea class="form-control rounded-0 fsz-12px p-3" name="content" rows="6" placeholder="Write your comment here"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- Hidden input for parent comment id -->
+                                    <input type="hidden" id="parentId" name="parent" value="">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn bg-main text-white rounded-0 mt-40">
+                                            <span class="fsz-11px">Submit Comment</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Function to submit comment via AJAX
-    function submitCommentAjax(event) {
-        event.preventDefault();
-        const form = document.getElementById('commentForm');
-        const formData = new FormData(form);
-        const articleId = form.getAttribute('data-article-id');
-        formData.append('articleId', articleId);
-        
-        fetch("{% url 'base:ajaxSubmitComment' %}", {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCSRFToken(),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                // Append the new comment HTML to the appropriate container.
-                const parentId = formData.get('parent');
-                if (parentId) {
-                    const parentComment = document.getElementById('comment-' + parentId);
-                    if (parentComment) {
-                        let replyContainer = parentComment.querySelector('.comment-replies');
-                        if (!replyContainer) {
-                            replyContainer = document.createElement('div');
-                            replyContainer.classList.add('comment-replies', 'ps-5', 'mt-30', 'ms-4');
-                            parentComment.appendChild(replyContainer);
-                        }
-                        replyContainer.innerHTML += data.commentHtml;
+    <script>
+        // Utility function to get CSRF token from cookies
+        function getCSRFToken() {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith('csrftoken=')) {
+                        cookieValue = cookie.substring('csrftoken='.length);
+                        break;
                     }
-                } else {
-                    const commentsContainer = document.getElementById('commentsContainer');
-                    commentsContainer.innerHTML += data.commentHtml;
                 }
-                form.reset();
-                document.getElementById('parentId').value = '';
-            } else {
-                console.error('Error submitting comment:', data.errors);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+            return cookieValue;
+        }
 
-    // Function to handle reply button click
-    function handleReplyClick(event) {
-        event.preventDefault();
-        const replyBtn = event.target.closest('.reply-btn');
-        const commentId = replyBtn.getAttribute('data-comment-id');
-        document.getElementById('parentId').value = commentId;
-        document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' });
-    }
+        // Function to submit comment via AJAX
+        function submitCommentAjax(event) {
+            event.preventDefault();
+            const form = document.getElementById('commentForm');
+            const formData = new FormData(form);
+            const articleId = form.getAttribute('data-article-id');
+            formData.append('articleId', articleId);
+            
+            fetch("{% url 'base:ajaxSubmitComment' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    // Append the new comment HTML to the appropriate container.
+                    const parentId = formData.get('parent');
+                    if (parentId) {
+                        const parentComment = document.getElementById('comment-' + parentId);
+                        if (parentComment) {
+                            let replyContainer = parentComment.querySelector('.comment-replies');
+                            if (!replyContainer) {
+                                replyContainer = document.createElement('div');
+                                replyContainer.classList.add('comment-replies', 'ps-5', 'mt-30', 'ms-4');
+                                parentComment.appendChild(replyContainer);
+                            }
+                            replyContainer.innerHTML += data.commentHtml;
+                        }
+                    } else {
+                        const commentsContainer = document.getElementById('commentsContainer');
+                        commentsContainer.innerHTML += data.commentHtml;
+                    }
+                    form.reset();
+                    document.getElementById('parentId').value = '';
+                } else {
+                    console.error('Error submitting comment:', data.errors);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
-    // Add event listeners on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', function() {
-        const commentForm = document.getElementById('commentForm');
-        commentForm.addEventListener('submit', submitCommentAjax);
-        
-        // Delegate click event for reply buttons
-        document.getElementById('commentsContainer').addEventListener('click', function(event) {
-            if (event.target.closest('.reply-btn')) {
-                handleReplyClick(event);
-            }
+        // Function to handle reply button click
+        function handleReplyClick(event) {
+            event.preventDefault();
+            const replyBtn = event.target.closest('.reply-btn');
+            const commentId = replyBtn.getAttribute('data-comment-id');
+            document.getElementById('parentId').value = commentId;
+            document.getElementById('commentForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add event listeners on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentForm = document.getElementById('commentForm');
+            commentForm.addEventListener('submit', submitCommentAjax);
+            
+            // Delegate click event for reply buttons
+            document.getElementById('commentsContainer').addEventListener('click', function(event) {
+                if (event.target.closest('.reply-btn')) {
+                    handleReplyClick(event);
+                }
+            });
         });
-    });
-</script>
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const likeBtn   = document.getElementById('likeBtn');
+            const likesEl   = document.getElementById('likesCount');
+            const csrftoken = document.cookie.split('; ').find(c => c.startsWith('csrftoken=')).split('=')[1];
+
+            likeBtn.addEventListener('click', () => {
+                fetch("{% url 'base:ajaxLike' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ articleId: '{{ article.id }}' })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    likesEl.textContent = data.likes_count;
+                    if (data.liked) {
+                        likeBtn.classList.replace('btn-outline-danger','btn-danger');
+                    }
+                })
+                .catch(console.error);
+            });
+        });
+    </script>
 
 {% endblock %}
