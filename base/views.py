@@ -3,8 +3,8 @@ from base.forms import *
 from base.models import *
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Count
 from django.http import JsonResponse
+from django.db.models import Count, F
 from django.contrib.auth import get_user_model
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
