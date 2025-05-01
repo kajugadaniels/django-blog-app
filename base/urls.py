@@ -8,6 +8,7 @@ app_name = 'base'
 urlpatterns = [
     path('', home, name="home"),
     path('article/<slug:slug>/', showArticle, name='showArticle'),
+    path('ajax/like/', ajaxLike, name='ajaxLike'),
     path('ajax/comment/', ajaxSubmitComment, name='ajaxSubmitComment'),
     path('category/<slug:category_slug>/', showCategoryArticles, name='showCategoryArticles'),
     path('tag/<slug:tag_slug>/', showTagArticles, name='showTagArticles'),
