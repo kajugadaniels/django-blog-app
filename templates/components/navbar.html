@@ -13,9 +13,7 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-calendar"></i>
                                         </div>
-                                        <!-- ID for updating the current day and date -->
-                                        <div class="inf" id="current-date">
-                                        </div>
+                                        <div class="inf" id="current-date"></div>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -23,20 +21,16 @@
                                         <div class="icon me-3 pt-1">
                                             <i class="la la-cloud-sun"></i>
                                         </div>
-                                        <!-- ID for updating the location and realtime clock -->
-                                        <div class="inf" id="location-info">
-                                        </div>
+                                        <div class="inf" id="location-info"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-center">
                         <a href="{% url 'base:home' %}" class="logo-brand d-none d-lg-block">
-                            <h1>
-                                Irebe.
-                            </h1>
+                            <h1>Irebe.</h1>
                         </a>
                     </div>
                 </div>
@@ -48,13 +42,10 @@
                 <div class="mob-nav-toggles d-flex align-items-center justify-content-between">
                     <button class="navbarList-icon me-lg-5" data-bs-toggle="offcanvas" href="#offcanvasExample"
                         role="button" aria-controls="offcanvasExample">
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span>
                     </button>
                     <a href="{% url 'base:home' %}" class="logo-brand d-block d-lg-none w-50 my-4">
-                        <h1>
-                            Irebe.
-                        </h1>
+                        <h1>Irebe.</h1>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -62,23 +53,31 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <!-- Home Link -->
                         <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'base:home' %}">
+                            <a
+                                href="{% url 'base:home' %}"
+                                class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-bold{% endif %}"
+                            >
                                 Home
                             </a>
                         </li>
                         <!-- Loop through first eight categories -->
                         {% for category in categories|slice:":8" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'base:showCategoryArticles' category.slug %}">
+                            <a
+                                href="{% url 'base:showCategoryArticles' category.slug %}"
+                                class="nav-link {% if request.resolver_match.url_name == 'showCategoryArticles' and request.resolver_match.kwargs.category_slug == category.slug %}active fw-bold{% endif %}"
+                            >
                                 {{ category.name }}
                             </a>
                         </li>
                         {% endfor %}
                     </ul>
+
                     <div class="nav-side">
                         <a href="#" class="icon-link search-btn-style1">
                             <i class="la la-search fs-4 sOpen-btn"></i>
@@ -104,9 +103,7 @@
                             Injira Ijambo ryibanze
                         </span>
                         <div class="form-group">
-                            <span class="icon">
-                                <i class="la la-search"></i>
-                            </span>
+                            <span class="icon"><i class="la la-search"></i></span>
                             <input type="text" class="form-control" placeholder="Elon Musk ... ">
                             <button type="submit">Shakisha</button>
                         </div>
@@ -121,49 +118,35 @@
 document.addEventListener("DOMContentLoaded", function(){
     // Set the current date (day and full date)
     const now = new Date();
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const currentDay = days[now.getDay()];
     const currentDate = now.getDate();
     const currentMonth = months[now.getMonth()];
     const currentYear = now.getFullYear();
-    
-    // Update current date block
-    const currentDateEl = document.getElementById("current-date");
-    if(currentDateEl){
-        currentDateEl.innerHTML = `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
-    }
-    
-    // Prepare location info element and variable for location text
+
+    document.getElementById("current-date").innerHTML =
+        `<strong>${currentDay}</strong><p>${currentMonth} ${currentDate}, ${currentYear}</p>`;
+
+    // Location and realtime clock
     const locationInfoEl = document.getElementById("location-info");
     let locationText = "Unknown City, Unknown Region, Unknown Country";
-    
-    // Fetch location info from IPinfo
+
     fetch('https://ipinfo.io/json?token=1a9fe57f5148a2')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-            const city = data.city || "Unknown City";
-            const region = data.region || "Unknown Region";
-            const country = data.country || "Unknown Country";
-            locationText = `${city}, ${region}, ${country}`;
+            locationText = `${data.city || 'Unknown City'}, ${data.region || 'Unknown Region'}, ${data.country || 'Unknown Country'}`;
         })
-    .catch(error => {
-            console.error("Error fetching location info:", error);
-    });
-    
-    // Function to update time in realtime
+        .catch(err => console.error("Error fetching location info:", err));
+
     function updateTime(){
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        const currentTime = hours + ":" + minutes + ":" + seconds;
-        if(locationInfoEl){
-            locationInfoEl.innerHTML = `<strong>${locationText}</strong><p>${currentTime}</p>`;
-        }
+        const hh = String(now.getHours()).padStart(2,'0');
+        const mm = String(now.getMinutes()).padStart(2,'0');
+        const ss = String(now.getSeconds()).padStart(2,'0');
+        locationInfoEl.innerHTML = `<strong>${locationText}</strong><p>${hh}:${mm}:${ss}</p>`;
     }
-    
-    // Initial time update and then update every second
+
     updateTime();
     setInterval(updateTime, 1000);
 });
