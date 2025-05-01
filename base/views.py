@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 def home(request):
     User = get_user_model()
@@ -292,6 +293,7 @@ def showArticle(request, slug):
     return render(request, 'pages/article_detail.html', context)
 
 @require_POST
+@ensure_csrf_cookie
 def ajaxLike(request):
     """
     Handle an anonymous like via POST. Uses session_key to ensure one like per visitor per article.
