@@ -150,10 +150,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.User'
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Ireme",
-    "site_header": "Ireme",
-    "site_brand": "Ireme",
-    "welcome_sign": "Ireme Admin Login",
+    "site_title": "Irebe",
+    "site_header": "Irebe",
+    "site_brand": "Irebe",
+    "welcome_sign": "Irebe Admin Login",
     "show_sidebar": True,
     "navigation_expanded": True,
     "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
