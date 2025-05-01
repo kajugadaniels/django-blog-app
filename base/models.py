@@ -212,3 +212,21 @@ class Alert(models.Model):
 
     class Meta:
         verbose_name_plural = "Alerts"
+
+class AnonymousLike(models.Model):
+    """
+    Track one like per visitor session (by session_key) per article.
+    """
+    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='anon_likes')
+    session_key = models.CharField(max_length=40)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('article', 'session_key')
+        verbose_name = 'Anonymous Like'
+        verbose_name_plural = 'Anonymous Likes'
+
+# add this property method to your Article model (inside class Article):
+    @property
+    def likes_count(self):
+        return self.anon_likes.count()
