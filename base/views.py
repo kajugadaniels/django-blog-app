@@ -257,29 +257,33 @@ def home(request):
 
 def showArticle(request, slug):
     """
-    Retrieve a published article by its slug along with its associated image URLs
-    and any additional URL fields (e.g., video_url, sponsored_link). This view now also
-    retrieves the number of likes and comments on the article.
+    Retrieve a published article by its slug, increment its view count,
+    and render the detail page with all related context.
     """
-    # Retrieve the article or return 404 if not found or not published.
+    # Fetch the article or return 404 if not found/published
     article = get_object_or_404(Article, slug=slug, status='published')
-    
-    # Retrieve all associated images for the article.
+
+    # Atomically increment the view counter
+    Article.objects.filter(pk=article.pk).update(views=F('views') + 1)
+    # Refresh the instance so the incremented value is available below
+    article.refresh_from_db(fields=['views'])
+
+    # Associated images
     images = article.articleimage_set.all()
-    
-    # Retrieve all categories.
+
+    # All categories for sidebar or navigation
     categories = Category.objects.all()
-    
-    # Build a dictionary of URL fields for easy access in the template.
+
+    # Prepare any extra URLs (video, sponsorship)
     urls = {
         'video': article.video_url,
         'sponsored': article.sponsored_link,
     }
-    
-    # Retrieve the number of likes and comments for the article.
+
+    # Compute counts for likes and comments
     likes_count = article.like_set.count()
     comments_count = article.comment_set.count()
-    
+
     context = {
         'categories': categories,
         'article': article,
@@ -288,7 +292,6 @@ def showArticle(request, slug):
         'likes_count': likes_count,
         'comments_count': comments_count,
     }
-    
     return render(request, 'pages/article_detail.html', context)
 
 @require_POST
