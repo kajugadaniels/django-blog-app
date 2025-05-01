@@ -257,40 +257,37 @@ def home(request):
 
 def showArticle(request, slug):
     """
-    Retrieve a published article by its slug, increment its view count,
-    and render the detail page with all related context.
+    Retrieve a published article, increment its view count,
+    and provide anonymous-like context.
     """
-    # Fetch the article or return 404 if not found/published
+    # --- fetch & bump views ---
     article = get_object_or_404(Article, slug=slug, status='published')
-
-    # Atomically increment the view counter
     Article.objects.filter(pk=article.pk).update(views=F('views') + 1)
-    # Refresh the instance so the incremented value is available below
     article.refresh_from_db(fields=['views'])
 
-    # Associated images
-    images = article.articleimage_set.all()
+    # --- ensure session exists ---
+    if not request.session.session_key:
+        request.session.create()
+    session_key = request.session.session_key
 
-    # All categories for sidebar or navigation
-    categories = Category.objects.all()
+    # --- determine if already liked in this session ---
+    has_liked = AnonymousLike.objects.filter(
+        article=article,
+        session_key=session_key
+    ).exists()
 
-    # Prepare any extra URLs (video, sponsorship)
-    urls = {
-        'video': article.video_url,
-        'sponsored': article.sponsored_link,
-    }
-
-    # Compute counts for likes and comments
-    likes_count = article.like_set.count()
+    # --- gather other context ---
+    images       = article.articleimage_set.all()
+    categories   = Category.objects.all()
     comments_count = article.comment_set.count()
 
     context = {
-        'categories': categories,
-        'article': article,
-        'images': images,
-        'urls': urls,
-        'likes_count': likes_count,
+        'article':       article,
+        'images':        images,
+        'categories':    categories,
         'comments_count': comments_count,
+        'likes_count':   article.likes_count,
+        'has_liked':     has_liked,
     }
     return render(request, 'pages/article_detail.html', context)
 
