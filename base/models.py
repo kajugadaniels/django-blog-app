@@ -113,6 +113,10 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def likes_count(self):
+        return self.anon_likes.count()
+
     class Meta:
         verbose_name_plural = "Articles"
 
